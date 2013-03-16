@@ -1,0 +1,8 @@
+.DS_Store
+*.log
+*.pyc
+
+crowdsrc/crowdsrc/settings.py
+
+.project
+.settings
