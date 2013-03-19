@@ -2,7 +2,9 @@
 *.log
 *.pyc
 
+
 crowdsrc/crowdsrc/settings.py
 
+.pydevproject
 .project
 .settings
