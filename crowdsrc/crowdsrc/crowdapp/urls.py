@@ -8,11 +8,9 @@ urlpatterns = patterns('',
     url(r'^$', "crowdapp.views.index"),
     
     # Authentication urls
-    url(r'^login/$', "crowdapp.views.login"),
-    url(r'^register/$', "crowdapp.views.register"),
-    
-    # User urls
-    url(r'^home/$', "crowdapp.views.home"),
+    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'auth/login.html'}),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
+    url(r'^register/$', 'crowdapp.views.register'),
     
     # Task management urls
     
