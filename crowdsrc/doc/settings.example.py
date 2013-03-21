@@ -11,6 +11,8 @@ STATIC_PATH = WORKSPACE_ROOT + 'static/'
 UPLOADS_PATH = WORKSPACE_ROOT + 'uploads/'
 TEMPLATES_PATH =  PROJECT_ROOT + 'templates/'
 
+# Urls
+LOGIN_URL = '/login/'
 
 # Debugging
 DEBUG = True
