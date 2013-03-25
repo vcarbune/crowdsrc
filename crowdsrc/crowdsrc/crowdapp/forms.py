@@ -24,4 +24,4 @@ class UserCreateForm(UserCreationForm):
 class ProfileForm(ModelForm):
     class Meta:
         model = UserProfile
-        exclude = ('user', 'last_login')
+        exclude = ('user', 'last_login', 'is_taskcreator', 'badges')

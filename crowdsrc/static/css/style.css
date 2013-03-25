@@ -1,4 +1,3 @@
-/* Created by Artisteer v4.1.0.59861 */
 
 #art-main
 {
@@ -443,7 +442,7 @@ text-align: left;
 {
    margin:0 auto;
    height: 100px;
-   background-image: url('images/header.jpg');
+   background-image: url("../img/header.jpg");
    background-position: center top;
    background-repeat: no-repeat;
    position: relative;
@@ -452,7 +451,7 @@ text-align: left;
 
 .responsive .art-header 
 {
-   background-image: url('images/header.jpg');
+   background-image: url('../img/header.jpg');
    background-position: center center;
 }
 
@@ -539,7 +538,7 @@ ul.art-hmenu
 
 ul.art-hmenu .justify-helper
 {
-   width: 100%;
+   /* width: 100%; */
    height: 0;
    visibility: hidden;
    display: inline-block;
@@ -741,7 +740,7 @@ ul.art-hmenu ul
    z-index: 10;
    left: 0;
    top: 0;
-   background-image: url('images/spacer.gif');
+   background-image: url('../img/spacer.gif');
 }
 
 .desktop ul.art-hmenu>li>ul
@@ -859,6 +858,7 @@ ul.art-hmenu ul
 {
    display: table-cell;
    vertical-align: top;
+   padding: 10px;
 }
 
 /* need only for content layout in post content */ 
@@ -984,7 +984,7 @@ input[type="text"], input[type="password"], input[type="email"], input[type="url
 input[type="text"], input[type="password"], input[type="email"], input[type="url"], textarea
 {
    width: 100%;
-   padding: 8px 0;
+   padding: 8px 4px;
    color: #383838 !important;
    font-size: 14px;
    font-family: 'Open Sans', Arial, 'Arial Unicode MS', Helvetica, Sans-Serif;
@@ -1056,7 +1056,7 @@ form.art-search input[type="submit"], input.art-search-button, a.art-search-butt
    left:auto;
    display:block;
    border:none;
-   background:url('images/searchicon.png') center center no-repeat;
+   background:url('../img/searchicon.png') center center no-repeat;
    width:24px;
    height: 100%;
    padding:0;
@@ -1572,7 +1572,7 @@ div.art-block img
 }
 .art-block ul>li:before
 {
-   content:url('images/blockbullets.png');
+   content:url('../img/blockbullets.png');
    margin-right:6px;
    bottom: 2px;
    position:relative;
@@ -1713,7 +1713,7 @@ pre
 
 .art-postheadericon:before
 {
-   content:url('images/postheadericon.png');
+   content:url('../img/postheadericon.png');
    margin-right:6px;
    position:relative;
    display:inline-block;
@@ -1818,7 +1818,7 @@ pre
 
 .art-postdateicon:before
 {
-   content:url('images/postdateicon.png');
+   content:url('../img/postdateicon.png');
    margin-right:6px;
    position:relative;
    display:inline-block;
@@ -1835,7 +1835,7 @@ pre
 
 .art-postauthoricon:before
 {
-   content:url('images/postauthoricon.png');
+   content:url('../img/postauthoricon.png');
    margin-right:6px;
    position:relative;
    display:inline-block;
@@ -1852,7 +1852,7 @@ pre
 
 .art-postpdficon:before
 {
-   content:url('images/postpdficon.png');
+   content:url('../img/postpdficon.png');
    margin-right:6px;
    position:relative;
    display:inline-block;
@@ -1869,7 +1869,7 @@ pre
 
 .art-postprinticon:before
 {
-   content:url('images/postprinticon.png');
+   content:url('../img/postprinticon.png');
    margin-right:6px;
    bottom: 2px;
    position:relative;
@@ -1886,7 +1886,7 @@ pre
 
 .art-postediticon:before
 {
-   content:url('images/postediticon.png');
+   content:url('../img/postediticon.png');
    margin-right:6px;
    position:relative;
    display:inline-block;
@@ -1903,7 +1903,7 @@ pre
 
 .art-postcontent ul>li:before,  .art-post ul>li:before,  .art-textblock ul>li:before
 {
-   content:url('images/postbullets.png');
+   content:url('../img/postbullets.png');
    margin-right:6px;
    bottom: 2px;
    position:relative;
@@ -2148,7 +2148,7 @@ blockquote p,
 
 .art-rss-tag-icon
 {
-   background:  url('images/footerrssicon.png') no-repeat scroll;
+   background:  url('../img/footerrssicon.png') no-repeat scroll;
    margin:0 auto;
    min-height:32px;
    min-width:32px;
@@ -2164,7 +2164,7 @@ blockquote p,
 
 .art-facebook-tag-icon
 {
-   background:  url('images/footerfacebookicon.png') no-repeat scroll;
+   background:  url('../img/footerfacebookicon.png') no-repeat scroll;
    margin:0 auto;
    min-height:32px;
    min-width:32px;
@@ -2180,7 +2180,7 @@ blockquote p,
 
 .art-twitter-tag-icon
 {
-   background:  url('images/footertwittericon.png') no-repeat scroll;
+   background:  url('../img/footertwittericon.png') no-repeat scroll;
    margin:0 auto;
    min-height:32px;
    min-width:32px;
@@ -2196,7 +2196,7 @@ blockquote p,
 
 .art-footer ul>li:before
 {
-   content:url('images/footerbullets.png');
+   content:url('../img/footerbullets.png');
    margin-right:6px;
    bottom: 2px;
    position:relative;
@@ -2306,7 +2306,7 @@ blockquote p,
 
 .art-lightbox-wrapper .loading
 {
-   background: #fff url('images/preloader-01.gif') center center no-repeat;
+   background: #fff url('../img/preloader-01.gif') center center no-repeat;
    border: 1px solid #b4b4b4;
    border-radius: 10px;
    box-shadow: 0 2px 5px #333;

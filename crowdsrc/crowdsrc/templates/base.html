@@ -1,203 +1,93 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
-  
-  <head>
-    <meta charset="utf-8">
-    <title>{% block title %}{% endblock %}</title>
-    <meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
-    <!--[if lt IE 9]>
+
+<head>
+<meta charset="utf-8">
+<title>{% block title %}Base{% endblock %}</title>
+<meta name="viewport"
+	content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+<!--[if lt IE 9]>
       <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link rel="stylesheet" href="style.css" media="screen">
-    <!--[if lte IE 7]>
-      <link rel="stylesheet" href="style.ie7.css" media="screen" />
-    <![endif]-->
-    <link rel="stylesheet" href="style.responsive.css" media="all">
-    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans&amp;subset=latin">
-    <script src="jquery.js"></script>
-    <script src="script.js"></script>
-    <script src="script.responsive.js"></script>
-    <style>
-      .art-content .art-postcontent-0 .layout-item-0 {
-        margin-bottom: 5px;
-      }
-      .art-content .art-postcontent-0 .layout-item-1 {
-        border-spacing: 10px 0px;
-        border-collapse: separate;
-      }
-      .art-content .art-postcontent-0 .layout-item-2 {
-        border-top-style:solid;
-        border-right-style:solid;
-        border-bottom-style:solid;
-        border-left-style:solid;
-        border-top-width:0px;
-        border-right-width:0px;
-        border-bottom-width:0px;
-        border-left-width:0px;
-        border-top-color:#BCBCBC;
-        border-right-color:#BCBCBC;
-        border-bottom-color:#BCBCBC;
-        border-left-color:#BCBCBC;
-        padding-right: 15px;
-        padding-left: 15px;
-      }
-      .ie7 .art-post .art-layout-cell {
-        border:none !important;
-        padding:0 !important;
-      }
-      .ie6 .art-post .art-layout-cell {
-        border:none !important;
-        padding:0 !important;
-      }
-    </style>
-  </head>
-  
-  <body>
-    <div id="art-main">
-      <div class="art-sheet clearfix">
-        <header class="art-header">
-          <div class="art-shapes"></div>   
-		  <h1 class="art-headline" data-left="1.9%">
-			<a href="#">Crowdsourcing</a>
-		  </h1>
-        </header>
-        <nav class="art-nav">
-          <ul class="art-hmenu">
-            <li>
-              <a href="home.html" class="active">Home</a>
-            </li>
-            <li>
-              <a href="view-tasks-2.html">View tasks</a>
-            </li>
-            <li>
-              <a href="create-task.html">Create task</a>
-            </li>
-            <li>
-              <a href="my-account.html">My account</a>
-            </li>
-            <li>
-              <a href="manage-solutions.html">Manage solutions</a>
-              <ul>
-                <li>
-                  <a href="manage-solutions/solutions-task1.html">Solutions task1</a>
-                </li>
-                <li>
-                  <a href="manage-solutions/solutions-task2.html">Solutions task2</a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </nav>
-        <div class="art-layout-wrapper">
-          <div class="art-content-layout">
-            <div class="art-content-layout-row">
-              <div class="art-layout-cell art-content">
-		{% block content %}{% endblock %}
-                <article class="art-post art-article">
-                  <div class="art-postcontent art-postcontent-0 clearfix">
-                    <div class="art-content-layout-wrapper layout-item-0">
-                      <div class="art-content-layout layout-item-1">
-                        <div class="art-content-layout-row">
-                          <div class="art-layout-cell layout-item-2" style="width: 100%">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-              </div>
-              <div class="art-layout-cell art-sidebar1">
-                <div class="art-block clearfix">
-                  <div class="art-blockheader">
-                     <h3 class="t">Login Form</h3>
-                  </div>
-                  <div class="art-blockcontent">
-                    <form action="#" method="post" name="login" id="form-login">
-                      <fieldset class="input" style="border: 0 none;">
-                        <p id="form-login-username">
-                          <label for="modlgn_username">Username</label>
-                          <br />
-                          <input id="modlgn_username" type="text" name="username" class="inputbox" alt="username" style="width:100%" />
-                        </p>
-                        <p id="form-login-password">
-                          <label for="modlgn_passwd">Password</label>
-                          <br />
-                          <input id="modlgn_passwd" type="password" name="passwd" class="inputbox" size="18" alt="password" style="width:100%" />
-                        </p>
-                        <p id="form-login-remember">
-                          <label class="art-checkbox">
-                            <input type="checkbox" id="modlgn_remember" name="remember" value="yes" alt="Remember Me" />Remember Me</label>
-                        </p>
-                        <input type="submit" value="Login" name="Submit" class="art-button" />
-                      </fieldset>
-                      <ul>
-                        <li>
-                          <a href="#">Forgot your password?</a>
-                        </li>
-                        <li>
-                          <a href="#">Forgot your username?</a>
-                        </li>
-                        <li>
-                          <a href="#">Create an account</a>
-                        </li>
-                      </ul>
-                    </form>
-                  </div>
-                </div>
-                <div class="art-block clearfix">
-                  <div class="art-blockheader">
-                     <h3 class="t">Completed tasks</h3>
-                  </div>
-                  <div class="art-blockcontent">
-                    <div>
-                      <ul>
-                        <li>
-                          <a href="#">My first blog</a>
-                        </li>
-                        <li>
-                          <a href="#">Who will prevail?</a>
-                        </li>
-                        <li>
-                          <a href="#">Stay positive!</a>
-                        </li>
-                        <li>
-                          <a href="#">Oil still going up</a>
-                        </li>
-                        <li>
-                          <a href="#">Gripes and Grins</a>
-                        </li>
-                        <li>
-                          <a href="#">2012 Olympics</a>
-                        </li>
-                        <li>
-                          <a href="#">How to SEO</a>
-                        </li>
-                        <li>
-                          <a href="#">On Global Warming</a>
-                        </li>
-                        <li>
-                          <a href="#">Can you guess?</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <footer class="art-footer">
-          <p>
-            <a href="#">Link1</a>&nbsp;|
-            <a href="#">Link2</a>|
-            <a href="#">Link3</a>
-          </p>
-          <p>Copyright © 2013. All Rights Reserved.</p>
-          <p class="art-page-footer"> <span id="art-footnote-links"><a href="http://www.ethz.ch/" target="_blank">ETH Zurich</a></span>
-          </p>
-        </footer>
-      </div>
-    </div>
-  </body>
+<link rel="stylesheet" href="{{ STATIC_URL }}css/style.css"
+	media="screen">
+<link rel="stylesheet" href="{{ STATIC_URL }}css/style.responsive.css"
+	media="all">
+<link rel="stylesheet" type="text/css"
+	href="http://fonts.googleapis.com/css?family=Open+Sans&amp;subset=latin">
+<script src="{{ STATIC_URL }}js/jquery.js"></script>
+<script src="{{ STATIC_URL }}js/script.js"></script>
+<script src="{{ STATIC_URL }}js/script.responsive.js"></script>
+<style>
+.art-content .art-postcontent-0 .layout-item-0 {
+	margin-bottom: 5px;
+}
+
+.art-content .art-postcontent-0 .layout-item-1 {
+	border-spacing: 10px 0px;
+	border-collapse: separate;
+}
+
+.art-content .art-postcontent-0 .layout-item-2 {
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	border-top-color: #BCBCBC;
+	border-right-color: #BCBCBC;
+	border-bottom-color: #BCBCBC;
+	border-left-color: #BCBCBC;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+</style>
+</head>
+
+<body>
+	<div id="art-main">
+		<div class="art-sheet clearfix">
+			<header class="art-header">
+				<div class="art-shapes"></div>
+				<h1 class="art-headline" data-left="1.9%">
+					<a href="#">Crowdsourcing</a>
+				</h1>
+			</header>
+			<nav class="art-nav">
+				<ul class="art-hmenu">
+					<li><a href="/">Home</a></li>
+					
+					{% block menu %}{% endblock %}
+				</ul>
+			</nav>
+			<div class="art-layout-wrapper">
+				<div class="art-content-layout">
+					<div class="art-content-layout-row">
+						<div class="art-layout-cell art-content">
+							{% block content %}{% endblock %}
+							
+						</div>
+						<div class="art-layout-cell art-sidebar1">
+							{% block sidebar%}{% endblock %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<footer class="art-footer">
+				<p>
+					<a href="#">About</a>&nbsp;| <a href="#">Terms</a>| <a href="#">Contact</a>
+				</p>
+				<p>Copyright © 2013. All Rights Reserved.</p>
+				<p class="art-page-footer">
+					<span id="art-footnote-links"><a href="http://www.ethz.ch/"
+						target="_blank">ETH Zurich</a></span>
+				</p>
+			</footer>
+		</div>
+	</div>
+</body>
 
 </html>

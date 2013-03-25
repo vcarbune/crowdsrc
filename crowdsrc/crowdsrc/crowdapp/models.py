@@ -8,11 +8,20 @@ from const import *
 class Language(models.Model):
     name = models.CharField(max_length=30)
     
+    def __unicode__(self):
+        return self.name
+    
 class Qualification(models.Model):
     name = models.CharField(max_length=100)
     
+    def __unicode__(self):
+        return self.name
+    
 class Badge(models.Model):
     name = models.CharField(max_length=100)
+    
+    def __unicode__(self):
+        return self.name
 
 
 class UserProfile(models.Model):
@@ -29,13 +38,16 @@ class UserProfile(models.Model):
     
     birth_place = models.CharField(max_length=2, choices=COUNTRIES, default='CH')
     
-    languages = models.ManyToManyField(Language)
-    qualifications = models.ManyToManyField(Qualification)
-    badges = models.ManyToManyField(Badge)
+    languages = models.ManyToManyField(Language, null=True, blank=True)
+    qualifications = models.ManyToManyField(Qualification, null=True, blank=True)
+    badges = models.ManyToManyField(Badge, null=True, blank=True)
     
     current_country = models.CharField(max_length=2, choices=COUNTRIES, default='CH')
     
     is_taskcreator = models.BooleanField(default=False)
+    
+    def __unicode__(self):
+        return self.first_name + " " + self.last_name
     
 
 class Task(models.Model):
