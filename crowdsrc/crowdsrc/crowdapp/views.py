@@ -38,3 +38,15 @@ def register(request):
     return render(request, 'auth/register.html', {'user_form': user_form, 'profile_form': profile_form})
 
 
+def create_task(request):
+    if request.method == 'POST':
+        # FIXME: save task code goes here.
+        return redirect('/')
+
+    return render(request, 'task/create.html')
+
+
+def tasks(request):
+    return render(request, 'task/list.html')
+
+

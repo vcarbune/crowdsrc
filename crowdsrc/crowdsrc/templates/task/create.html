@@ -1,0 +1,17 @@
+{% extends "base_user.html" %} 
+
+{% block content %}
+
+<h2>Create Task</h2>
+
+{% if form.errors %}
+<p>There have been problems with saving your task. Please try again!</p>
+{% endif %}
+
+<form method="post" action="/create_task/" style="width: 50%">
+	{% csrf_token %}
+	Title: <input id="task_title" type="text"><br><br>
+	<input type="submit" value="Save" />
+</form>
+
+{% endblock %}

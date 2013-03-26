@@ -12,6 +12,11 @@ urlpatterns = patterns('',
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'auth/login.html'}),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^register/$', 'crowdapp.views.register'),
+
+    # Task related urls
+    url(r'^create_task/$', 'crowdapp.views.create_task'),
+    url(r'^tasks/$', 'crowdapp.views.tasks'),
+
     url(r'^accounts/profile/$', redirect_to, {'url': '/'}),
     
     # Task management urls
