@@ -1,7 +1,5 @@
 {% extends "base.html" %} 
 
-<!-- FIXME: Check for user authentication -->
-
 {% block menu %}
 	<li><a href="/tasks">View all tasks</a></li>
 	<li><a href="#">Manage tasks</a>
@@ -13,4 +11,8 @@
 	<li><a href="#">My account</a></li>
 	<li><a href="#">Manage solutions</a></li>
 
+{% endblock %}
+
+{% block welcome_message %}
+Glad to have you back, {{user.username}}!
 {% endblock %}

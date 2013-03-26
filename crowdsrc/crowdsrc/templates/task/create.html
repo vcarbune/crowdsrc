@@ -4,13 +4,26 @@
 
 <h2>Create Task</h2>
 
+
 {% if form.errors %}
 <p>There have been problems with saving your task. Please try again!</p>
 {% endif %}
 
 <form method="post" action="/create_task/" style="width: 50%">
+
 	{% csrf_token %}
-	Title: <input id="task_title" type="text"><br><br>
+	Title: <input id="title" type="text"><br>
+
+	<br>
+	Toolbox (Generated HTML)
+	<div id="toolbox_html" style="background: #EEE; width: 90%; padding: 10px;">
+		<div>Write as many decimals of PI as you can!</div>
+		<div>Answer: <input style="width: 10%; height: 12px; font-size: 10px;" type="text" id="answer_1"></div>
+	</div>
+
+	<br>
+	Cost ($$$): <input type="text" value="30"><br>
+	Active? <input id="is_active" type="checkbox" value="false" />
 	<input type="submit" value="Save" />
 </form>
 

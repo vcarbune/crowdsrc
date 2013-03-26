@@ -38,6 +38,7 @@ def register(request):
     return render(request, 'auth/register.html', {'user_form': user_form, 'profile_form': profile_form})
 
 
+@login_required
 def create_task(request):
     if request.method == 'POST':
         # FIXME: save task code goes here.

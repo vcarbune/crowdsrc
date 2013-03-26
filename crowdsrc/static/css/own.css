@@ -1,0 +1,9 @@
+#welcome_message
+{
+	position: absolute;
+	right: 0px;
+	top: 0px;
+
+	font-size: 22px;
+	color: #FFF;
+}

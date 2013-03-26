@@ -10,6 +10,7 @@
       <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
+<link rel="stylesheet" href="{{ STATIC_URL }}css/own.css">
 <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css"
 	media="screen">
 <link rel="stylesheet" href="{{ STATIC_URL }}css/style.responsive.css"
@@ -64,13 +65,15 @@
 					
 					{% block menu %}{% endblock %}
 				</ul>
+				<div id="welcome_message">
+				{% block welcome_message %}{% endblock %}
+				</div>
 			</nav>
 			<div class="art-layout-wrapper">
 				<div class="art-content-layout">
 					<div class="art-content-layout-row">
 						<div class="art-layout-cell art-content">
 							{% block content %}{% endblock %}
-							
 						</div>
 						<div class="art-layout-cell art-sidebar1">
 							{% block sidebar%}
