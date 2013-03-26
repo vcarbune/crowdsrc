@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 from django.forms import ModelForm
+from django.forms.extras.widgets import SelectDateWidget
 from django.forms.util import ErrorList
 from django.utils.safestring import mark_safe
 
@@ -22,6 +23,8 @@ class UserCreateForm(UserCreationForm):
         return user
 
 class ProfileForm(ModelForm):
+    birth_date = forms.fields.DateField(widget=SelectDateWidget(years=range(2013, 1920, -1)))
+
     class Meta:
         model = UserProfile
         exclude = ('user', 'last_login', 'is_taskcreator', 'badges')
