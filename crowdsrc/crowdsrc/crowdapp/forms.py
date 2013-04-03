@@ -28,3 +28,10 @@ class ProfileForm(ModelForm):
     class Meta:
         model = UserProfile
         exclude = ('user', 'last_login', 'is_taskcreator', 'badges')
+        
+class TaskAdminForm(ModelForm):
+    html = forms.CharField(widget=forms.Textarea)
+    
+    class Meta:
+        model = Task
+        

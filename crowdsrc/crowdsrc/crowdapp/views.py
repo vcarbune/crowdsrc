@@ -10,7 +10,7 @@ from django.conf import settings
 
 from models import *
 from forms import *
-
+from helpers import *
 
 @login_required
 def index(request):
@@ -45,6 +45,38 @@ def create_task(request):
         return redirect('/')
 
     return render(request, 'task/create.html')
+
+@login_required
+def complete_task(request, task_id):
+    profile = get_profile(request.user)
+    task = Task.objects.get(id=task_id)
+    
+    if request.method == 'POST':
+        solution, created = Solution.objects.get_or_create(worker=profile, task=task)
+        if created:
+            solution.access_path = AccessPath.objects.get(id=request.POST['access_path_id'])
+        # Extract inputs
+        val_list = []
+        for key in request.POST.keys():
+            if key.startswith("task_"):
+                #print key + ":" + request.POST[key]
+                val_list.append(request.POST[key])
+        if check_solution_values(val_list):
+            solution.status = 1
+            for i in range(0, len(val_list), 1):
+                answer, created = Answer.objects.get_or_create(solution=solution, index = i+1) 
+                answer.value = val_list[i]
+                answer.type = 0     # TODO: set type
+                answer.save()
+        else:
+            solution.status = 0
+        solution.save()
+    else:
+        solution, created = Solution.objects.get_or_create(worker=profile, task=task)
+        if created:
+            solution.access_path = task.get_random_access_path()
+        
+    return render(request, 'task/complete.html', {'solution': solution})
 
 
 def tasks(request):

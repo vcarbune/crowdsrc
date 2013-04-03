@@ -2,7 +2,8 @@ from django import forms
 from django.contrib import admin
 from django.contrib.admin import site
 
-from crowdapp.models import *
+from models import *
+from forms import *
 
 # Testing the admin interface
 
@@ -22,6 +23,21 @@ class QualificationAdmin(admin.ModelAdmin):
 admin.site.register(Qualification, QualificationAdmin)
 
 class BadgeAdmin(admin.ModelAdmin):
-    fields = ('name',)
+    fields = ('name',)    
     
 admin.site.register(Badge, BadgeAdmin)
+
+class AccessPathInline(admin.TabularInline):
+    model = AccessPath
+    extra = 3
+    max_num = 5
+    fields = ('name','description','cost','error')
+
+class TaskAdmin(admin.ModelAdmin):
+    #readonly_fields = ('creator',)
+    form = TaskAdminForm
+    #fields = ('creator','name', 'html', 'is_active', 'cost')
+    search_fields = ['name',]
+    inlines = [AccessPathInline]
+    
+admin.site.register(Task, TaskAdmin)

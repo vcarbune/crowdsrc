@@ -8,3 +8,5 @@ crowdsrc/crowdsrc/settings.py
 .pydevproject
 .project
 .settings
+
+crowdsrc/.pmd

@@ -15,6 +15,7 @@ urlpatterns = patterns('',
 
     # Task related urls
     url(r'^create_task/$', 'crowdapp.views.create_task'),
+    url(r'^complete_task/(?P<task_id>\d+)/$', 'crowdapp.views.complete_task'),
     url(r'^tasks/$', 'crowdapp.views.tasks'),
 
     url(r'^accounts/profile/$', redirect_to, {'url': '/'}),

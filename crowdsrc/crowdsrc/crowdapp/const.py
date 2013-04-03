@@ -4,9 +4,10 @@ GENDERS = (
 )
 
 STATUSES = (
-    (0, "Pending"),
-    (1, "Approved"),
-    (2, "Rejected"),
+    (0, "Working"),
+    (1, "Finished"),
+    (2, "Approved"),
+    (3, "Rejected"),
 )
 
 ANSWER_TYPES = (

@@ -1,0 +1,23 @@
+{% extends "base_user.html" %} 
+
+{% block content %}
+
+<h2>Task: {{ solution.task.name }} </h2>
+
+<p>
+	Access path: {{ solution.access_path.description }} 
+</p>
+
+<form method="post" action="{% url crowdapp.views.complete_task solution.task.id %}">
+	{% csrf_token %}
+	<input type=hidden name="access_path_id" value="{{access_path.id}}" />
+	
+	{% autoescape off %}
+	{{ solution.task.html }}
+	{% endautoescape %}
+	
+	<br />
+	<input type="submit" value="Submit" />
+</form>
+
+{% endblock %}

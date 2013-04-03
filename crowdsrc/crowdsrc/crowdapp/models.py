@@ -1,4 +1,5 @@
 from datetime import datetime
+from random import randint
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -57,6 +58,14 @@ class Task(models.Model):
     is_active = models.BooleanField(default=False)
     cost = models.SmallIntegerField(default=0)
     
+    def get_random_access_path(self): # returns a random access path from all created for the task
+        access_paths = self.accesspath_set.all()
+        idx = randint(0, len(access_paths)-1)
+        return access_paths[idx]
+    
+    def __unicode__(self):
+        return self.name
+    
 class Resource(models.Model):
     task = models.ForeignKey(Task)
     name = models.CharField(max_length=100)
@@ -69,10 +78,10 @@ class AccessPath(models.Model):
     cost = models.SmallIntegerField(default=0)
     error = models.FloatField(default=0)
     
-
 class Solution(models.Model):
     worker = models.ForeignKey(UserProfile)
-    access_path = models.ForeignKey(AccessPath)
+    task = models.ForeignKey(Task)
+    access_path = models.ForeignKey(AccessPath, null=True)
     status = models.SmallIntegerField(choices=STATUSES, default=0)
     
 class Answer(models.Model):
