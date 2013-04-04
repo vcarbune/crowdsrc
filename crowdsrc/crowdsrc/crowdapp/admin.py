@@ -27,6 +27,12 @@ class BadgeAdmin(admin.ModelAdmin):
     
 admin.site.register(Badge, BadgeAdmin)
 
+class ResourceInline(admin.TabularInline):
+    model = Resource
+    extra = 1
+    max_num = 10
+    fields = ('name', 'index')
+
 class AccessPathInline(admin.TabularInline):
     model = AccessPath
     extra = 3
@@ -34,10 +40,24 @@ class AccessPathInline(admin.TabularInline):
     fields = ('name','description','cost','error')
 
 class TaskAdmin(admin.ModelAdmin):
-    #readonly_fields = ('creator',)
+    readonly_fields = ('creator',)
     form = TaskAdminForm
     #fields = ('creator','name', 'html', 'is_active', 'cost')
     search_fields = ['name',]
-    inlines = [AccessPathInline]
+    inlines = [AccessPathInline, ResourceInline]
     
 admin.site.register(Task, TaskAdmin)
+
+
+class AnswerInline(admin.TabularInline):
+    model = Answer
+    extra = 0
+    fields = ('index','type' ,'value')
+    
+class SolutionAdmin(admin.ModelAdmin):
+    readonly_fields = ('worker', 'task', 'access_path')
+    inlines = [AnswerInline]
+    
+admin.site.register(Solution, SolutionAdmin)
+
+

@@ -7,6 +7,7 @@ from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirec
 from django.shortcuts import render, redirect, render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 
 from models import *
 from forms import *
@@ -48,8 +49,11 @@ def create_task(request):
 
 @login_required
 def complete_task(request, task_id):
-    profile = get_profile(request.user)
-    task = Task.objects.get(id=task_id)
+    try:
+        profile = get_profile(request.user)
+        task = Task.objects.get(id=task_id)
+    except ObjectDoesNotExist:
+        raise Http404
     
     if request.method == 'POST':
         solution, created = Solution.objects.get_or_create(worker=profile, task=task)
@@ -78,8 +82,65 @@ def complete_task(request, task_id):
         
     return render(request, 'task/complete.html', {'solution': solution})
 
-
-def tasks(request):
+def my_tasks(request): # TODO
     return render(request, 'task/list.html')
 
+def all_tasks(request): # TODO
+    return render(request, 'task/list.html')
+
+@login_required
+def view_solution(request, solution_id):
+    try:
+        solution = Solution.objects.get(id=solution_id)
+    except ObjectDoesNotExist:
+        raise Http404
+    
+    profile = get_profile(request.user)
+    if solution.worker.id != profile.id and solution.task.creator.id != profile.id:
+        raise Http404
+    
+    return render(request, 'solution/solution.html', {'solution': solution})
+
+@login_required
+def process_solution(request, solution_id, approved):
+    try:
+        solution = Solution.objects.get(id=solution_id)
+        profile = get_profile(request.user)
+    except ObjectDoesNotExist:
+        raise Http404
+
+    if solution.task.creator.id != profile.id:
+        raise Http404
+    
+    if int(approved) == 1:
+        solution.status = 2
+    else:
+        solution.status = 3
+    solution.save()
+    
+    # TODO: do other stuff
+    
+    return redirect('crowdapp.views.view_solution', solution_id=solution.id)
+
+@login_required
+def my_solutions(request):
+    
+    profile = get_profile(request.user)
+    solutions = Solution.objects.filter(worker=profile)
+    
+    return render(request, 'solution/my_solutions.html', {'solutions': solutions })
+
+@login_required
+def task_solutions(request, task_id):
+    try:
+        task = Task.objects.get(id=task_id)
+        profile = get_profile(request.user)
+    except ObjectDoesNotExist:
+        raise Http404
+    
+    return render(request, 'solution/task_solutions.html', {'task': task })
+    
+    
+    
+    
 

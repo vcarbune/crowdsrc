@@ -1,5 +1,7 @@
 {% extends "base.html" %} 
 
+{% load crowdapp_extras %} 
+
 {% block menu %}
 	<li><a href="/tasks">View all tasks</a></li>
 	<li><a href="#">Manage tasks</a>
@@ -9,10 +11,46 @@
 		</ul>
 	</li>
 	<li><a href="#">My account</a></li>
-	<li><a href="#">Manage solutions</a></li>
+	<li><a href="/my_solutions/">My solutions</a></li>
 
 {% endblock %}
 
 {% block welcome_message %}
-Glad to have you back, {{user.username}}!
+Glad to have you back, {{user|profile}}!
+{% endblock %}
+
+{% block sidebar%}						
+	<div class="art-block clearfix">
+		<div class="art-blockheader">
+			<h3 class="t">Recent events</h3>
+		</div>
+		<div class="art-blockcontent">
+		<div>
+			<ul>
+				<li><a href="#">Event 1</a></li>
+				<li><a href="#">Event 2</a></li>
+				<li><a href="#">Event 3</a></li>
+				<li><a href="#">Event 4</a></li>
+			</ul>
+			</div>
+		</div>
+	</div>	
+	<div class="art-block clearfix">
+		<div class="art-blockheader">
+			<h3 class="t">Completed tasks</h3>
+		</div>
+		<div class="art-blockcontent">
+		<div>
+			<ul>
+				{% with profile=user|profile %}
+					{% for solution in profile.solution_set.all %}
+						<li><a href="{% url crowdapp.views.view_solution solution.id %}">{{ solution.task }}</a></li>
+					{% empty %}
+						No completed tasks yet.
+					{% endfor %}
+				{% endwith %}
+			</ul>
+			</div>
+		</div>
+	</div>	
 {% endblock %}

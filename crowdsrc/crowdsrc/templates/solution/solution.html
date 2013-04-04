@@ -1,0 +1,25 @@
+{% extends "base_user.html" %} 
+
+{% load crowdapp_extras %} 
+
+{% block content %}
+
+<p>Task: {{ solution.task.name }} </p>
+{% if user|profile != solution.worker %} <p>Worker: {{ user|profile }} </p> {% endif %}
+<p>Access path: {{ solution.access_path.description }}</p>
+<p>Created at: {{ solution.created_at }} </p>
+<p>Status: {{ solution.get_status_display }} </p>
+
+<p>Answers:</p>
+<ol>
+{% for answer in solution.answer_set.all %}
+	<li>{{ answer.value }}</li>
+{% endfor %}
+</ol>
+
+{% if user|profile == solution.task.creator and solution.status == 1 %}
+	<a href="{% url crowdapp.views.process_solution solution.id 1 %}">Approve</a>
+	<a href="{% url crowdapp.views.process_solution solution.id 0 %}">Deny</a>
+{% endif %}
+
+{% endblock %}

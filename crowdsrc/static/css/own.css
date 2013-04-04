@@ -7,3 +7,13 @@
 	font-size: 22px;
 	color: #FFF;
 }
+
+#art-main p
+{
+	margin: 5px 0 5px 0;
+}
+
+td
+{
+	padding: 5px;
+}

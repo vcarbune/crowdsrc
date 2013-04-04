@@ -52,11 +52,12 @@ class UserProfile(models.Model):
     
 
 class Task(models.Model):
-    creator = models.ForeignKey(UserProfile)    
+    creator = models.ForeignKey(UserProfile)
     name = models.CharField(max_length=200)
     html = models.CharField(max_length=1000)
     is_active = models.BooleanField(default=False)
     cost = models.SmallIntegerField(default=0)
+    created_at = models.DateField()  
     
     def get_random_access_path(self): # returns a random access path from all created for the task
         access_paths = self.accesspath_set.all()
@@ -70,6 +71,9 @@ class Resource(models.Model):
     task = models.ForeignKey(Task)
     name = models.CharField(max_length=100)
     index = models.SmallIntegerField(null=True, blank=True)
+    
+    def __unicode__(self):
+        return self.name
 
 class AccessPath(models.Model):
     task = models.ForeignKey(Task)
@@ -78,11 +82,18 @@ class AccessPath(models.Model):
     cost = models.SmallIntegerField(default=0)
     error = models.FloatField(default=0)
     
+    def __unicode__(self):
+        return self.name
+    
 class Solution(models.Model):
     worker = models.ForeignKey(UserProfile)
     task = models.ForeignKey(Task)
     access_path = models.ForeignKey(AccessPath, null=True)
     status = models.SmallIntegerField(choices=STATUSES, default=0)
+    created_at = models.DateField()
+    
+    def __unicode__(self):
+        return self.task.name + " [" + self.worker.__unicode__() + "]"
     
 class Answer(models.Model):
     solution = models.ForeignKey(Solution)
@@ -90,6 +101,8 @@ class Answer(models.Model):
     value = models.CharField(max_length=30)
     index = models.SmallIntegerField(default=0)
     
+    def __unicode__(self):
+        return "Answer " + str(self.index)
     
     
     

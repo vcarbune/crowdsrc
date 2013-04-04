@@ -4,7 +4,7 @@ from models import *
 
 def get_profile(user):
     try:
-        return UserProfile.objects.get(user=user)
+        return UserProfile.objects.get(user__id = user.id)
     except ObjectDoesNotExist:
         return None
     

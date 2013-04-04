@@ -1,0 +1,12 @@
+{% extends "base_user.html" %}
+
+{% block content %}
+
+<p>My solutions:</p>
+<ul>
+{% for solution in solutions %}
+	<li><a href="{% url crowdapp.views.view_solution solution.id %}">{{ solution.task }}</a></li>
+{% endfor %}
+</ul>
+
+{% endblock %}
