@@ -40,7 +40,7 @@ class AccessPathInline(admin.TabularInline):
     fields = ('name','description','cost','error')
 
 class TaskAdmin(admin.ModelAdmin):
-    readonly_fields = ('creator',)
+    #readonly_fields = ('creator',)
     form = TaskAdminForm
     #fields = ('creator','name', 'html', 'is_active', 'cost')
     search_fields = ['name',]

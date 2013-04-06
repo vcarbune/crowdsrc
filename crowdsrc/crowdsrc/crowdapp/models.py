@@ -61,6 +61,8 @@ class Task(models.Model):
     
     def get_random_access_path(self): # returns a random access path from all created for the task
         access_paths = self.accesspath_set.all()
+        if len(access_paths) == 0:
+            return None
         idx = randint(0, len(access_paths)-1)
         return access_paths[idx]
     

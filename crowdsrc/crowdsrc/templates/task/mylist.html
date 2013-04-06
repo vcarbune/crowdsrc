@@ -14,6 +14,7 @@
             <th> Creation Date </th>
             <th> Is active </th>
             <th> Edit </th>
+            <th> Manage solutions </th>
         </tr>
     {% for task in tasks %}
         <tr>
@@ -35,6 +36,7 @@
                     <a href="#"> Edit task </a>
                 {% endif %}
             </td>
+            <td> <a href="{% url "crowdapp.views.task_solutions" task.id %}"> View solutions </a> </td>
         </tr>
     {% endfor %}
     </table>
