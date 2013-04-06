@@ -1,3 +1,4 @@
+/* Main Page */
 #welcome_message
 {
 	position: absolute;
@@ -16,4 +17,15 @@
 td
 {
 	padding: 5px;
+}
+
+/* Toolbox */
+.toolbox {
+	background: #EEE;
+	width: 90%;
+	padding: 10px;
+}
+
+.toolbox div {
+	background: black;
 }

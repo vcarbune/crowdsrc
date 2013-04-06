@@ -1,5 +1,9 @@
 {% extends "base_user.html" %} 
 
+{% block angular %}
+<script src="{{ STATIC_URL }}js/create_task.js" type="text/javascript"></script>
+{% endblock %}
+
 {% block content %}
 
 <h2>Create Task</h2>
@@ -16,14 +20,19 @@
 
 	<br>
 	Toolbox (Generated HTML)
-	<div id="toolbox_html" style="background: #EEE; width: 90%; padding: 10px;">
-		<div>Write as many decimals of PI as you can!</div>
-		<div>Answer: <input style="width: 10%; height: 12px; font-size: 10px;" type="text" id="answer_1"></div>
+  {% verbatim %}
+	<div ng-app ng-controller="ToolboxCtrl" class="toolbox">
+    <ul>
+      <li ng-repeat="item in items">{{item.name}} -- {{item.desc}}</li>
+    </ul>
+    <button ng-click="update()">{{buttonLabel}}</button>
 	</div>
+  {% endverbatim %}
 
 	<br>
 	Cost ($$$): <input type="text" value="30"><br>
 	Active? <input id="is_active" type="checkbox" value="false" />
+
 	<input type="submit" value="Save" />
 </form>
 
