@@ -13,27 +13,28 @@
 <p>There have been problems with saving your task. Please try again!</p>
 {% endif %}
 
-<form method="post" action="/create_task/" style="width: 50%">
-
+<form method="post" action="/create_task/" style="width: 50%" ng-app ng-controller="MasterFormCtrl">
 	{% csrf_token %}
-	Title: <input id="title" type="text"><br>
+	Title: <input id="title" type="text" ng-model="title"><br>
 
 	<br>
 	Toolbox (Generated HTML)
   {% verbatim %}
-	<div ng-app ng-controller="ToolboxCtrl" class="toolbox">
+  <!-- This should be done differently... -->
+  <div ng-bind-html-unsafe="toolboxHtml"></div>
+
+	<div ng-controller="ToolboxCtrl" class="toolbox">
     <ul>
       <li ng-repeat="item in items">{{item.name}} -- {{item.desc}}</li>
     </ul>
-    <button ng-click="update()">{{buttonLabel}}</button>
 	</div>
   {% endverbatim %}
 
 	<br>
-	Cost ($$$): <input type="text" value="30"><br>
-	Active? <input id="is_active" type="checkbox" value="false" />
+	Cost: <input type="text" ng-model="cost"><br>
+	Active? <input id="is_active" type="checkbox" ng-model="isActive" />
 
-	<input type="submit" value="Save" />
+	<input type="submit" value="Save" ng-click="serialize()"/>
 </form>
 
 {% endblock %}
