@@ -1,0 +1,47 @@
+{% extends "base_user.html" %} 
+
+{% block content %}
+
+<h2>View My Tasks</h2>
+<br>
+
+{% if tasks %}
+    <table class="task_list">
+        <tr>
+            <th> Task Name </th>
+            <th> Creator </th>
+            <th> Cost </th>
+            <th> Creation Date </th>
+            <th> Is active </th>
+            <th> Edit </th>
+            <th> Manage solutions </th>
+        </tr>
+    {% for task in tasks %}
+        <tr>
+            <td> {{ task.name }} </td>
+            <td> {{ task.creator }} </td>
+            <td> {{ task.cost }} </td>
+            <td> {{ task.created_at }} </td>
+            <td>
+                {% if task.is_active %}
+                    Active
+                {% else %}
+                    Not Active
+                {% endif %}
+            </td>
+            <td>
+                {% if task.is_active %}
+                    Not editable
+                {% else %}
+                    <a href="#"> Edit task </a>
+                {% endif %}
+            </td>
+            <td> <a href="{% url "crowdapp.views.task_solutions" task.id %}"> View solutions </a> </td>
+        </tr>
+    {% endfor %}
+    </table>
+{% else %}
+    No tasks are created by you.
+{% endif %}
+
+{% endblock %}

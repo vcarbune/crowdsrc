@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -58,7 +60,10 @@ def complete_task(request, task_id):
     if request.method == 'POST':
         solution, created = Solution.objects.get_or_create(worker=profile, task=task)
         if created:
-            solution.access_path = AccessPath.objects.get(id=request.POST['access_path_id'])
+            if 'access_path_id' in request.POST:
+                solution.access_path = AccessPath.objects.get(id=request.POST['access_path_id'])
+            else:
+                solution.access_path = None
         # Extract inputs
         val_list = []
         for key in request.POST.keys():
@@ -76,17 +81,28 @@ def complete_task(request, task_id):
             solution.status = 0
         solution.save()
     else:
-        solution, created = Solution.objects.get_or_create(worker=profile, task=task)
+        solution, created = Solution.objects.get_or_create(worker=profile, task=task, created_at=datetime.now())
         if created:
             solution.access_path = task.get_random_access_path()
         
     return render(request, 'task/complete.html', {'solution': solution})
 
-def my_tasks(request): # TODO
-    return render(request, 'task/list.html')
+@login_required
+def my_tasks(request):
+    try:
+        profile = get_profile(request.user)
+        tasks = Task.objects.filter(creator=profile)
+    except ObjectDoesNotExist:
+        raise Http404
+    return render(request, 'task/mylist.html', {'tasks': tasks})
 
-def all_tasks(request): # TODO
-    return render(request, 'task/list.html')
+@login_required
+def all_tasks(request):
+    try:
+        tasks = Task.objects.filter(is_active=True)
+    except ObjectDoesNotExist:
+        raise Http404
+    return render(request, 'task/list.html', {'tasks': tasks})
 
 @login_required
 def view_solution(request, solution_id):
@@ -135,6 +151,8 @@ def task_solutions(request, task_id):
     try:
         task = Task.objects.get(id=task_id)
         profile = get_profile(request.user)
+        if task.creator != profile:
+            raise Http404
     except ObjectDoesNotExist:
         raise Http404
     
