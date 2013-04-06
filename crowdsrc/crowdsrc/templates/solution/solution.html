@@ -18,8 +18,8 @@
 </ol>
 
 {% if user|profile == solution.task.creator and solution.status == 1 %}
-	<a href="{% url crowdapp.views.process_solution solution.id 1 %}">Approve</a>
-	<a href="{% url crowdapp.views.process_solution solution.id 0 %}">Deny</a>
+	<a href="{% url "crowdapp.views.process_solution" solution.id 1 %}">Approve</a>
+	<a href="{% url "crowdapp.views.process_solution" solution.id 0 %}">Deny</a>
 {% endif %}
 
 {% endblock %}

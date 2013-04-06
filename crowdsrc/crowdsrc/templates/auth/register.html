@@ -15,7 +15,7 @@
 </div>
 
 <h2>Register</h2>
-<form method="post" action="{% url crowdapp.views.register %}" id="register_form" style="width: 200px;">
+<form method="post" action="{% url "crowdapp.views.register" %}" id="register_form" style="width: 200px;">
 	{% csrf_token %}
 	<fieldset class="input" style="border: 0 none;">
 		{{ user_form.as_p }} 
