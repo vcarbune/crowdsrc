@@ -80,6 +80,8 @@ def complete_task(request, task_id):
     except ObjectDoesNotExist:
         raise Http404
     
+    message = ""
+    
     if request.method == 'POST':
         solution, created = Solution.objects.get_or_create(worker=profile, task=task)
         if created:
@@ -100,15 +102,18 @@ def complete_task(request, task_id):
                 answer.value = val_list[i]
                 answer.type = 0     # TODO: set type
                 answer.save()
+            solution.save()
+            return redirect(reverse('crowdapp.views.view_solution', args=[solution.id]))
         else:
             solution.status = 0
-        solution.save()
+            solution.save()
+            message = "You have errors in your solution."
     else:
         solution, created = Solution.objects.get_or_create(worker=profile, task=task, created_at=datetime.now())
         if created:
             solution.access_path = task.get_random_access_path()
         
-    return render(request, 'task/complete.html', {'solution': solution})
+    return render(request, 'task/complete.html', {'solution': solution, 'message': message})
 
 @login_required
 def my_tasks(request):
