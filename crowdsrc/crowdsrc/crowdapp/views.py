@@ -51,13 +51,14 @@ def create_task(request):
         task_params = json.loads(request.body)
 
         # FIXME: what's the default?
-        request_cost = 30;
-        if 'cost' in request:
-            request_cost = task_params['cost'];
+        request_cost = 30
+        if 'cost' in task_params:
+            request_cost = task_params['cost']
 
         task = Task.objects.create(
                 creator=profile,
                 name=task_params['name'],
+                # FIXME: Dropping the HTML directly sometimes raises issues
                 html=urllib.unquote(task_params['html']),
                 is_active=task_params['is_active'],
                 cost=request_cost,
