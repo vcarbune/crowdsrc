@@ -15,6 +15,9 @@ from models import *
 from forms import *
 from helpers import *
 
+import json
+import urllib
+
 @login_required
 def index(request):
     return render(request, 'home.html')
@@ -44,10 +47,29 @@ def register(request):
 @login_required
 def create_task(request):
     if request.method == 'POST':
-        # FIXME: save task code goes here.
-        return redirect('/')
+        profile = get_profile(request.user)
+        task_params = json.loads(request.body)
 
-    return render(request, 'task/create.html')
+        # FIXME: what's the default?
+        request_cost = 30;
+        if 'cost' in request:
+            request_cost = task_params['cost'];
+
+        task = Task.objects.create(
+                creator=profile,
+                name=task_params['name'],
+                html=urllib.unquote(task_params['html']),
+                is_active=task_params['is_active'],
+                cost=request_cost,
+                created_at=datetime.now());
+
+        data = {
+            "task_id": task.id,
+        }
+
+        return HttpResponse(json.dumps(data), content_type="application/json")
+
+    return render(request, 'task/create.html', {'post': '... no request!'})
 
 @login_required
 def complete_task(request, task_id):

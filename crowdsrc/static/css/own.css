@@ -25,12 +25,22 @@ td
 }
 
 /* Toolbox */
+.create-task-form
+{
+	width: 50%;
+}
+
 .toolbox {
-	background: #EEE;
-	width: 90%;
+	background: gray;
 	padding: 10px;
 }
 
-.toolbox div {
-	background: black;
+.task-generic-item {
+	border: black 1px solid;
+	padding: 5px;
+}
+
+.task-generic-item input[type='text'] {
+	height: 5px;
+	width: 50%;
 }
