@@ -1,11 +1,4 @@
-var app = angular.module('angularjs-starter', ["ngSanitize"]);
-
-/* We need this to match Django built-in xsrf protection */
-app.config(["$httpProvider", function(provider) {
-    provider.defaults.headers.common['X-CSRFToken'] =
-    provider.defaults.headers.common['csrftoken'] =
-        $('input[name=csrfmiddlewaretoken]').val();
-}]);
+/* Require item_controllers.js to be included before */
 
 app.directive('toolboxItem', function($compile) {
   // Each toolbox item will have its controller, and the HTML
@@ -51,30 +44,6 @@ app.directive('toolboxItem', function($compile) {
     }
   }
 });
-
-/**
- * Toolbox - Description Item Controller.
- */
-function TaskDescriptionCtrl($scope) {
-  $scope.desc = "This is an editable field";
-
-  $scope.ctrlFctn = function() {
-    alert("Alert generated from TaskDescriptionCtrl");
-    return false;
-  }
-};
-
-/**
- * Toolbox - Submit Item Controller.
- */
-function TaskSubmitCtrl($scope) {
-};
-
-/**
- * Toolbox - Input Item Controller.
- */
-function TaskInputCtrl($scope) {
-};
 
 //+ Jonas Raoni Soares Silva
 //@ http://jsfromhell.com/array/shuffle [v1.0]

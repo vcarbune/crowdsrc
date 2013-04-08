@@ -1,5 +1,9 @@
 {% extends "base_user.html" %} 
 
+{% block angular %}
+<script src="{{ STATIC_URL }}js/item_controllers.js" type="text/javascript"></script>
+{% endblock %}
+
 {% block content %}
 
 <h2>Task: {{ solution.task.name }} </h2>
@@ -8,7 +12,7 @@
 	Access path: {{ solution.access_path.description }} 
 </p>
 
-<form method="post" action="{% url "crowdapp.views.complete_task" solution.task.id %}">
+<form method="post" action="{% url "crowdapp.views.complete_task" solution.task.id %}" ng-app>
 	{% csrf_token %}
 	{% if solution.access_path %}
             <input type=hidden name="access_path_id" value="{{solution.access_path.id}}" />
