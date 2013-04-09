@@ -9,6 +9,7 @@
 	color: #FFF;
 }
 
+/* General styles */
 #art-main p
 {
 	margin: 5px 0 5px 0;
@@ -22,6 +23,11 @@
 td
 {
 	padding: 5px;
+}
+
+.flash_message
+{
+	text-color: #4444ff;
 }
 
 /* Toolbox */

@@ -15,7 +15,10 @@ def profile(user):
 @register.filter
 def solved(user, task):
     try:
-        Solution.objects.get(worker=user,task=task)
-        return True
+        solution = Solution.objects.get(worker=user,task=task)
+        if solution.status != 0:
+            return True
+        else:
+            return False
     except ObjectDoesNotExist:
         return False
