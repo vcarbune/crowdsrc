@@ -24,6 +24,11 @@
   {% verbatim %}
   <!-- This should be done differently... -->
   <div ng-controller="ToolboxCtrl" class="toolbox">
+    <!-- In case you're wondering, the default type for a button is "submit",
+    that's why we have explicitly specified the type to be "button" below -->
+    <button type="button" ng-click="addDescription()">Insert Description</button>
+    <button type="button" ng-click="addAnswerInput()">Insert Answer Input</button>
+
     <toolbox-item ng-repeat="item in content" content="item"></toolbox-item>
   </div>
   {% endverbatim %}

@@ -10,7 +10,7 @@ app.directive('toolboxItem', function($compile) {
 
   var inputItemTemplate =
       "<div ng-controller='TaskInputCtrl' class='task-generic-item'>" +
-      "<b>Solution:</b> <input type='text' disabled />" +
+      "<b>Solution:</b> <input id='task_{{content.crt}}' type='text' disabled />" +
       "</div>";
 
   var submitItemTemplate =
@@ -58,18 +58,42 @@ function ToolboxCtrl($scope) {
   /* List of elements currently in the toolbox for the current task */
   $scope.content = [
   {
-    type: 'descriptionItem',
-    desc: 'magic'
-  },
-  {
-    type: 'inputItem',
-    desc: 'None'
-  },
-  {
     type: 'submitItem',
     desc: 'Submit'
   }];
 
+  $scope.insertDescriptionElement = function() {
+    $scope.content.unshift({
+      type: 'descriptionItem',
+      desc: 'magic',
+      crt: $scope.content.length
+    });
+  };
+
+  $scope.insertAnswerElement = function() {
+    $scope.content.unshift({
+      type: 'inputItem',
+      desc: 'double magic',
+      crt: $scope.content.length
+    });
+  };
+
+  $scope.addDescription = function() {
+    $scope.apply($scope.insertDescriptionElement());
+  };
+
+  $scope.addAnswerInput = function() {
+    $scope.apply($scope.insertAnswerElement());
+  };
+
+/*
+  setTimeout(function() {
+    alert('heh');
+    $scope.$apply(function() {
+      $scope.content = shuffle($scope.content);
+    });
+  }, 100);
+*/
   // $scope.content = shuffle($scope.content);
 };
 
