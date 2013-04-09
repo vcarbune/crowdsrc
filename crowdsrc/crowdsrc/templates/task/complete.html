@@ -15,8 +15,8 @@
 <form method="post" action="{% url "crowdapp.views.complete_task" solution.task.id %}" ng-app>
 	{% csrf_token %}
 	{% if solution.access_path %}
-            <input type=hidden name="access_path_id" value="{{solution.access_path.id}}" />
-        {% endif %}
+    <input type=hidden name="access_path_id" value="{{solution.access_path.id}}" />
+  {% endif %}
 	
 	{% autoescape off %}
 	{{ solution.task.html }}
