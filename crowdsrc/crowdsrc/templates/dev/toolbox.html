@@ -1,5 +1,7 @@
-<html ng-app="angularjs-starter">
+<html ng-app="angularjs-toolbox">
 <head>
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/toolbox.css">
+
   <script src="http://code.angularjs.org/1.1.4/angular.js"></script>
   <script src="http://code.angularjs.org/1.1.4/angular-sanitize.js"></script>
 
@@ -7,8 +9,12 @@
   <script src="{{ STATIC_URL }}js/item_controllers.js" type="text/javascript"></script>
 </head>
 
+{% verbatim %}
 <body>
   <div ng-controller="ToolboxCtrl" class="toolbox">
+    <button type="button" class="toolbox-state-btn" ng-click="toggleState()">Toggle</button>
+    <b>State</b>: {{state}} <br><br>
+
     <!-- In case you're wondering, the default type for a button is "submit",
       that's why we have explicitly specified the type to be "button" below -->
     <button type="button" ng-click="insertDescriptionElement()">Insert Description</button>
@@ -17,5 +23,6 @@
     <toolbox-item ng-repeat="item in content" content="item"></toolbox-item>
   </div>
 </body>
+{% endverbatim %}
 
 </html>

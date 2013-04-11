@@ -1,22 +1,54 @@
 // Toolbox Controllers and HTML Structures
-var app = angular.module('angularjs-starter', []);
+var app = angular.module('angularjs-toolbox', []);
 
+// This service broadcasts to each component whether it needs to change
+// its state or not (e.g. preview for workers or edit for creators)
+app.factory('toggleToolboxStateService', function($rootScope) {
+  var toggleToolboxStateService = {};
+
+  toggleToolboxStateService.currentState = '';
+  toggleToolboxStateService.STATE = {
+    PREVIEW: 'PREVIEW',
+    EDIT: 'EDIT'
+  };
+
+  toggleToolboxStateService.validateValue = function(value)
+  {
+    if (value == this.STATE.PREVIEW || value == this.STATE.EDIT)
+      return;
+
+    console.log('Incompatible state value: ' + value);
+    value = this.STATE.PREVIEW;
+  }
+
+  toggleToolboxStateService.setState = function(value) {
+    this.validateValue(value);
+
+    this.state = value;
+    $rootScope.$broadcast('stateChanged');
+  };
+
+  return toggleToolboxStateService;
+});
+
+// We might actually want to have different HTML elements for each
+// component (just declare different directives).
 app.directive('toolboxItem', function($compile) {
   // Each toolbox item will have its controller and the HTML below, ideally, in a separate file.
   var descriptionItemTemplate =
       "<div ng-controller='TaskDescriptionCtrl' class='task-generic-item'>" +
-      "<b>Task:</b><div ng-model='desc' contenteditable='true'>{{desc}}</div>" +
+      "<b>Task:</b><div ng-model='desc' contenteditable='{{isEditable}}'></div>" +
       "</div>";
   // "<button type='button' ng-click='ctrlFctn()'>Item Specific Function</button>" +
 
   var inputItemTemplate =
       "<div ng-controller='TaskInputCtrl' class='task-generic-item'>" +
-      "<b>Solution:</b> <input id='task_{{content.crt}}' type='text' disabled />" +
+      "<b>Solution:</b> <input id='task_{{content.crt}}' type='text' ng-disabled='disabled' />" +
       "</div>";
 
   var submitItemTemplate =
       "<div ng-controller='TaskSubmitCtrl' class='task-generic-item'>" +
-      "<button ng-click='completeTask()' disabled>{{content.desc}}</button>" +
+      "<button ng-click='completeTask()' ng-disabled='disabled'>Submit</button>" +
       "</div>";
 
   var getTemplate = function(taskElementType) {
@@ -55,7 +87,17 @@ function shuffle(o){ //v1.0
 /**
  * Toolbox - Master Controller
  */
-function ToolboxCtrl($scope) {
+app.controller('ToolboxCtrl', function($scope, toggleToolboxStateService) {
+  $scope.state = toggleToolboxStateService.STATE.EDIT;
+  $scope.toggleState = function() {
+    if ($scope.state == toggleToolboxStateService.STATE.EDIT)
+      $scope.state = toggleToolboxStateService.STATE.PREVIEW;
+    else
+      $scope.state = toggleToolboxStateService.STATE.EDIT;
+
+    toggleToolboxStateService.setState($scope.state);
+  };
+
   /* List of elements currently in the toolbox for the current task */
   $scope.content = [
   {
@@ -86,4 +128,4 @@ function ToolboxCtrl($scope) {
   $scope.addAnswerInput = function() {
      $scope.insertAnswerElement();
   };
-};
+});
