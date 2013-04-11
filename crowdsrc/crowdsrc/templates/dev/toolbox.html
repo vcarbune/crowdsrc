@@ -1,0 +1,21 @@
+<html ng-app="angularjs-starter">
+<head>
+  <script src="http://code.angularjs.org/1.1.4/angular.js"></script>
+  <script src="http://code.angularjs.org/1.1.4/angular-sanitize.js"></script>
+
+  <script src="{{ STATIC_URL }}js/toolbox.js" type="text/javascript"></script>
+  <script src="{{ STATIC_URL }}js/item_controllers.js" type="text/javascript"></script>
+</head>
+
+<body>
+  <div ng-controller="ToolboxCtrl" class="toolbox">
+    <!-- In case you're wondering, the default type for a button is "submit",
+      that's why we have explicitly specified the type to be "button" below -->
+    <button type="button" ng-click="insertDescriptionElement()">Insert Description</button>
+    <button type="button" ng-click="insertAnswerElement()">Insert Answer Input</button>
+
+    <toolbox-item ng-repeat="item in content" content="item"></toolbox-item>
+  </div>
+</body>
+
+</html>

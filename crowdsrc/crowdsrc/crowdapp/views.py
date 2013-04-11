@@ -186,7 +186,5 @@ def task_solutions(request, task_id):
     
     return render(request, 'solution/task_solutions.html', {'task': task })
     
-    
-    
-    
-
+def toolbox_dev(request):
+    return render(request, 'dev/toolbox.html');
