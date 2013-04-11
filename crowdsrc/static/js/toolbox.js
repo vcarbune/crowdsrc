@@ -31,15 +31,15 @@ app.factory('toggleToolboxStateService', function($rootScope) {
   return toggleToolboxStateService;
 });
 
-// We might actually want to have different HTML elements for each
-// component (just declare different directives).
 app.directive('toolboxItem', function($compile) {
-  // Each toolbox item will have its controller and the HTML below, ideally, in a separate file.
+  // FIXME: each toolbox item can have the HTML in a separate file. This
+  // requires different angular JS directives (needs change in ToolboxCtrl also).
+
+  // Note: not really important right now.
   var descriptionItemTemplate =
       "<div ng-controller='TaskDescriptionCtrl' class='task-generic-item'>" +
       "<b>Task:</b><div ng-model='desc' contenteditable='{{isEditable}}'></div>" +
       "</div>";
-  // "<button type='button' ng-click='ctrlFctn()'>Item Specific Function</button>" +
 
   var inputItemTemplate =
       "<div ng-controller='TaskInputCtrl' class='task-generic-item'>" +

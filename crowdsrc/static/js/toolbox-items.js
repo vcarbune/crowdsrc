@@ -13,14 +13,16 @@ function ToolboxItemCtrl($scope, toggleToolboxStateService)
     $scope.disabled = true;
   };
 
-  $scope.makeEditableForCreator();
-
-  $scope.$on('stateChanged', function() {
+  $scope.updateItemState = function() {
     if (toggleToolboxStateService.state == toggleToolboxStateService.STATE.PREVIEW)
       $scope.makeEditableForWorker();
     else
       $scope.makeEditableForCreator();
-  });
+  }
+
+  $scope.$on('stateChanged', $scope.updateItemState);
+
+  $scope.updateItemState();
 }
 
 /**
