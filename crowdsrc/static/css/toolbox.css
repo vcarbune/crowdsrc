@@ -1,2 +1,23 @@
 .toolbox-state-btn {
 }
+
+.toolbox-new-elem {
+	margin-top: 10px;
+}
+
+.toolbox-item-list {
+	list-style-type: none;
+	padding-left: 0px;
+}
+
+.toolbox-item {
+	border: 1px solid #333;
+	width: 500px;
+	padding: 2px;
+	background: #EEE;
+}
+
+.placeholder {
+	border: 1px solid #333;
+    background: #AEF;
+}
