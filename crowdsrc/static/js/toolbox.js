@@ -36,24 +36,6 @@ app.directive('toolboxItem', function($compile) {
   // requires different angular JS directives (needs change in ToolboxCtrl also).
 
   // Note: not really important right now.
-  
-  /*
-  var descriptionItemTemplate =
-      "<div ng-controller='TaskDescriptionCtrl' class='task-generic-item'>" +
-      "<b>Task:</b><div ng-model='desc' contenteditable='{{isEditable}}'>Add text here...</div>" +
-      "</div>";
-
-  var inputItemTemplate =
-      "<div ng-controller='TaskInputCtrl' class='task-generic-item'>" +
-      "<b>Solution:</b> <input id='task_{{content.crt}}' type='text' ng-disabled='disabled' />" +
-      "</div>";
-  
-  var submitItemTemplate =
-      "<div ng-controller='TaskSubmitCtrl' class='task-generic-item'>" +
-      "<button ng-click='completeTask()' ng-disabled='disabled'>Submit</button>" +
-      "</div>";
-  */
-
   var paragraphTemplate = 
 	  "<div ng-controller='ParagraphCtrl' class='task-generic-item'>" +
       "<p for='task_{{content.crt}}' contenteditable='{{isEditable}}' class='editable'>Add text here...</p>" + 
@@ -83,20 +65,14 @@ app.directive('toolboxItem', function($compile) {
   
   var getTemplate = function(taskElementType) { 
     switch(taskElementType) {
-//      case 'descriptionItem':
-//        return descriptionItemTemplate;
-//      case 'inputItem':
-//        return inputItemTemplate;
-//      case 'submitItem':
-//        return submitItemTemplate;
       case 'textField':
-    	return textFieldTemplate;
+    	  return textFieldTemplate;
       case 'checkbox':
       	return checkboxTemplate;
       case 'paragraph':
-    	return paragraphTemplate; 
+    	  return paragraphTemplate; 
       case 'radioGroup':
-    	return radioGroupTemplate;  
+    	  return radioGroupTemplate;  
     }
   };
 
@@ -114,13 +90,6 @@ app.directive('toolboxItem', function($compile) {
     }
   }
 });
-
-//+ Jonas Raoni Soares Silva
-//@ http://jsfromhell.com/array/shuffle [v1.0]
-function shuffle(o){ //v1.0
-    for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-    return o;
-};
 
 /**
  * Toolbox - Master Controller
@@ -151,35 +120,9 @@ app.controller('ToolboxCtrl', function($scope, toggleToolboxStateService) {
   $scope.content = [];
   
   $scope.sortableOptions = {
-	cancel: ':input,button,.editable',
-	axis: 'y'
+	  cancel: ':input,button,.editable',
+	  axis: 'y'
   };
-  
-  /*
-  $scope.insertDescriptionElement = function() {
-    $scope.content.unshift({
-      type: 'descriptionItem',
-      desc: 'magic',
-      crt: $scope.content.length
-    });
-  };
-
-  $scope.insertAnswerElement = function() {
-    $scope.content.unshift({
-      type: 'inputItem',
-      desc: 'double magic',
-      crt: $scope.content.length
-    });
-  };
-
-  $scope.addDescription = function() {
-     $scope.insertDescriptionElement();
-  };
-
-  $scope.addAnswerInput = function() {
-     $scope.insertAnswerElement();
-  };
-  */
   
   $scope.addElement = function() {
 	  $scope.content.push({
