@@ -21,3 +21,23 @@
 	border: 1px solid #333;
     background: #AEF;
 }
+
+.toolbox-ranking-list {
+	list-style-type: none;
+	padding-left: 0;
+}
+.toolbox-ranking-list li {
+	list-style-type: none;
+	margin-bottom: 5px;
+}
+
+.toolbox-ranking-list li .toolbox-ranking-name {
+	cursor: default;
+	border: 1px solid #333;
+	padding: 0 2px 0 2px;
+	margin-right: 5px;
+}
+
+.toolbox-ranking-list li.selected .toolbox-ranking-name {
+	background-color: #d55;
+}

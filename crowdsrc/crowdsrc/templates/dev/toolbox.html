@@ -32,7 +32,7 @@
     <ul ui-sortable="sortableOptions" ng-model="content" class="toolbox-item-list">
     	<li ng-repeat="item in content" class="toolbox-item">
     		<toolbox-item  content="item" ></toolbox-item>
-    		<button type="button" ng-click="removeElement({{item.crt}})">Remove</button>
+    		<button type="button" ng-click="removeElement(item.id)">Remove</button>
     	</li>
     </ul>
     

@@ -58,9 +58,21 @@ app.directive('toolboxItem', function($compile) {
 	  "<div ng:repeat='i in items'>" +
       "<input type='radio' value='{{i.id}}' name='task_{{content.crt}}' id='radio_{{i.id}}' ng-disabled='disabled' />" +
       "<label for='radio_{{i.id}}' contenteditable='{{isEditable}}' class='editable'>{{i.name}}</label>" +
-      "<button type='button' ng-click='removeItem({{i.id}})' ng-show='isEditable'>Remove Item</button>" +
+      "<button type='button' ng-click='removeItem(i.id)' ng-show='isEditable'>Remove Item</button>" +
       "</div>" +
       "<button type='button' ng-click='addItem()' ng-show='isEditable'>Add Item</button>" +
+      "</div>";
+  
+  var rankingTemplate = 
+	  "<div ng-controller='RankingCtrl' class='task-generic-item'>" +
+	  "<ul class='toolbox-ranking-list'>" +
+	  "<li ng-repeat='i in items' class='{{i.state}}'>" +
+	  	"<span class='toolbox-ranking-name editable' contenteditable='{{isEditable}}' ng-click='toggleSelectItem(i.id)'>{{i.name}}</span>" +
+	  	"<span class='toolbox-ranking-rank' ng-hide='isEditable || i.state===\"free\"'> - {{i.rank}}</span>" +
+	  	"<button type='button' ng-click='removeItem(i.id)' ng-show='isEditable'>Remove Item</button>" +
+	  "</li>" +
+      "</ul>" +
+      "<br /><button type='button' ng-click='addItem()' ng-show='isEditable'>Add Item</button>" +
       "</div>";
   
   var getTemplate = function(taskElementType) { 
@@ -73,6 +85,8 @@ app.directive('toolboxItem', function($compile) {
     	  return paragraphTemplate; 
       case 'radioGroup':
     	  return radioGroupTemplate;  
+      case 'ranking':
+    	  return rankingTemplate; 
     }
   };
 
@@ -111,7 +125,8 @@ app.controller('ToolboxCtrl', function($scope, toggleToolboxStateService) {
     {code:'textField', name: 'Text Field'},
     {code:'paragraph', name: 'Paragraph'},
     {code:'checkbox', name: 'Checkbox'},
-    {code:'radioGroup', name: 'Radio Group'}
+    {code:'radioGroup', name: 'Radio Group'},
+    {code:'ranking', name: 'Ranking Component'}
   ];
   
   $scope.newElemType = '';
@@ -126,19 +141,23 @@ app.controller('ToolboxCtrl', function($scope, toggleToolboxStateService) {
   
   $scope.addElement = function() {
 	  $scope.content.push({
-	    type: $scope.newElemType,
-	    desc: '',
-	    crt: $scope.content.length
+		  id: $scope.content.length,
+		  type: $scope.newElemType,
+		  desc: '',
 	  });
   };
   
-  $scope.removeElement = function (crt) {
-	  for (var i=0;i<$scope.content.length;i++) { 
-		  if ($scope.content[i].crt == crt) {
+  $scope.removeElement = function (id) {
+	  for (var i=0; i<$scope.content.length; i++) {
+		  if ($scope.content[i].id == id) {
+			  for (var j=0; j<$scope.content.length; j++) {
+				  if ($scope.content[j].id > id) {
+					  $scope.content[j].id--;
+				  }
+			  }
 			  $scope.content.splice(i, 1);
 			  break;
 		  }
 	  }
   };
-  
 });
