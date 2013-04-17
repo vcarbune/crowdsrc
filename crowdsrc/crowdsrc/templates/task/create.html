@@ -8,27 +8,49 @@
 
 <h2>Create Task</h2>
 
-
-{% if form.errors %}
-<p>There have been problems with saving your task. Please try again!</p>
-{% endif %}
-
-<form method="post" class="create-task-form"
-    ng-app="angularjs-starter" ng-controller="MasterFormCtrl" ng-submit="submit()">
+<form method="post" class="create-task-form">
 	{% csrf_token %}
-	Title: <input id="title" type="text" ng-model="title" placeholder="Insert title here.."><br>
+	{{ task_form.non_field_errors }}
+	
+	{{ task_form.name.label_tag }}: {{ task_form.name }} {{ task_form.name.errors }}
+	<br><br><br>
+	Access Paths:
+	<div class="accesspath-forms" style="margin-left: 20px; border: 1px solid #888; padding-right: 10px">
+		{{ accesspath_formset.management_form }}
+		{{ accesspath_formset.non_field_errors }}
+		{% for accesspath_form in accesspath_formset.forms %}
+    		<div class="subform">
+    			{{ accesspath_form }}
+    		</div>
+    	{% endfor %}
+    	
+    	<script type="text/javascript">
+    		$(".accesspath-forms label:contains('Delete')").hide(); <!-- TODO: find a better solution -->
+    		
+	    	$(function() {
+	    		$(".accesspath-forms .subform").formset({
+	    			prefix: '{{ accesspath_formset.prefix }}',
+	    			deleteText: "Remove item",
+	    			addText: "Add",
+	    		});
+	    	});
+    	</script>
+	</div>
+	<br>
+	
+	Toolbox:
+	{% verbatim %}
+	<div>Nothing here yet</div>
+	{% endverbatim %}
 
 	<br>
-	Toolbox (Each of the black corner boxes are generated independently)
-  {% verbatim %}
-  <div>Nothing here yet</div>
-  {% endverbatim %}
-
+	
+	{{ task_form.cost.label_tag }}: {{ task_form.cost }} {{ task_form.cost.errors }}
+	{{ task_form.is_active }} {{ task_form.is_active.label_tag}}
+	
+	<input type=hidden name="task-html" value="<div>Testing</div>" />
 	<br>
-	Cost: <input type="text" ng-model="cost" placeholder="Insert cost of the task here.."><br>
-	Active? <input id="is_active" type="checkbox" ng-model="isActive" />
-
-	<input type="submit" value="Save & Edit" />
+	<input type="submit" value="Save" />
 </form>
 
 {% endblock %}

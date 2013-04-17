@@ -29,9 +29,27 @@ class ProfileForm(ModelForm):
         model = UserProfile
         exclude = ('user', 'last_login', 'is_taskcreator', 'badges')
         
+class CreateTaskForm(ModelForm):
+    name = forms.CharField(label="Title")
+    is_active = forms.BooleanField(label="Active", required=False)
+    
+    class Meta:
+        model = Task
+        fields = ('name', 'html', 'is_active', 'cost')
+        
 class TaskAdminForm(ModelForm):
     html = forms.CharField(widget=forms.Textarea)
     
     class Meta:
         model = Task
+        
+class AccessPathForm(ModelForm):
+    description = forms.CharField(widget=forms.Textarea(attrs={'rows':'3'}))
+
+    class Meta:
+        model = AccessPath
+        fields = ('name', 'description', 'cost', 'error')
+
+AccessPathFormSet = forms.models.inlineformset_factory(Task, AccessPath, form=AccessPathForm, extra=0, max_num=4, can_delete=True)
+
         

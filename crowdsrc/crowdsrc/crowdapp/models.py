@@ -57,7 +57,7 @@ class Task(models.Model):
     html = models.CharField(max_length=1000)
     is_active = models.BooleanField(default=False)
     cost = models.SmallIntegerField(default=0)
-    created_at = models.DateField()  
+    created_at = models.DateField(default=datetime.now())  
     
     def get_random_access_path(self): # returns a random access path from all created for the task
         access_paths = self.accesspath_set.all()

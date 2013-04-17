@@ -22,7 +22,6 @@ import urllib
 def index(request):
     return render(request, 'home.html')
      
-     
 def register(request):     
     if request.method == 'POST':
         user_form = UserCreateForm(data=request.POST, prefix='user')
@@ -43,34 +42,51 @@ def register(request):
         
     return render(request, 'auth/register.html', {'user_form': user_form, 'profile_form': profile_form})
 
+@login_required
+def edit_task(request, task_id=None):
+    profile = get_profile(request.user)
+    if task_id:
+        try:
+            task = Task.objects.get(id=task_id)
+        except ObjectDoesNotExist:
+            raise Http404
+    else:
+        task = None
+    
+    if request.method == 'POST':
+        task_form = CreateTaskForm(instance=task, data=request.POST, prefix='task')
+        accesspath_formset = AccessPathFormSet(instance=task, data=request.POST, prefix='accesspath')
+        
+        if task_form.is_valid() and accesspath_formset.is_valid():
+            task = task_form.save(commit=False)
+            task.creator = get_profile(request.user)
+            task.save()
+            
+            accesspaths = accesspath_formset.save(commit=False)
+            for ap in accesspaths:
+                ap.task = task
+                ap.save()
+               
+            if task.is_active:
+                return redirect(reverse('crowdapp.views.my_tasks'))
+            else:
+                accesspath_formset = AccessPathFormSet(instance=task, prefix='accesspath')
+    else:
+        task_form = CreateTaskForm(instance=task, prefix='task')
+        accesspath_formset = AccessPathFormSet(instance=task, prefix='accesspath')
+    return render(request, 'task/create.html', {'task_form': task_form, 'accesspath_formset': accesspath_formset})
 
 @login_required
-def create_task(request):
-    if request.method == 'POST':
+def view_task(request, task_id):
+    try:
         profile = get_profile(request.user)
-        task_params = json.loads(request.body)
+        task = Task.objects.get(id=task_id)
+    except ObjectDoesNotExist:
+        raise Http404
 
-        # FIXME: what's the default?
-        request_cost = 30
-        if 'cost' in task_params:
-            request_cost = task_params['cost']
-
-        task = Task.objects.create(
-                creator=profile,
-                name=task_params['name'],
-                # FIXME: Dropping the HTML directly sometimes raises issues
-                html=urllib.unquote(task_params['html']),
-                is_active=task_params['is_active'],
-                cost=request_cost,
-                created_at=datetime.now());
-
-        data = {
-            "task_id": task.id,
-        }
-
-        return HttpResponse(json.dumps(data), content_type="application/json")
-
-    return render(request, 'task/create.html', {'post': '... no request!'})
+    if task.creator.id != profile.id:
+        raise Http404
+    
 
 @login_required
 def complete_task(request, task_id):
@@ -79,8 +95,6 @@ def complete_task(request, task_id):
         task = Task.objects.get(id=task_id)
     except ObjectDoesNotExist:
         raise Http404
-    
-    message = ""
     
     if request.method == 'POST':
         solution, created = Solution.objects.get_or_create(worker=profile, task=task)

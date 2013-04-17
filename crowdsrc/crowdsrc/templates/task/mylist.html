@@ -33,7 +33,7 @@
                 {% if task.is_active %}
                     Not editable
                 {% else %}
-                    <a href="#"> Edit task </a>
+                    <a href="{% url "crowdapp.views.edit_task" task.id %}"> Edit task </a>
                 {% endif %}
             </td>
             <td> <a href="{% url "crowdapp.views.task_solutions" task.id %}"> View solutions </a> </td>

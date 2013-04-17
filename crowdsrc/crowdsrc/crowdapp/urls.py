@@ -15,7 +15,8 @@ urlpatterns = patterns('',
     url(r'^accounts/profile/$', RedirectView.as_view(url='/', permanent=True)),
 
     # Task related urls
-    url(r'^create_task/$', 'crowdapp.views.create_task'),
+    url(r'^create_task/$', 'crowdapp.views.edit_task'),
+    url(r'^edit_task/(?P<task_id>\d+)/$', 'crowdapp.views.edit_task'),
     url(r'^complete_task/(?P<task_id>\d+)/$', 'crowdapp.views.complete_task'),
     url(r'^my_tasks/$', 'crowdapp.views.my_tasks'),
     url(r'^all_tasks/$', 'crowdapp.views.all_tasks'),
