@@ -30,23 +30,27 @@ td
 	text-color: #4444ff;
 }
 
-/* Toolbox */
+
 .create-task-form
 {
 	width: 50%;
 }
 
-.toolbox {
-	background: gray;
-	padding: 10px;
+.accesspath-forms
+{
+	border: 1px solid #888; 
+	padding: 10px 20px 10px 5px;
 }
 
-.task-generic-item {
-	border: black 1px solid;
-	padding: 5px;
+.accesspath-forms label
+{
+	display:inline-block;
+	width: 100px;
 }
 
-.task-generic-item input[type='text'] {
-	height: 5px;
-	width: 50%;
+.accesspath-forms input, .accesspath-forms textarea
+{
+	display:inline-block;
 }
+
+

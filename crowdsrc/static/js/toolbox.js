@@ -68,7 +68,7 @@ app.directive('toolboxItem', function($compile) {
 	  "<ul class='toolbox-ranking-list'>" +
 	  "<li ng-repeat='i in items' class='{{i.state}}'>" +
 	  	"<span class='toolbox-ranking-name editable' contenteditable='{{isEditable}}' ng-click='toggleSelectItem(i.id)'>{{i.name}}</span>" +
-	  	"<span class='toolbox-ranking-rank' ng-hide='isEditable || i.state===\"free\"'> - {{i.rank}}</span>" +
+	  	" <span class='toolbox-ranking-rank' ng-hide='isEditable || i.state===\"free\"'>{{i.rank}}</span>" +
 	  	"<button type='button' ng-click='removeItem(i.id)' ng-show='isEditable'>Remove Item</button>" +
 	  "</li>" +
       "</ul>" +

@@ -18,19 +18,15 @@
 <link rel="stylesheet" type="text/css"
 	href="http://fonts.googleapis.com/css?family=Open+Sans&amp;subset=latin">
 
-<!-- AngularJS begin -->
-<script src="http://code.angularjs.org/1.1.4/angular.js"></script>
-<script src="http://code.angularjs.org/1.1.4/angular-sanitize.js"></script>
-{% block angular %}
-{% endblock %}
-<!-- AngularJS end -->
-
 <!-- jquery template things! -->
 <script src="{{ STATIC_URL }}js/lib/jquery.js"></script>
 <script src="{{ STATIC_URL }}js/lib/jquery.formset.js"></script>
 <script src="{{ STATIC_URL }}js/lib/script.js"></script>
-<script src="{{ STATIC_URL }}js/lib/script.responsive.js"></script>
+<script src="{{ STATIC_URL }}js/lib/script.responsive.js"></script> 
 <!-- jquery end -->
+
+{% block head %}
+{% endblock %}
 
 <style>
 .art-content .art-postcontent-0 .layout-item-0 {

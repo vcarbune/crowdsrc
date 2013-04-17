@@ -1,3 +1,8 @@
+.toolbox {
+	border: 1px solid #333;
+	padding: 5px;
+}
+
 .toolbox-state-btn {
 }
 
@@ -7,14 +12,15 @@
 
 .toolbox-item-list {
 	list-style-type: none;
-	padding-left: 0px;
+	padding: 5px;
 }
 
 .toolbox-item {
 	border: 1px solid #333;
-	width: 500px;
-	padding: 2px;
+	max-width: 500px;
+	padding: 5px;
 	background: #EEE;
+	margin-bottom: 2px;
 }
 
 .placeholder {
