@@ -50,6 +50,6 @@ class AccessPathForm(ModelForm):
         model = AccessPath
         fields = ('name', 'description', 'cost', 'error')
 
-AccessPathFormSet = forms.models.inlineformset_factory(Task, AccessPath, form=AccessPathForm, extra=0, max_num=4, can_delete=True)
+AccessPathFormSet = forms.models.inlineformset_factory(Task, AccessPath, form=AccessPathForm, extra=1, max_num=4, can_delete=True)
 
         
