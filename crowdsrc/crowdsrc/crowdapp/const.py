@@ -12,8 +12,9 @@ STATUSES = (
 
 ANSWER_TYPES = (
     (0, "Free Text"),
-    (1, "Ranking"),
-    (2, "True / False"),
+    (1, "Boolean"),
+    (2, "Number"),
+    (3, "Ranking"),
 )
 
 

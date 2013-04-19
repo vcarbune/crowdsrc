@@ -132,7 +132,7 @@ function RankingCtrl($scope, toggleToolboxStateService)
   
   $scope.toggleSelectItem = function(id) {
 	  if ($scope.isEditable === true) {
-		  return
+		  return;
 	  }
 	  
 	  for (var i=0; i<$scope.items.length; i++) { 
