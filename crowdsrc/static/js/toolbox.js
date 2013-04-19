@@ -6,11 +6,11 @@ var app = angular.module('angularjs-toolbox', ['ui']);
 app.factory('toggleToolboxStateService', function($rootScope) {
   var toggleToolboxStateService = {};
 
-  toggleToolboxStateService.currentState = '';
   toggleToolboxStateService.STATE = {
     PREVIEW: 'PREVIEW',
     EDIT: 'EDIT'
   };
+  toggleToolboxStateService.currentState = toggleToolboxStateService.STATE.EDIT;
 
   toggleToolboxStateService.validateValue = function(value)
   {
@@ -19,13 +19,17 @@ app.factory('toggleToolboxStateService', function($rootScope) {
 
     console.log('Incompatible state value: ' + value);
     value = this.STATE.PREVIEW;
-  }
+  };
 
   toggleToolboxStateService.setState = function(value) {
     this.validateValue(value);
 
-    this.state = value;
+    this.currentState = value;
     $rootScope.$broadcast('stateChanged');
+  };
+
+  toggleToolboxStateService.getState = function() {
+    return this.currentState;
   };
 
   return toggleToolboxStateService;
@@ -150,7 +154,7 @@ app.controller('ToolboxCtrl', function($scope, toggleToolboxStateService) {
 		  type: $scope.newElemType,
 		  desc: '',
 	  });
-  };
+ };
  
   $scope.removeElement = function (id) {
 	  for (var i=0; i<$scope.content.length; i++) {
@@ -166,6 +170,30 @@ app.controller('ToolboxCtrl', function($scope, toggleToolboxStateService) {
 	  }
   };
 
-  /* Serialized HTML */
-  $scope.toolboxHtml = 'stuff';	
+  /* Helper methods to be used for serialization */
+  $scope.prepareSerialization = function() {
+    $scope.toolboxElement = document.querySelector('[ng-controller="ToolboxCtrl"]');
+    $scope.toolboxHtml = '';
+  };
+
+  /* Method called when serializing the toolbox */
+  $scope.serialize = function() {
+    $scope.prepareSerialization();
+
+    var previousState = toggleToolboxStateService.getState();
+    toggleToolboxStateService.setState(toggleToolboxStateService.STATE.PREVIEW);
+
+    var rootNode = document.createElement('div');
+    rootNode.setAttribute('ng-controller', 'ToolboxCtrl');
+    rootNode.setAttribute('class', 'toolbox');
+ 
+    var toolboxItems = $scope.toolboxElement.querySelectorAll('toolbox-item');
+    angular.forEach(toolboxItems, function(el) {
+      rootNode.innerHTML += el.outerHTML;
+    });
+
+    $scope.toolboxHtml = rootNode.outerHTML;
+
+    toggleToolboxStateService.setState(previousState);
+  };
 });
