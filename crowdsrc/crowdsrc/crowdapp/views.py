@@ -96,6 +96,7 @@ def complete_task(request, task_id):
     except ObjectDoesNotExist:
         raise Http404
     
+    message = "" 
     if request.method == 'POST':
         solution, created = Solution.objects.get_or_create(worker=profile, task=task)
         if created:

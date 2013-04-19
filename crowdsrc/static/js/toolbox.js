@@ -74,6 +74,11 @@ app.directive('toolboxItem', function($compile) {
       "</ul>" +
       "<br /><button type='button' ng-click='addItem()' ng-show='isEditable'>Add Item</button>" +
       "</div>";
+
+  var imageGroupTemplate =
+           "<div ng-controller='ImageGroupCtrl' class='task-generic-item'>" +
+      "dummy code"  +
+      "</div>";
   
   var getTemplate = function(taskElementType) { 
     switch(taskElementType) {
@@ -87,6 +92,8 @@ app.directive('toolboxItem', function($compile) {
     	  return radioGroupTemplate;  
       case 'ranking':
     	  return rankingTemplate; 
+      case 'imageGroup':
+          return imageGroupTemplate;
     }
   };
 
@@ -126,7 +133,8 @@ app.controller('ToolboxCtrl', function($scope, toggleToolboxStateService) {
     {code:'paragraph', name: 'Paragraph'},
     {code:'checkbox', name: 'Checkbox'},
     {code:'radioGroup', name: 'Radio Group'},
-    {code:'ranking', name: 'Ranking Component'}
+    {code:'ranking', name: 'Ranking Component'},
+    {code:'imageGroup', name: 'Image Group'},
   ];
   
   $scope.newElemType = '';

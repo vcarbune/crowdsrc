@@ -157,3 +157,13 @@ function RankingCtrl($scope, toggleToolboxStateService)
 	  }
   }
 };
+
+/**
+ * Toolbox - Image Group Controller.
+ */
+function ImageGroupCtrl($scope, toggleToolboxStateService) {
+
+  angular.injector().invoke(ToolboxItemCtrl, this, {
+    $scope: $scope,
+    toggleToolboxStateService: toggleToolboxStateService  
+};
