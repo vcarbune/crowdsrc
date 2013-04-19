@@ -54,7 +54,7 @@ class UserProfile(models.Model):
 class Task(models.Model):
     creator = models.ForeignKey(UserProfile)
     name = models.CharField(max_length=200)
-    html = models.CharField(max_length=1000)
+    html = models.CharField(max_length=1000000)
     is_active = models.BooleanField(default=False)
     cost = models.SmallIntegerField(default=0)
     created_at = models.DateField(default=datetime.now())  
