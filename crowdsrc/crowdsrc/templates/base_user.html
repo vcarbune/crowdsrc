@@ -3,11 +3,11 @@
 {% load crowdapp_extras %} 
 
 {% block menu %}
-	<li><a href="/all_tasks">View all tasks</a></li>
+	<li><a href="/all_tasks">View tasks</a></li>
 	<li><a href="#">Manage tasks</a>
 		<ul>
-			<li><a href="/create_task">Create new task</a></li>
-			<li><a href="/my_tasks">View my tasks</a></li>
+			<li><a href="/create_task">Create task</a></li>
+			<li><a href="/my_tasks">My tasks</a></li>
 		</ul>
 	</li>
 	<li><a href="#">My account</a></li>
@@ -19,22 +19,7 @@
 <h5>Glad to have you back, {{user|profile}}!</h5>
 {% endblock %}
 
-{% block sidebar%}						
-	<div class="art-block clearfix">
-		<div class="art-blockheader">
-			<h3 class="t">Recent events</h3>
-		</div>
-		<div class="art-blockcontent">
-		<div>
-			<ul>
-				<li><a href="#">Event 1</a></li>
-				<li><a href="#">Event 2</a></li>
-				<li><a href="#">Event 3</a></li>
-				<li><a href="#">Event 4</a></li>
-			</ul>
-			</div>
-		</div>
-	</div>	
+{% block sidebar %}							
 	<div class="art-block clearfix">
 		<div class="art-blockheader">
 			<h3 class="t">Completed tasks</h3>
