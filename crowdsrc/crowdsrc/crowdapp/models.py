@@ -5,25 +5,12 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from const import *
-
-class Language(models.Model):
-    name = models.CharField(max_length=30)
-    
-    def __unicode__(self):
-        return self.name
     
 class Qualification(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=200)
     
     def __unicode__(self):
         return self.name
-    
-class Badge(models.Model):
-    name = models.CharField(max_length=100)
-    
-    def __unicode__(self):
-        return self.name
-
 
 class UserProfile(models.Model):
     
@@ -36,14 +23,10 @@ class UserProfile(models.Model):
     gender = models.CharField(max_length=1, choices=GENDERS)
     birth_date = models.DateField()
     education_field = models.SmallIntegerField(choices=EDUCATION_FIELDS) 
-    
     birth_place = models.CharField(max_length=2, choices=COUNTRIES, default='CH')
-    
-    languages = models.ManyToManyField(Language, null=True, blank=True)
-    qualifications = models.ManyToManyField(Qualification, null=True, blank=True)
-    badges = models.ManyToManyField(Badge, null=True, blank=True)
-    
     current_country = models.CharField(max_length=2, choices=COUNTRIES, default='CH')
+    
+    qualifications = models.ManyToManyField(Qualification, null=True, blank=True)
     
     is_taskcreator = models.BooleanField(default=False)
     
@@ -54,10 +37,12 @@ class UserProfile(models.Model):
 class Task(models.Model):
     creator = models.ForeignKey(UserProfile)
     name = models.CharField(max_length=200)
-    html = models.CharField(max_length=1000)
+    html = models.TextField()
     is_active = models.BooleanField(default=False)
     cost = models.SmallIntegerField(default=0)
-    created_at = models.DateField(default=datetime.now())  
+    created_at = models.DateField(default=datetime.now()) 
+    
+    qualifications = models.ManyToManyField(Qualification) 
     
     def get_random_access_path(self): # returns a random access path from all created for the task
         access_paths = self.accesspath_set.all()
@@ -80,7 +65,7 @@ class Resource(models.Model):
 class AccessPath(models.Model):
     task = models.ForeignKey(Task)
     name = models.CharField(max_length=100)
-    description = models.CharField(max_length=400)
+    description = models.CharField(max_length=1000)
     cost = models.SmallIntegerField(default=0)
     error = models.FloatField(default=0)
     
@@ -91,22 +76,27 @@ class Solution(models.Model):
     worker = models.ForeignKey(UserProfile)
     task = models.ForeignKey(Task)
     access_path = models.ForeignKey(AccessPath, null=True)
+    resources = models.ManyToManyField(Resource)
     status = models.SmallIntegerField(choices=STATUSES, default=0)
     created_at = models.DateField()
     
     def __unicode__(self):
         return self.task.name + " [" + self.worker.__unicode__() + "]"
     
-class Answer(models.Model):
-    solution = models.ForeignKey(Solution)
+class TaskInput(models.Model):
+    task = models.ForeignKey(Task)
     type = models.SmallIntegerField(choices=ANSWER_TYPES, default=0)
-    value = models.CharField(max_length=30)
     index = models.SmallIntegerField(default=0)
     
     def __unicode__(self):
-        return "Answer " + str(self.index)
+        return "Input " + str(self.index)
     
+class TaskInputValue(models.Model):
+    answer = models.ForeignKey(TaskInput)
+    value = models.CharField(max_length=200)
     
+    def __unicode__(self):
+        return answer.__unicode__ + ": " + value
     
     
     

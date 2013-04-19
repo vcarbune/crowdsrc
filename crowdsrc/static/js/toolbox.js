@@ -120,10 +120,14 @@ app.controller('ToolboxCtrl', function($scope, toggleToolboxStateService) {
   $scope.state = toggleToolboxStateService.STATE.EDIT;
   
   $scope.toggleState = function() {
-    if ($scope.state == toggleToolboxStateService.STATE.EDIT)
+    if ($scope.state == toggleToolboxStateService.STATE.EDIT) {
       $scope.state = toggleToolboxStateService.STATE.PREVIEW;
-    else
+      $scope.isEditable = false;
+    }
+    else {
       $scope.state = toggleToolboxStateService.STATE.EDIT;
+      $scope.isEditable = true;
+  	}
 
     toggleToolboxStateService.setState($scope.state);
   };
@@ -136,6 +140,8 @@ app.controller('ToolboxCtrl', function($scope, toggleToolboxStateService) {
     {code:'ranking', name: 'Ranking Component'},
     {code:'imageGroup', name: 'Image Group'},
   ];
+  
+  $scope.isEditable = true;
   
   $scope.newElemType = '';
 
