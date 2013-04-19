@@ -33,7 +33,11 @@
     	Add new element: 
     	<select ng-model="newElemType" ng-options="i.code as i.name for i in elemTypes"></select> 
     	<button type="button" ng-click="addElement()">Add</button>
-    </div>    
+    </div>
+
+    <button type="button" ng-click="serialize()">Serialize</button>
+    <input ng-model="toolboxHtml" type="hidden" name="toolboxHtml" />
+    <div>{{toolboxHtml}}</div>
   </div>
 </body>
 {% endverbatim %}

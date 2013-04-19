@@ -14,7 +14,7 @@ function ToolboxItemCtrl($scope, toggleToolboxStateService)
   };
 
   $scope.updateItemState = function() {
-    if (toggleToolboxStateService.state == toggleToolboxStateService.STATE.PREVIEW)
+    if (toggleToolboxStateService.getState() == toggleToolboxStateService.STATE.PREVIEW)
       $scope.makeEditableForWorker();
     else
       $scope.makeEditableForCreator();
@@ -108,12 +108,12 @@ function RankingCtrl($scope, toggleToolboxStateService)
   $scope.currentRank = 0;
   
   $scope.addItem = function() {
-	$scope.items.push({
-		id: $scope.items.length,
-		name: 'New item',
-		rank: 100, // big enough
-		state: 'free',
-	});
+	  $scope.items.push({
+		  id: $scope.items.length,
+		  name: 'New item',
+		  rank: 100, // big enough
+		  state: 'free',
+	  });
   };
   
   $scope.removeItem = function(id) {

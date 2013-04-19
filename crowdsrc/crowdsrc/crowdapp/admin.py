@@ -21,7 +21,7 @@ class ResourceInline(admin.TabularInline):
     model = Resource
     extra = 1
     max_num = 10
-    fields = ('name', 'index')
+    fields = ('name', 'index', 'image')
 
 class AccessPathInline(admin.TabularInline):
     model = AccessPath
