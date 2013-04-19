@@ -14,6 +14,7 @@ ANSWER_TYPES = (
     (0, "Free Text"),
     (1, "Ranking"),
     (2, "True / False"),
+    (3, "Number"),
 )
 
 
