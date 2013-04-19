@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from random import randint
 
@@ -5,6 +6,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from const import *
+
     
 class Qualification(models.Model):
     name = models.CharField(max_length=200)
@@ -51,12 +53,32 @@ class Task(models.Model):
         idx = randint(0, len(access_paths)-1)
         return access_paths[idx]
     
+    def get_random_resources(self, num_res):
+        resources = self.resources_set.all()
+        selected_resources = []
+        res_ids = []
+        k = 0
+        
+        if len(resources) < num_res:
+            return resources
+        
+        while k < num_res:
+            idx = randint(0, len(resources)-1)
+            if not res_ids.contains(idx):
+                res_ids.append(idx)
+                selected_resources.append(resources[idx])
+        return selected_resources
+    
     def __unicode__(self):
         return self.name
     
+def resources_upload_path(instance, filename):
+    return os.path.join('uploads' , 'resources', str(instance.task.id), filename)
+    
 class Resource(models.Model):
     task = models.ForeignKey(Task)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=200, null=True, blank=True)
+    image = models.ImageField(upload_to = resources_upload_path, null=True, blank = True)
     index = models.SmallIntegerField(null=True, blank=True)
     
     def __unicode__(self):
@@ -92,7 +114,7 @@ class TaskInput(models.Model):
         return "Input " + str(self.index)
     
 class TaskInputValue(models.Model):
-    answer = models.ForeignKey(TaskInput)
+    taskinput = models.ForeignKey(TaskInput)
     value = models.CharField(max_length=200)
     
     def __unicode__(self):

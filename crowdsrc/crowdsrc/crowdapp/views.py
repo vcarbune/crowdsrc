@@ -126,8 +126,21 @@ def complete_task(request, task_id):
         solution, created = Solution.objects.get_or_create(worker=profile, task=task, created_at=datetime.now())
         if created:
             solution.access_path = task.get_random_access_path()
+            solution.save()
         
     return render(request, 'task/complete.html', {'solution': solution, 'message': message})
+
+@login_required
+def get_solution_resources(solution_id, num_res):
+    try:
+        profile = get_profile(request.user)
+        solution = Solution.objects.get(id=task_id)
+    except ObjectDoesNotExist:
+        raise Http404
+    
+    resources = solution.task.get_random_resources(num_res)
+    
+    return HttpResponse(json.dumps({"resources": resources}), mimetype="application/json")
 
 @login_required
 def my_tasks(request):
