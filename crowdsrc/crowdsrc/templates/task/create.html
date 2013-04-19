@@ -19,7 +19,7 @@
 
 <h2>Create Task</h2>
 
-<form method="post" id="create-task-form" class="create-task-form">
+<form method="post" id="create-task-form" class="create-task-form" enctype="multipart/form-data">
 	{% csrf_token %}
 	{{ task_form.non_field_errors }}
 	

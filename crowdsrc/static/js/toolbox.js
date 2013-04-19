@@ -109,17 +109,18 @@ app.directive('toolboxItem', function($compile) {
  * Toolbox - Master Controller
  */
 app.controller('ToolboxCtrl', function($scope, toggleToolboxStateService) {
-	
   $scope.state = toggleToolboxStateService.STATE.EDIT;
-  
+ 
+  $scope.isEditable = function() {
+    return $scope.state == toggleToolboxStateService.STATE.EDIT;
+  };
+ 
   $scope.toggleState = function() {
     if ($scope.state == toggleToolboxStateService.STATE.EDIT) {
       $scope.state = toggleToolboxStateService.STATE.PREVIEW;
-      $scope.isEditable = false;
     }
     else {
       $scope.state = toggleToolboxStateService.STATE.EDIT;
-      $scope.isEditable = true;
   	}
 
     toggleToolboxStateService.setState($scope.state);
@@ -132,8 +133,6 @@ app.controller('ToolboxCtrl', function($scope, toggleToolboxStateService) {
     {code:'radioGroup', name: 'Radio Group'},
     {code:'ranking', name: 'Ranking Component'}
   ];
-  
-  $scope.isEditable = true;
   
   $scope.newElemType = '';
 
@@ -166,4 +165,7 @@ app.controller('ToolboxCtrl', function($scope, toggleToolboxStateService) {
 		  }
 	  }
   };
+
+  /* Serialized HTML */
+  $scope.toolboxHtml = 'stuff';	
 });
