@@ -8,24 +8,14 @@ from forms import *
 # Testing the admin interface
 
 class UserProfileAdmin(admin.ModelAdmin):
-    fields = ('user','first_name', 'last_name', 'birth_date', 'birth_place', 'gender', 'education_field')
+    fields = ('user','first_name', 'last_name', 'birth_date', 'birth_place', 'gender', 'education_field', 'qualifications')
     
 admin.site.register(UserProfile, UserProfileAdmin)
-
-class LanguageAdmin(admin.ModelAdmin):
-    fields = ('name',)
-    
-admin.site.register(Language, LanguageAdmin)
 
 class QualificationAdmin(admin.ModelAdmin):
     fields = ('name',)
     
 admin.site.register(Qualification, QualificationAdmin)
-
-class BadgeAdmin(admin.ModelAdmin):
-    fields = ('name',)    
-    
-admin.site.register(Badge, BadgeAdmin)
 
 class ResourceInline(admin.TabularInline):
     model = Resource
@@ -47,17 +37,5 @@ class TaskAdmin(admin.ModelAdmin):
     inlines = [AccessPathInline, ResourceInline]
     
 admin.site.register(Task, TaskAdmin)
-
-
-class AnswerInline(admin.TabularInline):
-    model = Answer
-    extra = 0
-    fields = ('index','type' ,'value')
-    
-class SolutionAdmin(admin.ModelAdmin):
-    readonly_fields = ('worker', 'task', 'access_path')
-    inlines = [AnswerInline]
-    
-admin.site.register(Solution, SolutionAdmin)
 
 

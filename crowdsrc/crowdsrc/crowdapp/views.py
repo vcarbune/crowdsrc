@@ -141,10 +141,17 @@ def my_tasks(request):
 @login_required
 def all_tasks(request):
     try:
-        tasks = Task.objects.filter(is_active=True)
+        profile = get_profile(request.user)
+        user_qualifs = set(profile.qualifications.all())
+        all_tasks = Task.objects.filter(is_active=True)
+        good_tasks = []
+        for task in all_tasks:
+            task_qualifs = set(task.qualifications.all())
+            if task_qualifs.issubset(user_qualifs):
+                good_tasks.append(task)
     except ObjectDoesNotExist:
         raise Http404
-    return render(request, 'task/list.html', {'tasks': tasks})
+    return render(request, 'task/list.html', {'tasks': good_tasks})
 
 @login_required
 def view_solution(request, solution_id):
