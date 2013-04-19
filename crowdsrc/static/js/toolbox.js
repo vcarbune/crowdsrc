@@ -76,8 +76,18 @@ app.directive('toolboxItem', function($compile) {
       "</div>";
 
   var imageGroupTemplate =
+      // Content for EDIT state.
            "<div ng-controller='ImageGroupCtrl' class='task-generic-item'>" +
-      "dummy code"  +
+      "<label for='resources_{{content.crt}}' ng-show='isEditable'>" +
+        "Select images to upload:" +
+      "</label><br/>" +
+      "<input type='file' ng-model-instant onchange='angular.element(this).scope().setFiles(this)' ng-show='isEditable' multiple required />" +
+      "<p ng-show='isEditable'>" +
+        "Number of images per single task:" +
+      "</p>" +
+      "<input ng-model='nrImagesPerTask' type='text' ng-show='isEditable' value='3' required />" +
+      // Content for PREVIEW state.
+      "<img ng-repeat='image in previewImgs' src={{image}} ng-hide='isEditable'/>" +
       "</div>";
   
   var getTemplate = function(taskElementType) { 

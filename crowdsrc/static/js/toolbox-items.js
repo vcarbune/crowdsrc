@@ -167,4 +167,75 @@ function ImageGroupCtrl($scope, toggleToolboxStateService) {
     $scope: $scope,
     toggleToolboxStateService: toggleToolboxStateService  
   });
+
+  $scope.setFiles = function(element) {
+    // Filter image files.
+    rFilter = /^(image\/bmp|image\/gif|image\/jpeg|image\/png|image\/tiff)$/i;
+    // TO DO: Adjust maximum size of uploaded images.
+    FILE_SIZE_MAX = 30000000;
+    // Uploaded files
+    $scope.files = [];
+    // Readers used to preview some of the files
+    $scope.oFReaders = [];
+    previewImgNo = $scope.nrImagesPerTask
+    $scope.previewImgs = []
+    for(var i = 0; i < element.files.length; ++i)
+      if(rFilter.test(element.files[i].type) && element.files[i].size < FILE_SIZE_MAX)
+      {
+        $scope.files.push(element.files[i])
+        if(previewImgNo > 0)
+        {
+          oFReader = new FileReader()
+          oFReader.readAsDataURL($scope.files[i])
+          oFReader.onload = function(oFREvent) {
+            $scope.previewImgs.push(oFREvent.target.result)
+          }
+          $scope.oFReaders.push(oFReader)
+          previewImgNo--
+        }
+      }
+  //  Don't upload yet. Wait until user creates the task.
+  //  $scope.uploadFiles();
+  }
+
+  $scope.uploadProgress = function(evt) {
+    $scope.$apply(function() {
+      if(evt.lengthComputable)
+        scope.progress = Math.round(evt.loaded * 100 / evt.total)
+      else
+        scope.progress = 'unable to compute'
+    })
+  }
+
+  $scope.uploadComplete = function(evt) {
+    /* This event is raised when the server sends back a response.*/
+    alert(evt.target.responseText)
+  }
+
+  $scope.uploadFailed = function(evt) {
+    alert("There was an error attempting to upload the files.")
+  }
+
+  $scope.uploadCanceled = function(evt) {
+    scope.$apply(function() {
+        scope.progressVisible = false
+    })
+    alert("The image upload has been canceled by the user or the browser dropped the connection.")
+  }
+
+  $scope.uploadFiles = function() {
+    fd = new FormData()
+    for(file in $scope.files)
+      fd.append("uploadedFile", file);
+    xhr = new XMLHttpRequest()
+    xhr.upload.addEventListener("progress", $scope.uploadProgress, false)
+    xhr.addEventListener("load", $scope.uploadComplete, false)
+    xhr.addEventListener("error", $scope.uploadFailed, false)
+    xhr.addEventListener("abort", $scope.uploadCanceled, false)
+    // TO DO: On Server side the url /fileupload doesn't point anywhere.
+    xhr.open("POST", "/fileupload")
+    $scope.progressVisible = true
+    xhr.send(fd)
+  }
+
 };
