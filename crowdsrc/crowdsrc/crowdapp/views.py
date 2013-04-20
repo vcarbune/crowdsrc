@@ -70,10 +70,10 @@ def edit_task(request, task_id=None):
             if task.is_active:
                 return redirect(reverse('crowdapp.views.my_tasks'))
             else:
-                accesspath_formset = AccessPathFormSet(instance=task, prefix='accesspath')
+                return redirect(reverse('crowdapp.views.edit_task', args=[task.id]))
     else:
         task_form = CreateTaskForm(instance=task, prefix='task')
-        accesspath_formset = AccessPathFormSet(instance=task, prefix='accesspath')
+        accesspath_formset = get_accesspath_formset(task)
     return render(request, 'task/create.html', {'task_form': task_form, 'accesspath_formset': accesspath_formset})
 
 @login_required
