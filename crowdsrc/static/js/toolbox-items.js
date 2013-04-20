@@ -67,7 +67,7 @@ function TextFieldCtrl($scope, toggleStateService, serializationService)
   });
 
   $scope.itemContent = {
-    type: 'text field',
+    type: 'textField',
     name: 'Text Field'
   };
 };
