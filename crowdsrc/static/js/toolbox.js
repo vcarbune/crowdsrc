@@ -137,6 +137,7 @@ app.directive('toolboxItem', function($compile) {
         "Number of images per single task:" +
       "</p>" +
       "<input ng-model='itemContent.nrImagesPerTask' type='text' ng-show='isEditable' ng-change='refreshPreviewImages()' required />" +
+      "<button type='button' ng-click='uploadFiles()' ng-show='isEditable'> Upload resources </button>" +
       // Content for PREVIEW state.
       "<div style='text-align:center; margin: 0 auto; overflow: hidden;' ng-hide='isEditable'>" +
         "<div style='float:left' ng-repeat='image in previewImgs' ng-hide='isEditable'>" +

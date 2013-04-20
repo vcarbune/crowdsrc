@@ -231,7 +231,7 @@ function RankingCtrl($scope, toggleStateService, serializationService)
 /**
  * Toolbox - Image Group Controller.
  */
-function ImageGroupCtrl($scope, toggleStateService, serializationService) {
+function ImageGroupCtrl($scope, $http, toggleStateService, serializationService) {
 
   angular.injector().invoke(ToolboxItemCtrl, this, {
     $scope: $scope,
@@ -246,7 +246,7 @@ function ImageGroupCtrl($scope, toggleStateService, serializationService) {
 
   MAX_PREVIEW_IMG = 10;
   DEFAULT_IMG_PER_TASK = 3;
-  $scope.nrImagesPerTask = DEFAULT_IMG_PER_TASK;
+  $scope.itemContent.nrImagesPerTask = DEFAULT_IMG_PER_TASK;
 
   $scope.refreshPreviewImages = function() {
      $scope.previewImgs = [];
@@ -274,43 +274,24 @@ function ImageGroupCtrl($scope, toggleStateService, serializationService) {
     $scope.refreshPreviewImages();
   }
 
-  $scope.uploadProgress = function(evt) {
-    $scope.$apply(function() {
-      if(evt.lengthComputable)
-        scope.progress = Math.round(evt.loaded * 100 / evt.total);
-      else
-        scope.progress = 'unable to compute';
-    })
-  }
-
-  $scope.uploadComplete = function(evt) {
-    /* This event is raised when the server sends back a response.*/
-    alert(evt.target.responseText);
-  }
-
-  $scope.uploadFailed = function(evt) {
-    alert("There was an error attempting to upload the files.");
-  }
-
-  $scope.uploadCanceled = function(evt) {
-    scope.$apply(function() {
-        scope.progressVisible = false;
-    })
-    alert("The image upload has been canceled by the user or the browser dropped the connection.");
-  }
-
   $scope.uploadFiles = function() {
-    fd = new FormData();
-    for(file in $scope.files)
-      fd.append("uploadedFile", file);
-    xhr = new XMLHttpRequest();
-    xhr.upload.addEventListener("progress", $scope.uploadProgress, false);
-    xhr.addEventListener("load", $scope.uploadComplete, false);
-    xhr.addEventListener("error", $scope.uploadFailed, false);
-    xhr.addEventListener("abort", $scope.uploadCanceled, false);
-    // TO DO: On Server side the url /fileupload doesn't point anywhere.
-    xhr.open("POST", "/fileupload");
-    $scope.progressVisible = true;
-    xhr.send(fd);
+    request = {
+      method: 'POST',
+      url: '/upload_files/',
+      data: $scope.files,
+      headers: {'Content-Type': 'multipart/form-data'}
+    };
+
+    $http(request).
+      success(function(data, status, headers, config) {
+        alert('success!');
+      }).
+      error(function(data, status, headers, config) {
+        alert('error status ' + status);
+        console.log(data);
+      }).
+      then(function(response) {
+        console.log(response);
+      });
   }
 };
