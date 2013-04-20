@@ -250,7 +250,7 @@ function ImageGroupCtrl($scope, toggleStateService, serializationService) {
 
   $scope.refreshPreviewImages = function() {
      $scope.previewImgs = [];
-     for(i = 0; i < $scope.files.length && i < $scope.nrImagesPerTask; ++i)
+     for(i = 0; i < $scope.files.length && i < $scope.itemContent.nrImagesPerTask; ++i)
      {
        oFReader = new FileReader();
        oFReader.readAsDataURL($scope.files[i]);

@@ -136,12 +136,12 @@ app.directive('toolboxItem', function($compile) {
       "<p ng-show='isEditable'>" +
         "Number of images per single task:" +
       "</p>" +
-      "<input ng-model='nrImagesPerTask' type='text' ng-show='isEditable' ng-change='refreshPreviewImages()' required />" +
+      "<input ng-model='itemContent.nrImagesPerTask' type='text' ng-show='isEditable' ng-change='refreshPreviewImages()' required />" +
       // Content for PREVIEW state.
       "<div style='text-align:center; margin: 0 auto; overflow: hidden;' ng-hide='isEditable'>" +
         "<div style='float:left' ng-repeat='image in previewImgs' ng-hide='isEditable'>" +
           "<img src={{image}} ng-hide='isEditable' Hspace='30' />" +
-          "<br/>Image {{$index+1}}<br/>" +
+          "<br/>Image {{$index+1}}<br/><br/>" +
          "</div ng-hide='isEditable'>" +
       "</div ng-hide='isEditable'>" +
       "</div>";
