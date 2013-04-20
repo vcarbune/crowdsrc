@@ -10,4 +10,3 @@ def get_profile(user):
     
 def check_solution_values(val_list): # Checks the input from the complete task form
     return True
-    
