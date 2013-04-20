@@ -21,6 +21,8 @@ urlpatterns = patterns('',
     url(r'^my_tasks/$', 'crowdapp.views.my_tasks'),
     url(r'^all_tasks/$', 'crowdapp.views.all_tasks'),
     
+    url(r'^get_solution_resources/(?P<solution_id>\d+)/(?P<num_res>\d+)/$', 'crowdapp.views.get_solution_resources'),
+    
     url(r'^my_solutions/$', 'crowdapp.views.my_solutions'),
     url(r'^view_solution/(?P<solution_id>\d+)/$', 'crowdapp.views.view_solution'),
     

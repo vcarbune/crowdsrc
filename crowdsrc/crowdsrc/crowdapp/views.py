@@ -132,16 +132,23 @@ def complete_task(request, task_id):
     return render(request, 'task/complete.html', {'solution': solution, 'message': message})
 
 @login_required
-def get_solution_resources(solution_id, num_res):
+def get_solution_resources(request, solution_id, num_res):
     try:
         profile = get_profile(request.user)
-        solution = Solution.objects.get(id=task_id)
+        solution = Solution.objects.get(id=solution_id)
     except ObjectDoesNotExist:
         raise Http404
     
-    resources = solution.task.get_random_resources(num_res)
+    if len(solution.resources.all()) == 0:
+        resources = solution.task.get_random_resources(int(num_res))
+        solution.resources = resources
+        solution.save()
     
-    return HttpResponse(json.dumps({"resources": resources}), mimetype="application/json")
+    simple_resources = []
+    for res in solution.resources.all():
+        simple_resources.append({'index': res.index, 'name': res.name, 'url': res.get_absolute_image_url()})
+        
+    return HttpResponse(json.dumps({"resources": simple_resources}), mimetype="application/json")
 
 @login_required
 def my_tasks(request):

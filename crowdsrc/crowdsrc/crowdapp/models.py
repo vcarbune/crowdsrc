@@ -2,11 +2,11 @@ import os
 from datetime import datetime
 from random import randint
 
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 
 from const import *
-
     
 class Qualification(models.Model):
     name = models.CharField(max_length=200)
@@ -54,7 +54,7 @@ class Task(models.Model):
         return access_paths[idx]
     
     def get_random_resources(self, num_res):
-        resources = self.resources_set.all()
+        resources = self.resource_set.all()
         selected_resources = []
         res_ids = []
         k = 0
@@ -64,22 +64,27 @@ class Task(models.Model):
         
         while k < num_res:
             idx = randint(0, len(resources)-1)
-            if not res_ids.contains(idx):
+            if idx not in res_ids:
                 res_ids.append(idx)
                 selected_resources.append(resources[idx])
+                k = k+1
         return selected_resources
     
     def __unicode__(self):
         return self.name
     
 def resources_upload_path(instance, filename):
-    return os.path.join('uploads' , 'resources', str(instance.task.id), filename)
+    return os.path.join('resources', str(instance.task.id), filename)
     
 class Resource(models.Model):
     task = models.ForeignKey(Task)
     name = models.CharField(max_length=200, null=True, blank=True)
     image = models.ImageField(upload_to = resources_upload_path, null=True, blank = True)
     index = models.SmallIntegerField(null=True, blank=True)
+    
+    def get_absolute_image_url(self):
+        import socket
+        return '%s%s' % (settings.SERVER_URL, self.image.url)
     
     def __unicode__(self):
         return self.name
