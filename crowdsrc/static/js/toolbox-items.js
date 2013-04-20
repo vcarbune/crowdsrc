@@ -1,7 +1,7 @@
 /**
  * Toolbox - Generic Item Controller
  */
-function ToolboxItemCtrl($scope, toggleToolboxStateService)
+function ToolboxItemCtrl($scope, toggleStateService, serializationService)
 {
   $scope.makeEditableForWorker = function() {
     $scope.isEditable = false;
@@ -14,12 +14,25 @@ function ToolboxItemCtrl($scope, toggleToolboxStateService)
   };
 
   $scope.updateItemState = function() {
-    if (toggleToolboxStateService.getState() == toggleToolboxStateService.STATE.PREVIEW)
+    if (toggleStateService.getState() == toggleStateService.STATE.PREVIEW)
       $scope.makeEditableForWorker();
     else
       $scope.makeEditableForCreator();
   }
 
+  $scope.serialize = function() {
+    // In case we need any particular dark magic for components,
+    // override this function in the required component.
+    if (typeof $scope.prepareSerialization == "function")
+      $scope.prepareSerialization();
+
+    if (typeof $scope.itemContent == "object")
+      serializationService.appendItem($scope.itemContent);
+
+    console.log(serializationService.getContent());
+  };
+
+  $scope.$on('serializationStart', $scope.serialize);
   $scope.$on('stateChanged', $scope.updateItemState);
 
   $scope.updateItemState();
@@ -28,44 +41,48 @@ function ToolboxItemCtrl($scope, toggleToolboxStateService)
 /**
  * Toolbox - Text Field Controller.
  */
-function ParagraphCtrl($scope, toggleToolboxStateService)
+function ParagraphCtrl($scope, toggleStateService, serializationService)
 {
   angular.injector().invoke(ToolboxItemCtrl, this, {
     $scope: $scope,
-    toggleToolboxStateService: toggleToolboxStateService  
+    toggleStateService: toggleStateService,
+    serializationService: serializationService 
   });
 };
 
 /**
  * Toolbox - Text Field Controller.
  */
-function TextFieldCtrl($scope, toggleToolboxStateService)
+function TextFieldCtrl($scope, toggleStateService, serializationService)
 {
   angular.injector().invoke(ToolboxItemCtrl, this, {
     $scope: $scope,
-    toggleToolboxStateService: toggleToolboxStateService  
+    toggleStateService: toggleStateService,
+    serializationService: serializationService 
   });
 };
 
 /**
  * Toolbox - Checkbox Controller.
  */
-function CheckboxCtrl($scope, toggleToolboxStateService)
+function CheckboxCtrl($scope, toggleStateService, serializationService)
 {
   angular.injector().invoke(ToolboxItemCtrl, this, {
     $scope: $scope,
-    toggleToolboxStateService: toggleToolboxStateService  
+    toggleStateService: toggleStateService,
+    serializationService: serializationService 
   });
 };
 
 /**
  * Toolbox - Radio Group Controller.
  */
-function RadioGroupCtrl($scope, toggleToolboxStateService)
+function RadioGroupCtrl($scope, toggleStateService, serializationService)
 {
   angular.injector().invoke(ToolboxItemCtrl, this, {
     $scope: $scope,
-    toggleToolboxStateService: toggleToolboxStateService  
+    toggleStateService: toggleStateService,
+    serializationService: serializationService 
   });
   
   $scope.items = []
@@ -91,16 +108,29 @@ function RadioGroupCtrl($scope, toggleToolboxStateService)
 		  }
 	  }
   };
+
+  // This is needed because angularJS inserts some hashKeys
+  // to the items that we don't want to serialize.
+  $scope.prepareSerialization = function() {
+    $scope.itemContent = [];
+    angular.forEach($scope.items, function(item) {
+      $scope.itemContent.push({
+        id: item.id,
+        name: item.name
+      });
+    });
+  };
 };
 
 /**
  * Toolbox - Ranking Component Controller.
  */
-function RankingCtrl($scope, toggleToolboxStateService)
+function RankingCtrl($scope, toggleStateService, serializationService)
 {
   angular.injector().invoke(ToolboxItemCtrl, this, {
     $scope: $scope,
-    toggleToolboxStateService: toggleToolboxStateService  
+    toggleStateService: toggleStateService,
+    serializationService: serializationService
   });
   
   $scope.items = []
@@ -156,16 +186,32 @@ function RankingCtrl($scope, toggleToolboxStateService)
 		  }
 	  }
   }
+
+  // This is needed because angularJS inserts some hashKeys
+  // to the items that we don't want to serialize.
+  $scope.prepareSerialization = function() {
+    $scope.itemContent = [];
+
+    angular.forEach($scope.items, function(item) {
+      $scope.itemContent.push({
+        id: item.id,
+        name: item.name,
+        rank: item.rank,
+        state: item.state
+      });
+    });
+  };
 };
 
 /**
  * Toolbox - Image Group Controller.
  */
-function ImageGroupCtrl($scope, toggleToolboxStateService) {
+function ImageGroupCtrl($scope, toggleStateService, serializationService) {
 
   angular.injector().invoke(ToolboxItemCtrl, this, {
     $scope: $scope,
-    toggleToolboxStateService: toggleToolboxStateService  
+    toggleStateService: toggleStateService,
+    serializationService: serializationService 
   });
 
   DEFAULT_IMG_PER_TASK = 3

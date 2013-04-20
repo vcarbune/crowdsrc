@@ -47,3 +47,8 @@
 .toolbox-ranking-list li.selected .toolbox-ranking-name {
 	background-color: #d55;
 }
+
+.toolbox-editable {
+	/* Related to our beloved label and contenteditable problem on firefox. */
+	display: inline;
+}
