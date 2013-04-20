@@ -1,3 +1,6 @@
+import os
+import uuid
+
 from datetime import datetime
 
 from django.core.urlresolvers import reverse
@@ -10,6 +13,7 @@ from django.shortcuts import render, redirect, render_to_response, get_object_or
 from django.template import RequestContext
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.csrf import csrf_exempt
 
 from models import *
 from forms import *
@@ -58,9 +62,20 @@ def edit_task(request, task_id=None):
         accesspath_formset = AccessPathFormSet(instance=task, data=request.POST, prefix='accesspath')
         
         if task_form.is_valid() and accesspath_formset.is_valid():
+            
             task = task_form.save(commit=False)
             task.creator = get_profile(request.user)
             task.save()
+            
+            # creating resources from saved images
+            if task_form.cleaned_data['resource_folder_name']:
+                if task:
+                    task.resource_set.delete()
+                folder_name = task_form.cleaned_data['resource_folder_name']
+                for filename in os.listdir(folder_name):
+                    img = File(open(os.path.join(settings.UPLOADS_PATH, folder_name, filename), 'r'))
+                    resource = Resource(task=task, index=1, name = filename, image = img)
+                    resource.save()
             
             accesspaths = accesspath_formset.save(commit=False)
             for ap in accesspaths:
@@ -104,19 +119,13 @@ def complete_task(request, task_id):
                 solution.access_path = AccessPath.objects.get(id=request.POST['access_path_id'])
             else:
                 solution.access_path = None
-        # Extract inputs
-        val_list = []
-        for key in request.POST.keys():
-            if key.startswith("task_"):
-                #print key + ":" + request.POST[key]
-                val_list.append(request.POST[key])
-        if check_solution_values(val_list):
+        # Extract input values
+        task_input_values = []
+        
+        # TODO: extract input values
+
+        if check_solution_values(task_input_values):
             solution.status = 1
-            for i in range(0, len(val_list), 1):
-                answer, created = Answer.objects.get_or_create(solution=solution, index = i+1) 
-                answer.value = val_list[i]
-                answer.type = 0     # TODO: set type
-                answer.save()
             solution.save()
             return redirect(reverse('crowdapp.views.view_solution', args=[solution.id]))
         else:
@@ -230,3 +239,18 @@ def task_solutions(request, task_id):
     
 def toolbox_dev(request):
     return render(request, 'dev/toolbox.html');
+
+
+@csrf_exempt
+def upload_files(request):
+    unique_foldername = str(uuid.uuid4())
+    os.makedirs(os.path.join(settings.UPLOADS_PATH, unique_foldername))
+    
+    for aFile in request.FILES.getlist('files'):
+        full_path = os.path.join(settings.UPLOADS_PATH, unique_foldername, aFile.name)
+        destination = open(full_path, 'wb+') 
+        for chunk in aFile.chunks():
+            destination.write(chunk)
+    return HttpResponse(json.dumps({"folder_name": unique_foldername}), mimetype="application/json")
+
+

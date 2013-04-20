@@ -36,4 +36,7 @@ urlpatterns = patterns('',
 
     # Toolbox development URL
     url(r'^toolbox/$', 'crowdapp.views.toolbox_dev'),
+    
+    # Uploading images for resources
+    url(r'^upload_files/$', 'crowdapp.views.upload_files'),
 )
