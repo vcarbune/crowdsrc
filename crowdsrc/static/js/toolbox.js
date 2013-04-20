@@ -1,18 +1,39 @@
 // Toolbox Controllers and HTML Structures
 var app = angular.module('angularjs-toolbox', ['ui']);
 
+// This service serializes the toolbox and all the components.
+app.factory('serializationService', function($rootScope) {
+  var serializationService = {};
+  serializationService.content = [];
+
+  serializationService.appendItem = function(item) {
+    this.content.push(item);
+  };
+
+  serializationService.start = function() {
+    this.content = [];
+    $rootScope.$broadcast('serializationStart');
+  };
+
+  serializationService.getContent = function() {
+    return window.JSON.stringify(this.content);
+  };
+
+  return serializationService;
+});
+
 // This service broadcasts to each component whether it needs to change
 // its state or not (e.g. preview for workers or edit for creators)
-app.factory('toggleToolboxStateService', function($rootScope) {
-  var toggleToolboxStateService = {};
+app.factory('toggleStateService', function($rootScope) {
+  var toggleStateService = {};
 
-  toggleToolboxStateService.STATE = {
+  toggleStateService.STATE = {
     PREVIEW: 'PREVIEW',
     EDIT: 'EDIT'
   };
-  toggleToolboxStateService.currentState = toggleToolboxStateService.STATE.EDIT;
+  toggleStateService.currentState = toggleStateService.STATE.EDIT;
 
-  toggleToolboxStateService.validateValue = function(value)
+  toggleStateService.validateValue = function(value)
   {
     if (value == this.STATE.PREVIEW || value == this.STATE.EDIT)
       return;
@@ -21,19 +42,43 @@ app.factory('toggleToolboxStateService', function($rootScope) {
     value = this.STATE.PREVIEW;
   };
 
-  toggleToolboxStateService.setState = function(value) {
+  toggleStateService.setState = function(value) {
     this.validateValue(value);
 
     this.currentState = value;
     $rootScope.$broadcast('stateChanged');
   };
 
-  toggleToolboxStateService.getState = function() {
+  toggleStateService.getState = function() {
     return this.currentState;
   };
 
-  return toggleToolboxStateService;
+  return toggleStateService;
 });
+
+// For contenteditable data-binding.
+app.directive('contenteditable', function() {
+  return {
+    require: 'ngModel',
+    link: function(scope, elm, attrs, ctrl) {
+      // view -> model
+      elm.bind('blur', function() {
+        scope.$apply(function() {
+          ctrl.$setViewValue(elm.html());
+        });
+      });
+    
+      // model -> view
+      ctrl.$render = function(value) {
+        elm.html(value);
+      };
+     
+      // load init value from DOM
+      ctrl.$setViewValue(elm.html());
+      }
+  };
+});
+
 
 app.directive('toolboxItem', function($compile) {
   // FIXME: each toolbox item can have the HTML in a separate file. This
@@ -42,26 +87,27 @@ app.directive('toolboxItem', function($compile) {
   // Note: not really important right now.
   var paragraphTemplate = 
 	  "<div ng-controller='ParagraphCtrl' class='task-generic-item'>" +
-      "<p for='task_{{content.crt}}' contenteditable='{{isEditable}}' class='editable'>Add text here...</p>" + 
+      "<p for='task_{{content.id}}' contenteditable='{{isEditable}}'" +
+        "class='toolbox-editable' ng-model='itemContent.paragraphText'>Add text here...</p>" + 
       "</div>";
   
   var textFieldTemplate =
 	  "<div ng-controller='TextFieldCtrl' class='task-generic-item'>" +
-      "<label for='task_{{content.crt}}' contenteditable='{{isEditable}}' class='editable'>Label:</label>" + 
-      "<input id='task_{{content.crt}}' name='task_{{content.crt}}' type='text' ng-disabled='disabled' />" +
+      "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.textFieldLabel'>Label:</div>" + 
+      "<input id='task_{{content.id}}' name='task_{{content.id}}' type='text' ng-disabled='disabled' />" +
       "</div>";
   
   var checkboxTemplate = 
 	  "<div ng-controller='CheckboxCtrl' class='task-generic-item'>" +
-      "<input id='task_{{content.crt}}' name='task_{{content.crt}}' type='checkbox' ng-disabled='disabled' />" +
-      "<label for='task_{{content.crt}}' contenteditable='{{isEditable}}' class='editable'>Label</label>" +
+      "<input id='task_{{content.id}}' name='task_{{content.id}}' type='checkbox' ng-disabled='disabled' />" +
+      "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.checkBoxLabel'>Label</div>" +
       "</div>";
   
   var radioGroupTemplate = 
 	  "<div ng-controller='RadioGroupCtrl' class='task-generic-item'>" +
 	  "<div ng:repeat='i in items'>" +
-      "<input type='radio' value='{{i.id}}' name='task_{{content.crt}}' id='radio_{{i.id}}' ng-disabled='disabled' />" +
-      "<label for='radio_{{i.id}}' contenteditable='{{isEditable}}' class='editable'>{{i.name}}</label>" +
+      "<input type='radio' value='{{i.id}}' name='task_{{content.id}}' id='radio_{{i.id}}' ng-disabled='disabled' />" +
+      "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='items[i.id].name'>New Item</div>" +
       "<button type='button' ng-click='removeItem(i.id)' ng-show='isEditable'>Remove Item</button>" +
       "</div>" +
       "<button type='button' ng-click='addItem()' ng-show='isEditable'>Add Item</button>" +
@@ -71,8 +117,9 @@ app.directive('toolboxItem', function($compile) {
 	  "<div ng-controller='RankingCtrl' class='task-generic-item'>" +
 	  "<ul class='toolbox-ranking-list'>" +
 	  "<li ng-repeat='i in items' class='{{i.state}}'>" +
-	  	"<span class='toolbox-ranking-name editable' contenteditable='{{isEditable}}' ng-click='toggleSelectItem(i.id)'>{{i.name}}</span>" +
-	  	" <span class='toolbox-ranking-rank' ng-hide='isEditable || i.state===\"free\"'>{{i.rank}}</span>" +
+	  	"<span class='toolbox-ranking-name toolbox-editable' " + 
+          "contenteditable='{{isEditable}}' ng-click='toggleSelectItem(i.id)' ng-model='items[i.id].name'>New Item</span>" +
+	  	"<span class='toolbox-ranking-rank' ng-hide='isEditable || i.state===\"free\"'>{{i.rank}}</span>" +
 	  	"<button type='button' ng-click='removeItem(i.id)' ng-show='isEditable'>Remove Item</button>" +
 	  "</li>" +
       "</ul>" +
@@ -82,7 +129,7 @@ app.directive('toolboxItem', function($compile) {
   var imageGroupTemplate =
       // Content for EDIT state.
            "<div ng-controller='ImageGroupCtrl' class='task-generic-item'>" +
-      "<label for='resources_{{content.crt}}' ng-show='isEditable'>" +
+      "<label for='resources_{{content.id}}' ng-show='isEditable'>" +
         "Select images to upload:" +
       "</label><br/>" +
       "<input type='file' ng-model-instant onchange='angular.element(this).scope().setFiles(this)' ng-show='isEditable' multiple required />" +
@@ -134,24 +181,30 @@ app.directive('toolboxItem', function($compile) {
 /**
  * Toolbox - Master Controller
  */
-app.controller('ToolboxCtrl', function($scope, toggleToolboxStateService) {
-  $scope.state = toggleToolboxStateService.STATE.EDIT;
+app.controller('ToolboxCtrl', function($scope, toggleStateService, serializationService) {
+  $scope.state = toggleStateService.STATE.EDIT;
  
   $scope.isEditable = function() {
-    return $scope.state == toggleToolboxStateService.STATE.EDIT;
+    return $scope.state == toggleStateService.STATE.EDIT;
   };
  
   $scope.toggleState = function() {
-    if ($scope.state == toggleToolboxStateService.STATE.EDIT) {
-      $scope.state = toggleToolboxStateService.STATE.PREVIEW;
+    if ($scope.state == toggleStateService.STATE.EDIT) {
+      $scope.state = toggleStateService.STATE.PREVIEW;
     }
     else {
-      $scope.state = toggleToolboxStateService.STATE.EDIT;
+      $scope.state = toggleStateService.STATE.EDIT;
   	}
 
-    toggleToolboxStateService.setState($scope.state);
+    toggleStateService.setState($scope.state);
   };
-  
+
+  /* Method called when serializing the toolbox */
+  $scope.serialize = function() {
+    serializationService.start();
+    $scope.toolboxJsonString = serializationService.getContent();
+  };
+ 
   $scope.elemTypes = [
     {code:'textField', name: 'Text Field'},
     {code:'paragraph', name: 'Paragraph'},
@@ -167,7 +220,7 @@ app.controller('ToolboxCtrl', function($scope, toggleToolboxStateService) {
   $scope.content = [];
   
   $scope.sortableOptions = {
-	  cancel: ':input,button,.editable',
+	  cancel: ':input,button,.toolbox-editable',
 	  axis: 'y'
   };
   
@@ -193,30 +246,4 @@ app.controller('ToolboxCtrl', function($scope, toggleToolboxStateService) {
 	  }
   };
 
-  /* Helper methods to be used for serialization */
-  $scope.prepareSerialization = function() {
-    $scope.toolboxElement = document.querySelector('[ng-controller="ToolboxCtrl"]');
-    $scope.toolboxHtml = '';
-  };
-
-  /* Method called when serializing the toolbox */
-  $scope.serialize = function() {
-    $scope.prepareSerialization();
-
-    var previousState = toggleToolboxStateService.getState();
-    toggleToolboxStateService.setState(toggleToolboxStateService.STATE.PREVIEW);
-
-    var rootNode = document.createElement('div');
-    rootNode.setAttribute('ng-controller', 'ToolboxCtrl');
-    rootNode.setAttribute('class', 'toolbox');
- 
-    var toolboxItems = $scope.toolboxElement.querySelectorAll('toolbox-item');
-    angular.forEach(toolboxItems, function(el) {
-      rootNode.innerHTML += el.outerHTML;
-    });
-
-    $scope.toolboxHtml = rootNode.outerHTML;
-
-    toggleToolboxStateService.setState(previousState);
-  };
 });

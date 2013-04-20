@@ -36,8 +36,10 @@
     </div>
 
     <button type="button" ng-click="serialize()">Serialize</button>
-    <input ng-model="toolboxHtml" type="hidden" name="toolboxHtml" />
-    <div>{{toolboxHtml}}</div>
+    <input ng-model="toolboxJsonString" type="hidden" name="toolboxJsonString" />
+
+    <br><br>
+    <div>Just for debugging: {{toolboxJsonString}}</div>
   </div>
 </body>
 {% endverbatim %}

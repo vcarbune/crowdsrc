@@ -33,6 +33,9 @@ class CreateTaskForm(ModelForm):
     name = forms.CharField(label="Title")
     is_active = forms.BooleanField(label="Active", required=False)
     
+    resource_folder_name = forms.CharField(widget=forms.HiddenInput())
+    html = forms.CharField(widget=forms.HiddenInput())
+    
     class Meta:
         model = Task
         fields = ('name', 'html', 'is_active', 'cost')

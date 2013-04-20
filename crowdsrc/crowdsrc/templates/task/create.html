@@ -74,7 +74,8 @@
 	<br>
 	{{ task_form.is_active }} {{ task_form.is_active.label_tag}}
 	
-	<input type="hidden" name="task-html" id="task-html" value="<div>Testing</div>" />
+	{{ task_form.html }}
+	{{ task_form.resource_folder_name }}
 	<br>
 	<input type="submit" value="Save" />
 </form>
