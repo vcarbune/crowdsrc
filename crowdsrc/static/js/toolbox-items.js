@@ -48,6 +48,11 @@ function ParagraphCtrl($scope, toggleStateService, serializationService)
     toggleStateService: toggleStateService,
     serializationService: serializationService 
   });
+
+  $scope.itemContent = {
+    type: 'paragraph',
+    name: 'Paragraph'
+  };
 };
 
 /**
@@ -60,6 +65,11 @@ function TextFieldCtrl($scope, toggleStateService, serializationService)
     toggleStateService: toggleStateService,
     serializationService: serializationService 
   });
+
+  $scope.itemContent = {
+    type: 'text field',
+    name: 'Text Field'
+  };
 };
 
 /**
@@ -72,6 +82,11 @@ function CheckboxCtrl($scope, toggleStateService, serializationService)
     toggleStateService: toggleStateService,
     serializationService: serializationService 
   });
+  
+  $scope.itemContent = {
+    type: 'checkbox',
+    name: 'Checkbox'
+  };
 };
 
 /**
@@ -84,6 +99,11 @@ function RadioGroupCtrl($scope, toggleStateService, serializationService)
     toggleStateService: toggleStateService,
     serializationService: serializationService 
   });
+
+  $scope.itemContent = {
+    type: 'radioGroup',
+    name: 'Radio Group'
+  };
   
   $scope.items = [];
   $scope.selectedItem = null;
@@ -112,9 +132,9 @@ function RadioGroupCtrl($scope, toggleStateService, serializationService)
   // This is needed because angularJS inserts some hashKeys
   // to the items that we don't want to serialize.
   $scope.prepareSerialization = function() {
-    $scope.itemContent = [];
+    $scope.itemContent.items = [];
     angular.forEach($scope.items, function(item) {
-      $scope.itemContent.push({
+      $scope.itemContent.items.push({
         id: item.id,
         name: item.name
       });
@@ -132,6 +152,11 @@ function RankingCtrl($scope, toggleStateService, serializationService)
     toggleStateService: toggleStateService,
     serializationService: serializationService
   });
+
+  $scope.itemContent = {
+    type: 'ranking',
+    name: 'Ranking Component'
+  };
   
   $scope.items = []
   $scope.orderedItems = [];
@@ -190,7 +215,7 @@ function RankingCtrl($scope, toggleStateService, serializationService)
   // This is needed because angularJS inserts some hashKeys
   // to the items that we don't want to serialize.
   $scope.prepareSerialization = function() {
-    $scope.itemContent = [];
+    $scope.itemContent.items = [];
 
     angular.forEach($scope.items, function(item) {
       $scope.itemContent.push({
@@ -213,6 +238,11 @@ function ImageGroupCtrl($scope, toggleStateService, serializationService) {
     toggleStateService: toggleStateService,
     serializationService: serializationService 
   });
+
+  $scope.itemContent = {
+    type: 'imageGroup',
+    name: 'Image Group'
+  };
 
   MAX_PREVIEW_IMG = 10;
   DEFAULT_IMG_PER_TASK = 3;
