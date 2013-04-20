@@ -29,27 +29,38 @@
 	{{ task_form.name.label_tag }}: {{ task_form.name }} {{ task_form.name.errors }}
 	<br><br>
 	
-	Access Paths:
-	<div class="accesspath-forms">
-		{{ accesspath_formset.management_form }}
-		{{ accesspath_formset.non_field_errors }}
-		{% for accesspath_form in accesspath_formset.forms %}
-    		<div class="subform">
-    			{{ accesspath_form.as_p }}
-    		</div>
-    	{% endfor %}
-    	
-    	<script type="text/javascript">
-    		$(".accesspath-forms label:contains('Delete')").hide(); <!-- TODO: find a better solution -->
-    		
-	    	$(function() {
-	    		$(".accesspath-forms .subform").formset({
-	    			prefix: '{{ accesspath_formset.prefix }}',
-	    			deleteText: "Remove item",
-	    			addText: "Add",
-	    		});
-	    	});
-    	</script>
+	{% if not task_form.instance.accesspath_set.all %}
+		<button type="button" id="add-accesspaths">Add access paths</button>
+		<script type="text/javascript">
+			$('#add-accesspaths').click(function(){
+				$('#accesspaths').show();
+				$('#add-accesspaths').hide();
+			});
+		</script>
+	{% endif %}
+	<div id="accesspaths" {% if not task_form.instance.accesspath_set.all %}style="display:none;"{% endif %}>
+		Access Paths:
+		<div id="accesspath-formset">
+			{{ accesspath_formset.management_form }}
+			{{ accesspath_formset.non_field_errors }}
+	    	{% for accesspath_form in accesspath_formset.forms %}
+	    		<div class="subform">
+	    			{{ accesspath_form.as_p }}
+	    		</div>
+		    {% endfor %}
+	    	
+	    	<script type="text/javascript">
+	    		$("#accesspath-formset label:contains('Delete')").hide(); <!-- TODO: find a better solution -->
+	    		
+		    	$(function() {
+		    		$(".subform").formset({
+		    			prefix: '{{ accesspath_formset.prefix }}',
+		    			deleteText: "Remove item",
+		    			addText: "Add",
+		    		});
+		    	});
+	    	</script>
+		</div>
 	</div>
 	<br>
 	

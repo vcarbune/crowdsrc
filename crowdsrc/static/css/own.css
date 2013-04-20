@@ -36,19 +36,19 @@ td
 	width: 50%;
 }
 
-.accesspath-forms
+#accesspath-formset
 {
 	border: 1px solid #888; 
 	padding: 10px 20px 10px 5px;
 }
 
-.accesspath-forms label
+#accesspath-formset label
 {
 	display:inline-block;
 	width: 100px;
 }
 
-.accesspath-forms input, .accesspath-forms textarea
+#accesspath-formset input, #accesspath-formset textarea
 {
 	display:inline-block;
 }
