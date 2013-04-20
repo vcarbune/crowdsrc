@@ -6,7 +6,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from const import *
-
     
 class Qualification(models.Model):
     name = models.CharField(max_length=200)
@@ -73,7 +72,7 @@ class Task(models.Model):
         return self.name
     
 def resources_upload_path(instance, filename):
-    return os.path.join('uploads' , 'resources', str(instance.task.id), filename)
+    return os.path.join('resources', str(instance.task.id), filename)
     
 class Resource(models.Model):
     task = models.ForeignKey(Task)

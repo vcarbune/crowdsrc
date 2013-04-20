@@ -10,3 +10,5 @@ crowdsrc/crowdsrc/settings.py
 .settings
 
 crowdsrc/.pmd
+
+crowdsrc/uploads
