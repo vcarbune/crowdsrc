@@ -8,13 +8,40 @@
 
 {% block content %}
 
-<p>Task: {{ solution.task.name }} </p>
-{% if user|profile != solution.worker %} <p>Worker: {{ user|profile }} </p> {% endif %}
-<p>Access path: {{ solution.access_path.description }}</p>
-<p>Created at: {{ solution.created_at }} </p>
-<p>Status: {{ solution.get_status_display }} </p>
+<h2> View solution </h2> <br/>
 
-<p>Answers:</p>
+<table class='task_list'>
+  <tr>  
+    <th> Task: </th>
+    <td> {{ solution.task.name }} </td>
+  </tr>
+  {% if user|profile != solution.worker %} 
+  <tr>
+    <th> Worker: </th>
+    <td> {{ user|profile }} </td>
+  </tr>
+  {% endif %}
+  <tr>
+    <th> Access path: </th>
+    {% if solution.access_path %}
+    <td> {{ solution.access_path.description }} </td>
+    {% else %}
+    <td> None </td>
+    {% endif %}
+  </tr>
+  <tr>
+    <th> Created at: </th>
+    <td> {{ solution.created_at }} </td>
+  </tr>
+  <tr>
+    <th> Status: </th>
+    <td> {{ solution.get_status_display }} </td>
+  </tr>
+  <tr>
+    <th>Answers:</th>
+  </tr>
+</table>
+
 <ol>
 {% for answer in solution.answer_set.all %}
 	<li>{{ answer.value }}</li>

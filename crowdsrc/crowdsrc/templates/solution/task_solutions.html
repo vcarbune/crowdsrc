@@ -6,27 +6,25 @@
 
 {% block content %}
 
-<p>Task: {{ task.name }}</p>
-<p>Submitted solutions: </p>
-<table border="1">
-<thead>
-	<tr>
-		<td>Date</td>
-		<td>Worker</td>
-		<td>Access path</td>
-		<td>Status</td>
-		<td></td>
-	</tr>
-</thead>
-	{% for solution in task.solution_set.all %}
-		<tr>
-			<td>{{solution.created_at}}</td>
-			<td>{{solution.worker}}</td>
-			<td>{{solution.access_path}}</td>
-			<td>{{solution.get_status_display}}</td>
-			<td><a href="{% url "crowdapp.views.view_solution" solution.id %}">View</a></td>
-		</tr>
-	{% endfor %}
+<h2>{{ task.name }}</h2> <br/>
+<h4>Submitted solutions: </h4> <br/>
+<table class='task_list'>
+  <tr>
+    <th>Date</th>
+    <th>Worker</th>
+    <th>Access path</th>
+    <th>Status</th>
+    <th>Action</th>
+  </tr>
+  {% for solution in task.solution_set.all %}
+  <tr>
+    <td>{{solution.created_at}}</td>
+    <td>{{solution.worker}}</td>
+    <td>{{solution.access_path}}</td>
+    <td>{{solution.get_status_display}}</td>
+    <td><a href="{% url "crowdapp.views.view_solution" solution.id %}">View</a></td>
+  </tr>
+  {% endfor %}
 </table>
 
 {% endblock %}
