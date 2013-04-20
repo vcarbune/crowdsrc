@@ -275,11 +275,15 @@ function ImageGroupCtrl($scope, $http, toggleStateService, serializationService)
   }
 
   $scope.uploadFiles = function() {
+    fd = new FormData();
+    for(i = 0; i < $scope.files.length; ++i)
+      fd.append('files', $scope.files[i]);
     request = {
       method: 'POST',
       url: '/upload_files/',
-      data: $scope.files,
-      headers: {'Content-Type': 'multipart/form-data'}
+      data: fd,
+      headers: {'Content-Type': undefined},
+      transformRequest: angular.identity
     };
 
     $http(request).
