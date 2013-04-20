@@ -59,7 +59,7 @@ class Task(models.Model):
         res_ids = []
         k = 0
         
-        if len(resources) < num_res:
+        if len(resources) <= num_res:
             return resources
         
         while k < num_res:
@@ -124,8 +124,3 @@ class TaskInputValue(models.Model):
     
     def __unicode__(self):
         return answer.__unicode__ + ": " + value
-    
-    
-    
-    
-
