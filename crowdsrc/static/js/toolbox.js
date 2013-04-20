@@ -89,9 +89,9 @@ app.directive('toolboxItem', function($compile) {
       "<p ng-show='isEditable'>" +
         "Number of images per single task:" +
       "</p>" +
-      "<input ng-model='nrImagesPerTask' type='text' ng-show='isEditable' value='3' required />" +
+      "<input ng-model='nrImagesPerTask' type='text' ng-show='isEditable' required />" +
       // Content for PREVIEW state.
-      "<img ng-repeat='image in previewImgs' src={{image}} ng-hide='isEditable'/>" +
+      "<img ng-repeat='image in previewImgs' src={{image}} ng-hide='isEditable' Hspace='30' />" +
       "</div>";
   
   var getTemplate = function(taskElementType) { 

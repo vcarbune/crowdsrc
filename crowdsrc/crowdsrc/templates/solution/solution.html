@@ -2,6 +2,10 @@
 
 {% load crowdapp_extras %} 
 
+{% block title %}
+  Solution {{solution.task.name}}
+{% endblock %}
+
 {% block content %}
 
 <p>Task: {{ solution.task.name }} </p>

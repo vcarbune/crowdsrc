@@ -168,6 +168,9 @@ function ImageGroupCtrl($scope, toggleToolboxStateService) {
     toggleToolboxStateService: toggleToolboxStateService  
   });
 
+  DEFAULT_IMG_PER_TASK = 3
+  $scope.nrImagesPerTask = DEFAULT_IMG_PER_TASK;
+
   $scope.setFiles = function(element) {
     // Filter image files.
     rFilter = /^(image\/bmp|image\/gif|image\/jpeg|image\/png|image\/tiff)$/i;

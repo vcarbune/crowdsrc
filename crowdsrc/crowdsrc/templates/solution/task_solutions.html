@@ -1,5 +1,9 @@
 {% extends "base_user.html" %}
 
+{% block title %}
+  Solutions {{task.name}}
+{% endblock %}
+
 {% block content %}
 
 <p>Task: {{ task.name }}</p>
