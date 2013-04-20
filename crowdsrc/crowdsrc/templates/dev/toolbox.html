@@ -10,12 +10,16 @@
   <script src="http://code.angularjs.org/1.1.4/angular-sanitize.js"></script>
   <script src="https://raw.github.com/angular-ui/angular-ui/master/build/angular-ui.min.js"></script>
 
+  <script type="text/javascript">
+    var app = angular.module('angularjs-toolbox', ['ui']);
+  </script>
+
   <script src="{{ STATIC_URL }}js/toolbox.js" type="text/javascript"></script>
   <script src="{{ STATIC_URL }}js/toolbox-items.js" type="text/javascript"></script>
 </head>
 
-{% verbatim %}
 <body>
+{% verbatim %}
   <div ng-controller="ToolboxCtrl" class="toolbox">
     <button type="button" class="toolbox-state-btn" ng-click="toggleState()">Toggle</button>
     <b>State</b>: {{state}} <br><br>
@@ -41,7 +45,7 @@
     <br><br>
     <div>Just for debugging: {{toolboxJsonString}}</div>
   </div>
-</body>
 {% endverbatim %}
+</body>
 
 </html>

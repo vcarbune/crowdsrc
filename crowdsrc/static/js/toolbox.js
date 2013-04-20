@@ -1,5 +1,6 @@
 // Toolbox Controllers and HTML Structures
-var app = angular.module('angularjs-toolbox', ['ui']);
+
+// You MUST define in the page: app = angularjs.module('angularjs-toolbox');
 
 // This service serializes the toolbox and all the components.
 app.factory('serializationService', function($rootScope) {
@@ -247,4 +248,7 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
 	  }
   };
 
+  $scope.$on('masterFormSubmit', function() {
+    alert('The toolbox got informed');
+  });
 });

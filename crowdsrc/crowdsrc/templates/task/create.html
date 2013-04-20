@@ -10,8 +10,12 @@
 <script src="http://code.angularjs.org/1.1.4/angular-sanitize.js"></script>
 <script src="https://raw.github.com/angular-ui/angular-ui/master/build/angular-ui.min.js"></script>
 
+<script type="text/javascript">
+  var app = angular.module('angularjs-toolbox', ['ui']);
+</script>
 <script src="{{ STATIC_URL }}js/toolbox.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}js/toolbox-items.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}js/create-task.js" type="text/javascript"></script>
 
 {% endblock %}
 
@@ -22,7 +26,7 @@
 
 <h2>Create Task</h2>
 
-<form method="post" id="create-task-form" class="create-task-form" enctype="multipart/form-data">
+<form ng-app="angularjs-toolbox" method="post" id="create-task-form" class="create-task-form" enctype="multipart/form-data">
 	{% csrf_token %}
 	{{ task_form.non_field_errors }}
 	
@@ -63,10 +67,33 @@
 		</div>
 	</div>
 	<br>
-	
-	Toolbox:
+
 	{% verbatim %}
-	<div>Nothing here yet</div>
+	<div ng-controller="ToolboxCtrl" class="toolbox">
+    <button type="button" class="toolbox-state-btn" ng-click="toggleState()">Toggle</button>
+    <b>State</b>: {{state}} <br><br>
+    
+    <!-- "ui-sortable" makes the list sortable by dragging items up and down. -->
+    
+    <ul ui-sortable="sortableOptions" ng-model="content" class="toolbox-item-list">
+    	<li ng-repeat="item in content" class="toolbox-item">
+    		<toolbox-item  content="item" ></toolbox-item>
+    		<button type="button" ng-click="removeElement(item.id)" ng-show="isEditable()">Remove</button>
+    	</li>
+    </ul>
+    
+    <div class="toolbox-new-elem">
+    	Add new element: 
+    	<select ng-model="newElemType" ng-options="i.code as i.name for i in elemTypes"></select> 
+    	<button type="button" ng-click="addElement()">Add</button>
+    </div>
+
+    <button type="button" ng-click="serialize()">Serialize</button>
+    <input ng-model="toolboxJsonString" type="hidden" name="toolboxJsonString" />
+
+    <br><br>
+    <div>Just for debugging: {{toolboxJsonString}}</div>
+  </div>
 	{% endverbatim %}
 
 	<br>
@@ -77,7 +104,9 @@
 	{{ task_form.html }}
 	{{ task_form.resource_folder_name }}
 	<br>
-	<input type="submit" value="Save" />
+  <div ng-controller="MasterFormCtrl">
+	  <input ng-click="yeah()" type="submit" value="Save" />
+  </div>
 </form>
 
 {% endblock %}
