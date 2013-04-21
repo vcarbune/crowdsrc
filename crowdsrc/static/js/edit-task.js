@@ -28,7 +28,7 @@ app.factory('pageService', function($rootScope) {
 app.controller('MasterFormCtrl', function($scope, pageService) {
   $scope.submitForm = function() {
 	pageService.prepareCreateTaskForm();
-	$('#create-task-form input[name="task-html"]').val(pageService.toolboxJsonString);
+	$('#create-task-form input[name="task-content"]').val(pageService.toolboxJsonString);
 	$('#create-task-form').submit();
   };
 });

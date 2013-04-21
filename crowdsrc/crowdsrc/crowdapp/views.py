@@ -73,7 +73,7 @@ def edit_task(request, task_id=None):
                 resource.save()
                 
             # create task input objects
-            items = json.loads(task.html)
+            items = json.loads(task.content)
             task.taskinput_set.all().delete()
             for i in range(0, len(items), 1):
                 input_type = get_input_type(items[i]['type'])
@@ -129,16 +129,19 @@ def complete_task(request, task_id):
         task_inputs = json.loads(request.POST['inputs'])
         
         if check_solution_values(task_inputs): # TODO: validate input
+            
+            solution.status = 1
+            solution.save()
+            
             for input_val_dict in task_inputs:
                 try:
                     task_input = TaskInput.objects.get(task=task, index=input_val_dict['id'])
-                    input_value = TaskInputValue(taskinput=task_input, value=input_val_dict['value'])
+                    input_value = TaskInputValue(solution=solution, taskinput=task_input, value=input_val_dict['value'])
                     input_value.save()
                 except ObjectDoesNotExist:
                     pass
             
-            solution.status = 1
-            solution.save()
+            
             return redirect(reverse('crowdapp.views.view_solution', args=[solution.id]))
         else:
             solution.status = 0

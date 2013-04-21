@@ -39,7 +39,7 @@ class UserProfile(models.Model):
 class Task(models.Model):
     creator = models.ForeignKey(UserProfile)
     name = models.CharField(max_length=200)
-    html = models.TextField()
+    content = models.TextField()
     is_active = models.BooleanField(default=False)
     cost = models.SmallIntegerField(default=0)
     created_at = models.DateField(default=datetime.now()) 
@@ -119,6 +119,7 @@ class TaskInput(models.Model):
         return "Input " + str(self.index)
     
 class TaskInputValue(models.Model):
+    solution = models.ForeignKey(Solution)
     taskinput = models.ForeignKey(TaskInput)
     value = models.CharField(max_length=200)
     

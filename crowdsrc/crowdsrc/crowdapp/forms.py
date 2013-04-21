@@ -33,11 +33,11 @@ class CreateTaskForm(ModelForm):
     name = forms.CharField(label="Title")
     is_active = forms.BooleanField(label="Active", required=False)
     
-    html = forms.CharField(widget=forms.HiddenInput())
+    content = forms.CharField(widget=forms.HiddenInput())
     
     class Meta:
         model = Task
-        fields = ('name', 'html', 'is_active', 'cost')
+        fields = ('name', 'content', 'is_active', 'cost')
         
 class TaskAdminForm(ModelForm):
     html = forms.CharField(widget=forms.Textarea)
