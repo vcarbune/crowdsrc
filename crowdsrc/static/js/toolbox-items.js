@@ -1,7 +1,7 @@
 /**
  * Toolbox - Generic Item Controller
  */
-function ToolboxItemCtrl($scope, toggleStateService, serializationService)
+function ToolboxItemCtrl($scope, toggleStateService, serializationService, inputExtractionService)
 {
   $scope.makeEditableForWorker = function() {
     $scope.isEditable = false;
@@ -47,9 +47,23 @@ function ToolboxItemCtrl($scope, toggleStateService, serializationService)
 
     console.log(serializationService.getContent());
   };
+  
+  $scope.extractInput = function() {	 
+	input = $scope.getInput();
+	
+	if (input) {
+	  inputExtractionService.appendInput(input);
+      console.log(serializationService.getInputs());
+	}
+  }
+  
+  $scope.getInput = function() {
+	  return null;
+  }
 
   $scope.$on('serializationStart', $scope.serialize);
-  $scope.$on('stateChanged', $scope.updateItemState);
+  $scope.$on('inputExtractionStart', $scope.extractInput);
+  $scope.$on('stateChanged', $scope.updateItemState);  
 
   $scope.updateItemState();
 }
@@ -57,12 +71,13 @@ function ToolboxItemCtrl($scope, toggleStateService, serializationService)
 /**
  * Toolbox - Text Field Controller.
  */
-function ParagraphCtrl($scope, toggleStateService, serializationService)
+function ParagraphCtrl($scope, toggleStateService, serializationService, inputExtractionService)
 {
   angular.injector().invoke(ToolboxItemCtrl, this, {
     $scope: $scope,
     toggleStateService: toggleStateService,
-    serializationService: serializationService 
+    serializationService: serializationService,
+    inputExtractionService: inputExtractionService
   });
   
   $scope.init = function() {
@@ -79,12 +94,13 @@ function ParagraphCtrl($scope, toggleStateService, serializationService)
 /**
  * Toolbox - Text Field Controller.
  */
-function TextFieldCtrl($scope, toggleStateService, serializationService)
+function TextFieldCtrl($scope, toggleStateService, serializationService, inputExtractionService)
 {
   angular.injector().invoke(ToolboxItemCtrl, this, {
     $scope: $scope,
     toggleStateService: toggleStateService,
-    serializationService: serializationService 
+    serializationService: serializationService,
+    inputExtractionService: inputExtractionService 
   });
   
   $scope.init = function() {
@@ -95,18 +111,27 @@ function TextFieldCtrl($scope, toggleStateService, serializationService)
 	    textFieldLabel: 'Label:'
 	  };
 	}
-  }
+  };
+  
+  $scope.getInput = function() {	 
+	return {
+		id: $scope.content.id,
+		type: 'text',
+		value: $scope.textFieldValue
+	};
+  };
 };
 
 /**
  * Toolbox - Checkbox Controller.
  */
-function CheckboxCtrl($scope, toggleStateService, serializationService)
+function CheckboxCtrl($scope, toggleStateService, serializationService, inputExtractionService)
 {
   angular.injector().invoke(ToolboxItemCtrl, this, {
     $scope: $scope,
     toggleStateService: toggleStateService,
-    serializationService: serializationService 
+    serializationService: serializationService,
+    inputExtractionService: inputExtractionService
   });
   
   $scope.init = function() {
@@ -118,17 +143,26 @@ function CheckboxCtrl($scope, toggleStateService, serializationService)
 	  };
 	}
   }
+  
+  $scope.getInput = function() {	 
+	return {
+		id: $scope.content.id,
+		type: 'boolean',
+		value: $scope.checkBoxValue
+	};
+  };
 };
 
 /**
  * Toolbox - Radio Group Controller.
  */
-function RadioGroupCtrl($scope, toggleStateService, serializationService)
+function RadioGroupCtrl($scope, toggleStateService, serializationService, inputExtractionService)
 {
   angular.injector().invoke(ToolboxItemCtrl, this, {
     $scope: $scope,
     toggleStateService: toggleStateService,
-    serializationService: serializationService 
+    serializationService: serializationService,
+    inputExtractionService: inputExtractionService
   });
   
   $scope.init = function() {
@@ -150,7 +184,11 @@ function RadioGroupCtrl($scope, toggleStateService, serializationService)
 	}
   }
 
-  $scope.selectedItem = null;
+  $scope.radioValue = '0';
+  
+  $scope.setRadioValue = function(val) {
+	$scope.radioValue = val;
+  };
   
   $scope.addItem = function() {
 	$scope.items.push({
@@ -184,17 +222,26 @@ function RadioGroupCtrl($scope, toggleStateService, serializationService)
       });
     });
   };
+  
+  $scope.getInput = function() {	 
+	return {
+		id: $scope.content.id,
+		type: 'integer',
+		value: $scope.radioValue
+	};
+  };
 };
 
 /**
  * Toolbox - Ranking Component Controller.
  */
-function RankingCtrl($scope, toggleStateService, serializationService)
+function RankingCtrl($scope, toggleStateService, serializationService, inputExtractionService)
 {
   angular.injector().invoke(ToolboxItemCtrl, this, {
     $scope: $scope,
     toggleStateService: toggleStateService,
-    serializationService: serializationService
+    serializationService: serializationService,
+    inputExtractionService: inputExtractionService
   });
   
   $scope.init = function() {
@@ -217,7 +264,6 @@ function RankingCtrl($scope, toggleStateService, serializationService)
       });
 	}
   }
-
   
   $scope.orderedItems = [];
   $scope.currentRank = 0;
@@ -286,17 +332,31 @@ function RankingCtrl($scope, toggleStateService, serializationService)
       });
     });
   };
+  
+  $scope.getInput = function() {	 
+	value = '';
+	for (i in $scope.items) {
+		value = value + $scope.items[i].rank + ' ';
+	}
+	
+	return {
+		id: $scope.content.id,
+		type: 'ranking',
+		value: value
+	};
+  };
 };
 
 /**
  * Toolbox - Image Group Controller.
  */
-function ImageGroupCtrl($scope, $http, toggleStateService, serializationService) {
+function ImageGroupCtrl($scope, $http, toggleStateService, serializationService, inputExtractionService) {
 
   angular.injector().invoke(ToolboxItemCtrl, this, {
     $scope: $scope,
     toggleStateService: toggleStateService,
-    serializationService: serializationService 
+    serializationService: serializationService,
+    inputExtractionService: inputExtractionService
   });
   
   $scope.init = function() {

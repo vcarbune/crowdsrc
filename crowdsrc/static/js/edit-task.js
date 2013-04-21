@@ -9,10 +9,10 @@ app.config(["$httpProvider", function(provider) {
 app.factory('pageService', function($rootScope) {
 	var pageService = {};
 	
-	pageService.toolboxJsonString = {};
+	pageService.toolboxJsonString = '';
 	
-	pageService.submitCreateTaskForm = function() {
-	  $rootScope.$broadcast('submitCreateTaskForm');
+	pageService.prepareCreateTaskForm = function() {
+	  $rootScope.$broadcast('prepareCreateTaskForm');
 	};
 	
 	pageService.getToolboxJson = function() {
@@ -27,7 +27,7 @@ app.factory('pageService', function($rootScope) {
  */
 app.controller('MasterFormCtrl', function($scope, pageService) {
   $scope.submitForm = function() {
-	pageService.submitCreateTaskForm();
+	pageService.prepareCreateTaskForm();
 	$('#create-task-form input[name="task-html"]').val(pageService.toolboxJsonString);
 	$('#create-task-form').submit();
   };

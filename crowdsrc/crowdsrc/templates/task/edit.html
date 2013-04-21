@@ -79,7 +79,7 @@
 	<!-- Begin Toolbox -->
 	<div ng-controller="ToolboxCtrl" 
 		{% if task_form.html.value %}
-			ng-init="init({{ task_form.html.value }})"
+			ng-init="init({{ task_form.html.value }}, 'EDIT')"
 		{% endif %} 
 		class="toolbox">
 	    <ul ui-sortable="sortableOptions" ng-model="content" class="toolbox-item-list">

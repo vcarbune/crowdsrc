@@ -23,6 +23,27 @@ app.factory('serializationService', function($rootScope) {
   return serializationService;
 });
 
+//This service extracts the input values from all components.
+app.factory('inputExtractionService', function($rootScope) {
+  var inputExtractionService = {};
+  inputExtractionService.inputs = [];
+
+  inputExtractionService.appendInput = function(input) {
+    this.inputs.push(input);
+  };
+  
+  inputExtractionService.getInputs = function() {
+    return this.inputs;
+  };
+  
+  inputExtractionService.start = function() {
+    this.inputs = [];
+    $rootScope.$broadcast('inputExtractionStart');
+  };
+
+  return inputExtractionService;
+});
+
 // This service broadcasts to each component whether it needs to change
 // its state or not (e.g. preview for workers or edit for creators)
 app.factory('toggleStateService', function($rootScope) {
@@ -96,19 +117,19 @@ app.directive('toolboxItem', function($compile) {
   var textFieldTemplate =
 	  "<div ng-controller='TextFieldCtrl' ng-init='init()' class='task-generic-item'>" +
       "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.textFieldLabel'>{{itemContent.textFieldLabel}}</div>" + 
-      "<input id='task_{{content.id}}' name='task_{{content.id}}' type='text' ng-disabled='disabled' />" +
+      "<input id='task_{{content.id}}' ng-model='textFieldValue' name='task_{{content.id}}' type='text' ng-disabled='disabled' />" +
       "</div>";
   
   var checkboxTemplate = 
 	  "<div ng-controller='CheckboxCtrl' ng-init='init()' class='task-generic-item'>" +
-      "<input id='task_{{content.id}}' name='task_{{content.id}}' type='checkbox' ng-disabled='disabled' />" +
+      "<input id='task_{{content.id}}' ng-model='checkBoxValue' name='task_{{content.id}}' type='checkbox' ng-disabled='disabled' />" +
       "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.checkBoxLabel'>{{itemContent.checkBoxLabel}}</div>" +
       "</div>";
   
   var radioGroupTemplate = 
 	  "<div ng-controller='RadioGroupCtrl' ng-init='init()' class='task-generic-item'>" +
 	  "<div ng:repeat='i in items'>" +
-      "<input type='radio' value='{{i.id}}' name='task_{{content.id}}' id='radio_{{i.id}}' ng-disabled='disabled' />" +
+      "<input type='radio' name='task_{{content.id}}' value='{{i.id}}' ng-model='radioValue' ng-change='setRadioValue(radioValue)' id='radio_{{i.id}}' ng-disabled='disabled' />" +
       "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='items[i.id].name'>{{items[i.id].name}}</div>" +
       "<button type='button' ng-click='removeItem(i.id)' ng-show='isEditable'>Remove Item</button>" +
       "</div>" +
@@ -185,7 +206,9 @@ app.directive('toolboxItem', function($compile) {
 /**
  * Toolbox - Master Controller
  */
-app.controller('ToolboxCtrl', function($scope, toggleStateService, serializationService, pageService) {
+app.controller('ToolboxCtrl', function($scope, toggleStateService, serializationService, 
+		inputExtractionService, pageService) {
+	
   $scope.state = toggleStateService.STATE.EDIT;
  
   $scope.isEditable = function() {
@@ -215,12 +238,6 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
     toggleStateService.setState($scope.state);
   };
 
-  /* Method called when serializing the toolbox */
-  $scope.serialize = function() {
-    serializationService.start();
-    $scope.toolboxJsonString = serializationService.getContent();
-  };
-  
   $scope.elemTypes = [
     {code:'textField', name: 'Text Field'},
     {code:'paragraph', name: 'Paragraph'},
@@ -238,6 +255,26 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
   $scope.sortableOptions = {
 	  cancel: ':input,button,.toolbox-editable',
 	  axis: 'y'
+  };
+  
+  $scope.init = function(jsonItems, state) {
+	for (var item in jsonItems) {
+	  $scope.addExistingElement(jsonItems[item]);
+	}
+	  
+	if (state) {
+	  $scope.state = state;
+	  toggleStateService.setState($scope.state);
+  	}
+  };
+  
+  $scope.addExistingElement = function(elem) {
+	  $scope.content.push({
+		  id: $scope.content.length,
+		  type: elem.type,
+		  desc: '',
+		  itemContent: elem,
+	  });
   };
   
   $scope.addElement = function() {
@@ -262,24 +299,29 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
 		  }
 	  }
   };
+  
+  /* Method called when serializing the toolbox */
+  $scope.serialize = function() {
+    serializationService.start();
+    $scope.toolboxJsonString = serializationService.getContent();
+  };
+  
+  /* Method called when extracting the input values */
+  $scope.extractInputs = function() {
+    inputExtractionService.start();
+    $scope.inputs = inputExtractionService.getInputs();
+    alert(window.JSON.stringify($scope.inputs));
+  };
 
-  $scope.$on('submitCreateTaskForm', function() {
+  /* When the task form should be submited */ 
+  $scope.$on('prepareCreateTaskForm', function() {
     $scope.serialize();
     pageService.toolboxJsonString = $scope.toolboxJsonString;
   });
   
-  $scope.init = function(jsonItems) {
-	  for (var item in jsonItems) {
-		  $scope.addExistingElement(jsonItems[item]);
-	  }
-  };
+  /* When the solution form should be submited */ 
+  $scope.$on('prepareCompleteTaskForm', function() {
+	  $scope.extractInputs();
+  });
   
-  $scope.addExistingElement = function(elem) {
-	  $scope.content.push({
-		  id: $scope.content.length,
-		  type: elem.type,
-		  desc: '',
-		  itemContent: elem,
-	  });
-  };
 });
