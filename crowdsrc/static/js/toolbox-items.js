@@ -234,7 +234,7 @@ function RankingCtrl($scope, toggleStateService, serializationService)
     $scope.itemContent.items = [];
 
     angular.forEach($scope.items, function(item) {
-      $scope.itemContent.push({
+      $scope.itemContent.items.push({
         id: item.id,
         name: item.name,
         rank: item.rank,
@@ -314,4 +314,27 @@ function ImageGroupCtrl($scope, $http, toggleStateService, serializationService)
         console.log(response);
       });
   }
+  
+  /**
+   * Overriding serialize. Adding the resources as well.
+   */ 
+  $scope.serialize = function() {
+    if (typeof $scope.prepareSerialization == "function")
+      $scope.prepareSerialization();
+
+    if (typeof $scope.itemContent == "object")
+      serializationService.appendItem($scope.itemContent);
+    
+    // Adding resources
+    if ($scope.files) {
+	  for(i = 0; i < $scope.files.length; ++i) {
+	    serializationService.appendResource($scope.files[i]);
+	  }
+    }
+    console.log("In overriden function");
+
+    console.log(serializationService.getContent());
+  };
+  
+  $scope.$on('serializationStart', $scope.serialize);
 };

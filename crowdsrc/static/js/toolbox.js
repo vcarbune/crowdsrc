@@ -6,13 +6,19 @@
 app.factory('serializationService', function($rootScope) {
   var serializationService = {};
   serializationService.content = [];
+  serializationService.resources = [];
 
   serializationService.appendItem = function(item) {
     this.content.push(item);
   };
+  
+  serializationService.appendResource = function(res) {
+	this.resources.push(res);
+  };
 
   serializationService.start = function() {
     this.content = [];
+    this.resources = [];
     $rootScope.$broadcast('serializationStart');
   };
 
@@ -20,6 +26,10 @@ app.factory('serializationService', function($rootScope) {
     return window.JSON.stringify(this.content);
   };
 
+  serializationService.getResources = function() {
+    return window.JSON.stringify(this.resources);
+  };  
+  
   return serializationService;
 });
 
@@ -218,8 +228,25 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
   $scope.serialize = function() {
     serializationService.start();
     $scope.toolboxJsonString = serializationService.getContent();
+    $scope.resourceFiles = serializationService.getResources();
+    $scope.sendForm();
   };
- 
+  
+  /* Create the form using the serialized data */
+  $scope.createForm = function() {
+	
+	// TODO: get the form element by id and pass it to the FormData constructor
+	  
+    formData = new FormData();
+    formData.append('items', $scope.toolboxJsonString);
+    
+    for(i = 0; i < $scope.resourceFiles.length; ++i) {
+      formData.append('files', $scope.resourceFiles[i]);
+    }
+    
+    // TODO: send the form.
+  }
+  
   $scope.elemTypes = [
     {code:'textField', name: 'Text Field'},
     {code:'paragraph', name: 'Paragraph'},
