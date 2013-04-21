@@ -26,7 +26,7 @@
 
 <h2>Create Task</h2>
 
-<form ng-app="angularjs-toolbox" method="post" id="create-task-form" class="create-task-form" enctype="multipart/form-data">
+<form method="post" action="/create_task/" id="create-task-form" class="create-task-form" enctype="multipart/form-data">
 	{% csrf_token %}
 	{{ task_form.non_field_errors }}
 	
@@ -69,11 +69,7 @@
 	<br>
 
 	{% verbatim %}
-	<div ng-controller="ToolboxCtrl" class="toolbox">
-    <button type="button" class="toolbox-state-btn" ng-click="toggleState()">Toggle</button>
-    <b>State</b>: {{state}} <br><br>
-    
-    <!-- "ui-sortable" makes the list sortable by dragging items up and down. -->
+	<div ng-app="angularjs-toolbox" ng-controller="ToolboxCtrl" class="toolbox">
     
     <ul ui-sortable="sortableOptions" ng-model="content" class="toolbox-item-list">
     	<li ng-repeat="item in content" class="toolbox-item">
@@ -102,11 +98,13 @@
 	{{ task_form.is_active }} {{ task_form.is_active.label_tag}}
 	
 	{{ task_form.html }}
-	{{ task_form.resource_folder_name }}
+	{{ task_form.resource_files }}
 	<br>
+  <!-- 
   <div ng-controller="MasterFormCtrl">
 	  <input ng-click="yeah()" type="submit" value="Save" />
   </div>
+   -->
 </form>
 
 {% endblock %}

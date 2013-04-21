@@ -6,19 +6,13 @@
 app.factory('serializationService', function($rootScope) {
   var serializationService = {};
   serializationService.content = [];
-  serializationService.resources = [];
 
   serializationService.appendItem = function(item) {
     this.content.push(item);
   };
   
-  serializationService.appendResource = function(res) {
-	this.resources.push(res);
-  };
-
   serializationService.start = function() {
     this.content = [];
-    this.resources = [];
     $rootScope.$broadcast('serializationStart');
   };
 
@@ -26,10 +20,6 @@ app.factory('serializationService', function($rootScope) {
     return window.JSON.stringify(this.content);
   };
 
-  serializationService.getResources = function() {
-    return window.JSON.stringify(this.resources);
-  };  
-  
   return serializationService;
 });
 
@@ -144,7 +134,7 @@ app.directive('toolboxItem', function($compile) {
       "<label for='resources_{{content.id}}' ng-show='isEditable'>" +
         "Select images to upload:" +
       "</label><br/>" +
-      "<input type='file' ng-model-instant onchange='angular.element(this).scope().setFiles(this)' ng-show='isEditable' multiple required />" +
+      "<input type='file' name='resource_files' ng-model-instant onchange='angular.element(this).scope().setFiles(this)' ng-show='isEditable' multiple required />" +
       "<p ng-show='isEditable'>" +
         "Number of images per single task:" +
       "</p>" +
@@ -228,23 +218,13 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
   $scope.serialize = function() {
     serializationService.start();
     $scope.toolboxJsonString = serializationService.getContent();
-    $scope.resourceFiles = serializationService.getResources();
-    $scope.createForm();
+    $scope.sendCreateTaskForm();
   };
   
   /* Create the form using the serialized data */
-  $scope.createForm = function() {
-	
-	// TODO: get the form element by id and pass it to the FormData constructor
-	  
-    formData = new FormData();
-    formData.append('task_items', $scope.toolboxJsonString);
-    
-    for(i = 0; i < $scope.resourceFiles.length; ++i) {
-      formData.append('resource_files', $scope.resourceFiles[i]);
-    }
-    
-    // TODO: send the form.
+  $scope.sendCreateTaskForm = function() {
+	$('#create-task-form input[name="task-html"]').val($scope.toolboxJsonString);
+	$('#create-task-form').submit();
   }
   
   $scope.elemTypes = [

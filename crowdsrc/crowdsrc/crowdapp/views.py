@@ -56,27 +56,23 @@ def edit_task(request, task_id=None):
             raise Http404
     else:
         task = None
-    
+        
     if request.method == 'POST':
         task_form = CreateTaskForm(instance=task, data=request.POST, prefix='task')
         accesspath_formset = AccessPathFormSet(instance=task, data=request.POST, prefix='accesspath')
         
         if task_form.is_valid() and accesspath_formset.is_valid():
-            
+            # save task
             task = task_form.save(commit=False)
             task.creator = get_profile(request.user)
             task.save()
             
-            # creating resources from saved images
-            if task_form.cleaned_data['resource_folder_name']:
-                if task:
-                    task.resource_set.delete()
-                folder_name = task_form.cleaned_data['resource_folder_name']
-                for filename in os.listdir(folder_name):
-                    img = File(open(os.path.join(settings.UPLOADS_PATH, folder_name, filename), 'r'))
-                    resource = Resource(task=task, index=1, name = filename, image = img)
-                    resource.save()
+            # create resources from uploaded images
+            for img in request.FILES.getlist('resource_files'):
+                resource = Resource(task=task, index=1, image = img)
+                resource.save()
             
+            # save access paths
             accesspaths = accesspath_formset.save(commit=False)
             for ap in accesspaths:
                 ap.task = task
