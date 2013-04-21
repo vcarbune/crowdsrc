@@ -71,6 +71,15 @@ def edit_task(request, task_id=None):
             for img in request.FILES.getlist('resource_files'):
                 resource = Resource(task=task, index=1, image = img)
                 resource.save()
+                
+            # create task input objects
+            items = json.loads(task.html)
+            task.taskinput_set.all().delete()
+            for i in range(0, len(items), 1):
+                input_type = get_input_type(items[i]['type'])
+                if input_type != None:
+                    taskInput = TaskInput(task = task, index=i, type=input_type)
+                    taskInput.save()
             
             # save access paths
             accesspaths = accesspath_formset.save(commit=False)
@@ -115,6 +124,7 @@ def complete_task(request, task_id):
                 solution.access_path = AccessPath.objects.get(id=request.POST['access_path_id'])
             else:
                 solution.access_path = None
+                
         # Extract input values
         task_input_values = []
         

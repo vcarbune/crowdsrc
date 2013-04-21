@@ -1,3 +1,8 @@
+INPUT_TYPES = {'textField': 0, 
+               'checkbox': 1, 
+               'radioGroup': 2, 
+               'ranking': 3}
+
 GENDERS = (
     ('M', "Male"),
     ('F', "Female"),
