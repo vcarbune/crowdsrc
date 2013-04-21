@@ -26,8 +26,16 @@
 
 <h2>Create Task</h2>
 
-<form ng-app="angularjs-toolbox" method="post" action="/create_task/" id="create-task-form" class="create-task-form" enctype="multipart/form-data">
+<form ng-app="angularjs-toolbox" method="post" 
+	action="{% if task_form.instance.id %} {% url 'crowdapp.views.edit_task' task_form.instance.id %} {% else %} {% url 'crowdapp.views.edit_task' %} {% endif %} " 
+	id="create-task-form" class="create-task-form" enctype="multipart/form-data">
+	
 	{% csrf_token %}
+	
+	{% if task_form.instance.id %}
+		<input type="hidden" name="task-id" value="{{ task_form.instance.id }}" />
+	{% endif %}
+	
 	{{ task_form.non_field_errors }}
 	
 	{{ task_form.name.label_tag }}: {{ task_form.name }} {{ task_form.name.errors }}
@@ -68,11 +76,15 @@
 	</div>
 	<br>
 
-	{% verbatim %}
-	<div  ng-controller="ToolboxCtrl" class="toolbox">
+	<!-- Begin Toolbox -->
+	<div ng-controller="ToolboxCtrl" 
+		{% if task_form.html.value %}
+			ng-init="init({{ task_form.html.value }})"
+		{% endif %} 
+		class="toolbox">
 	    <ul ui-sortable="sortableOptions" ng-model="content" class="toolbox-item-list">
 	    	<li ng-repeat="item in content" class="toolbox-item">
-	    		<toolbox-item  content="item" ></toolbox-item>
+	    		<toolbox-item content="item" itemcontent="item.itemContent"></toolbox-item>
 	    		<button type="button" ng-click="removeElement(item.id)" ng-show="isEditable()">Remove</button>
 	    	</li>
 	    </ul>
@@ -83,7 +95,7 @@
 	    	<button type="button" ng-click="addElement()">Add</button>
 	    </div>
   	</div>
-	{% endverbatim %}
+  	<!-- End Toolbox -->
 
 	<br>
 	{{ task_form.cost.label_tag }}: {{ task_form.cost }} {{ task_form.cost.errors }}

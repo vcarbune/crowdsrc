@@ -76,8 +76,8 @@ app.directive('contenteditable', function() {
       };
      
       // load init value from DOM
-      ctrl.$setViewValue(elm.html());
-      }
+      //ctrl.$setViewValue(elm.html());
+    }
   };
 });
 
@@ -88,39 +88,39 @@ app.directive('toolboxItem', function($compile) {
 
   // Note: not really important right now.
   var paragraphTemplate = 
-	  "<div ng-controller='ParagraphCtrl' class='task-generic-item'>" +
+	  "<div ng-controller='ParagraphCtrl' ng-init='init()' class='task-generic-item'>" +
       "<p for='task_{{content.id}}' contenteditable='{{isEditable}}'" +
-        "class='toolbox-editable' ng-model='itemContent.paragraphText'>Add text here...</p>" + 
+        "class='toolbox-editable' ng-model='itemContent.paragraphText'>{{itemContent.paragraphText}}</p>" +
       "</div>";
   
   var textFieldTemplate =
-	  "<div ng-controller='TextFieldCtrl' class='task-generic-item'>" +
-      "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.textFieldLabel'>Label:</div>" + 
+	  "<div ng-controller='TextFieldCtrl' ng-init='init()' class='task-generic-item'>" +
+      "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.textFieldLabel'>{{itemContent.textFieldLabel}}</div>" + 
       "<input id='task_{{content.id}}' name='task_{{content.id}}' type='text' ng-disabled='disabled' />" +
       "</div>";
   
   var checkboxTemplate = 
-	  "<div ng-controller='CheckboxCtrl' class='task-generic-item'>" +
+	  "<div ng-controller='CheckboxCtrl' ng-init='init()' class='task-generic-item'>" +
       "<input id='task_{{content.id}}' name='task_{{content.id}}' type='checkbox' ng-disabled='disabled' />" +
-      "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.checkBoxLabel'>Label</div>" +
+      "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.checkBoxLabel'>{{itemContent.checkBoxLabel}}</div>" +
       "</div>";
   
   var radioGroupTemplate = 
-	  "<div ng-controller='RadioGroupCtrl' class='task-generic-item'>" +
+	  "<div ng-controller='RadioGroupCtrl' ng-init='init()' class='task-generic-item'>" +
 	  "<div ng:repeat='i in items'>" +
       "<input type='radio' value='{{i.id}}' name='task_{{content.id}}' id='radio_{{i.id}}' ng-disabled='disabled' />" +
-      "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='items[i.id].name'>New Item</div>" +
+      "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='items[i.id].name'>{{items[i.id].name}}</div>" +
       "<button type='button' ng-click='removeItem(i.id)' ng-show='isEditable'>Remove Item</button>" +
       "</div>" +
       "<button type='button' ng-click='addItem()' ng-show='isEditable'>Add Item</button>" +
       "</div>";
   
   var rankingTemplate = 
-	  "<div ng-controller='RankingCtrl' class='task-generic-item'>" +
+	  "<div ng-controller='RankingCtrl' ng-init='init()' class='task-generic-item'>" +
 	  "<ul class='toolbox-ranking-list'>" +
 	  "<li ng-repeat='i in items' class='{{i.state}}'>" +
 	  	"<span class='toolbox-ranking-name toolbox-editable' " + 
-          "contenteditable='{{isEditable}}' ng-click='toggleSelectItem(i.id)' ng-model='items[i.id].name'>New Item</span>" +
+          "contenteditable='{{isEditable}}' ng-click='toggleSelectItem(i.id)' ng-model='items[i.id].name'>{{items[i.id].name}}</span>" +
 	  	"<span class='toolbox-ranking-rank' ng-hide='isEditable || i.state===\"free\"'>{{i.rank}}</span>" +
 	  	"<button type='button' ng-click='removeItem(i.id)' ng-show='isEditable'>Remove Item</button>" +
 	  "</li>" +
@@ -130,7 +130,7 @@ app.directive('toolboxItem', function($compile) {
 
   var imageGroupTemplate =
       // Content for EDIT state.
-           "<div ng-controller='ImageGroupCtrl' class='task-generic-item'>" +
+           "<div ng-controller='ImageGroupCtrl' ng-init='init()' class='task-generic-item'>" +
       "<label for='resources_{{content.id}}' ng-show='isEditable'>" +
         "Select images to upload:" +
       "</label><br/>" +
@@ -176,7 +176,8 @@ app.directive('toolboxItem', function($compile) {
     replace: true,
     link: linker,
     scope: {
-      content: '='
+      content: '=',
+      itemContent: '=itemcontent'
     }
   }
 });
@@ -244,9 +245,10 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
 		  id: $scope.content.length,
 		  type: $scope.newElemType,
 		  desc: '',
+		  content: {},
 	  });
- };
- 
+  };
+  
   $scope.removeElement = function (id) {
 	  for (var i=0; i<$scope.content.length; i++) {
 		  if ($scope.content[i].id == id) {
@@ -265,4 +267,19 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
     $scope.serialize();
     pageService.toolboxJsonString = $scope.toolboxJsonString;
   });
+  
+  $scope.init = function(jsonItems) {
+	  for (var item in jsonItems) {
+		  $scope.addExistingElement(jsonItems[item]);
+	  }
+  };
+  
+  $scope.addExistingElement = function(elem) {
+	  $scope.content.push({
+		  id: $scope.content.length,
+		  type: elem.type,
+		  desc: '',
+		  itemContent: elem,
+	  });
+  };
 });

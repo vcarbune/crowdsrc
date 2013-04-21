@@ -64,11 +64,16 @@ function ParagraphCtrl($scope, toggleStateService, serializationService)
     toggleStateService: toggleStateService,
     serializationService: serializationService 
   });
-
-  $scope.itemContent = {
-    type: 'paragraph',
-    name: 'Paragraph'
-  };
+  
+  $scope.init = function() {
+	if (!$scope.itemContent) {  
+      $scope.itemContent = {
+        type: 'paragraph',
+        name: 'Paragraph',
+        paragraphText: 'Enter text here...'	  
+      };
+	}
+  }
 };
 
 /**
@@ -81,11 +86,16 @@ function TextFieldCtrl($scope, toggleStateService, serializationService)
     toggleStateService: toggleStateService,
     serializationService: serializationService 
   });
-
-  $scope.itemContent = {
-    type: 'textField',
-    name: 'Text Field'
-  };
+  
+  $scope.init = function() {
+	if (!$scope.itemContent) {
+	  $scope.itemContent = {
+	    type: 'textField',
+	    name: 'Text Field',
+	    textFieldLabel: 'Label:'
+	  };
+	}
+  }
 };
 
 /**
@@ -99,10 +109,15 @@ function CheckboxCtrl($scope, toggleStateService, serializationService)
     serializationService: serializationService 
   });
   
-  $scope.itemContent = {
-    type: 'checkbox',
-    name: 'Checkbox'
-  };
+  $scope.init = function() {
+	if (!$scope.itemContent) {
+	  $scope.itemContent = {
+	    type: 'checkbox',
+	    name: 'CheckBox',
+	    checkBoxLabel: 'Label'
+	  };
+	}
+  }
 };
 
 /**
@@ -115,13 +130,26 @@ function RadioGroupCtrl($scope, toggleStateService, serializationService)
     toggleStateService: toggleStateService,
     serializationService: serializationService 
   });
-
-  $scope.itemContent = {
-    type: 'radioGroup',
-    name: 'Radio Group'
-  };
   
-  $scope.items = [];
+  $scope.init = function() {
+	if (!$scope.itemContent) {
+	  $scope.itemContent = {
+	    type: 'radioGroup',
+	    name: 'Radio Group'
+	  };
+	  $scope.items = [];
+	}
+	else {
+	  $scope.items = [];
+      angular.forEach($scope.itemContent.items, function(item) {
+        $scope.items.push({
+          id: item.id,
+          name: item.name
+        });
+      });
+	}
+  }
+
   $scope.selectedItem = null;
   
   $scope.addItem = function() {
@@ -168,13 +196,29 @@ function RankingCtrl($scope, toggleStateService, serializationService)
     toggleStateService: toggleStateService,
     serializationService: serializationService
   });
-
-  $scope.itemContent = {
-    type: 'ranking',
-    name: 'Ranking Component'
-  };
   
-  $scope.items = []
+  $scope.init = function() {
+	if (!$scope.itemContent) {
+	  $scope.itemContent = {
+	    type: 'ranking',
+	    name: 'Ranking Component'
+	  };
+	  $scope.items = []
+	}
+	else {
+	  $scope.items = [];
+      angular.forEach($scope.itemContent.items, function(item) {
+        $scope.items.push({
+          id: item.id,
+          name: item.name,
+          rank: item.rank,
+          state: item.state
+        });
+      });
+	}
+  }
+
+  
   $scope.orderedItems = [];
   $scope.currentRank = 0;
   
@@ -254,15 +298,19 @@ function ImageGroupCtrl($scope, $http, toggleStateService, serializationService)
     toggleStateService: toggleStateService,
     serializationService: serializationService 
   });
-
-  $scope.itemContent = {
-    type: 'imageGroup',
-    name: 'Image Group'
-  };
+  
+  $scope.init = function() {
+	if (!$scope.itemContent) {
+	  $scope.itemContent = {
+	    type: 'imageGroup',
+	    name: 'Image Group'
+	  };
+	  $scope.itemContent.nrImagesPerTask = DEFAULT_IMG_PER_TASK;
+	}
+  }
 
   MAX_PREVIEW_IMG = 10;
   DEFAULT_IMG_PER_TASK = 3;
-  $scope.itemContent.nrImagesPerTask = DEFAULT_IMG_PER_TASK;
 
   $scope.refreshPreviewImages = function() {
      $scope.previewImgs = [];
