@@ -338,28 +338,28 @@ function ImageGroupCtrl($scope, $http, toggleStateService, serializationService)
     $scope.refreshPreviewImages();
   }
 
-  $scope.uploadFiles = function() {
-    fd = new FormData();
-    for(i = 0; i < $scope.files.length; ++i)
-      fd.append('files', $scope.files[i]);
-    request = {
-      method: 'POST',
-      url: '/upload_files/',
-      data: fd,
-      headers: {'Content-Type': undefined},
-      transformRequest: angular.identity
-    };
-
-    $http(request).
-      success(function(data, status, headers, config) {
-        alert('success!');
-      }).
-      error(function(data, status, headers, config) {
-        alert('error status ' + status);
-        console.log(data);
-      }).
-      then(function(response) {
-        console.log(response);
-      });
-  }
+//  $scope.uploadFiles = function() {
+//    fd = new FormData();
+//    for(i = 0; i < $scope.files.length; ++i)
+//      fd.append('files', $scope.files[i]);
+//    request = {
+//      method: 'POST',
+//      url: '/upload_files/',
+//      data: fd,
+//      headers: {'Content-Type': undefined},
+//      transformRequest: angular.identity
+//    };
+//
+//    $http(request).
+//      success(function(data, status, headers, config) {
+//        alert('success!');
+//      }).
+//      error(function(data, status, headers, config) {
+//        alert('error status ' + status);
+//        console.log(data);
+//      }).
+//      then(function(response) {
+//        console.log(response);
+//      });
+//  }
 };

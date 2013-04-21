@@ -85,7 +85,7 @@ def edit_task(request, task_id=None):
     else:
         task_form = CreateTaskForm(instance=task, prefix='task')
         accesspath_formset = get_accesspath_formset(task)
-    return render(request, 'task/create.html', {'task_form': task_form, 'accesspath_formset': accesspath_formset})
+    return render(request, 'task/edit.html', {'task_form': task_form, 'accesspath_formset': accesspath_formset})
 
 @login_required
 def view_task(request, task_id):
