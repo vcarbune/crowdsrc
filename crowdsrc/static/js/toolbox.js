@@ -229,7 +229,7 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
     serializationService.start();
     $scope.toolboxJsonString = serializationService.getContent();
     $scope.resourceFiles = serializationService.getResources();
-    $scope.sendForm();
+    $scope.createForm();
   };
   
   /* Create the form using the serialized data */
@@ -238,10 +238,10 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
 	// TODO: get the form element by id and pass it to the FormData constructor
 	  
     formData = new FormData();
-    formData.append('items', $scope.toolboxJsonString);
+    formData.append('task_items', $scope.toolboxJsonString);
     
     for(i = 0; i < $scope.resourceFiles.length; ++i) {
-      formData.append('files', $scope.resourceFiles[i]);
+      formData.append('resource_files', $scope.resourceFiles[i]);
     }
     
     // TODO: send the form.
