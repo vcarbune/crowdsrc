@@ -12,12 +12,28 @@ function ToolboxItemCtrl($scope, toggleStateService, serializationService)
     $scope.isEditable = true;
     $scope.disabled = true;
   };
+  
+  $scope.makeCompleted = function() {
+    $scope.isEditable = false;
+    $scope.disabled = true;
+  };
 
   $scope.updateItemState = function() {
-    if (toggleStateService.getState() == toggleStateService.STATE.PREVIEW)
+    switch(toggleStateService.getState())
+    {
+    case toggleStateService.STATE.EDIT:
+      $scope.makeEditableForCreator();	
+      break;
+    case toggleStateService.STATE.PREVIEW:
       $scope.makeEditableForWorker();
-    else
-      $scope.makeEditableForCreator();
+      break;
+    case toggleStateService.STATE.COMPLETED:
+      $scope.makeCompleted();
+      break;
+    default:
+      // do nothing
+      break;
+    }
   }
 
   $scope.serialize = function() {
@@ -186,7 +202,7 @@ function RankingCtrl($scope, toggleStateService, serializationService)
   };
   
   $scope.toggleSelectItem = function(id) {
-	  if ($scope.isEditable === true) {
+	  if ($scope.isEditable === true || $scope.disabled === true) {
 		  return;
 	  }
 	  

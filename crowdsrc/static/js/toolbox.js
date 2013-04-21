@@ -30,13 +30,14 @@ app.factory('toggleStateService', function($rootScope) {
 
   toggleStateService.STATE = {
     PREVIEW: 'PREVIEW',
-    EDIT: 'EDIT'
+    EDIT: 'EDIT',
+    COMPLETED: 'COMPLETED'
   };
   toggleStateService.currentState = toggleStateService.STATE.EDIT;
 
   toggleStateService.validateValue = function(value)
   {
-    if (value == this.STATE.PREVIEW || value == this.STATE.EDIT)
+    if (value == this.STATE.PREVIEW || value == this.STATE.EDIT || this.STATE.COMPLETED)
       return;
 
     console.log('Incompatible state value: ' + value);
@@ -190,13 +191,25 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
     return $scope.state == toggleStateService.STATE.EDIT;
   };
  
-  $scope.toggleState = function() {
-    if ($scope.state == toggleStateService.STATE.EDIT) {
-      $scope.state = toggleStateService.STATE.PREVIEW;
+  $scope.changeState = function(newState) {
+    switch(newState)
+    {
+    case toggleStateService.STATE.EDIT:
+      $scope.state = newState;
+      $('.toolbox-item-list').sortable("enable");
+      break;
+    case toggleStateService.STATE.PREVIEW:
+      $scope.state = newState;
+      $('.toolbox-item-list').sortable("disable");
+      break;
+    case toggleStateService.STATE.COMPLETED:
+      $scope.state = newState;
+      $('.toolbox-item-list').sortable("disable");
+      break;
+    default:
+      // do nothing
+      break;
     }
-    else {
-      $scope.state = toggleStateService.STATE.EDIT;
-  	}
 
     toggleStateService.setState($scope.state);
   };
