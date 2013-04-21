@@ -184,7 +184,7 @@ app.directive('toolboxItem', function($compile) {
 /**
  * Toolbox - Master Controller
  */
-app.controller('ToolboxCtrl', function($scope, toggleStateService, serializationService) {
+app.controller('ToolboxCtrl', function($scope, toggleStateService, serializationService, pageService) {
   $scope.state = toggleStateService.STATE.EDIT;
  
   $scope.isEditable = function() {
@@ -218,14 +218,7 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
   $scope.serialize = function() {
     serializationService.start();
     $scope.toolboxJsonString = serializationService.getContent();
-    $scope.sendCreateTaskForm();
   };
-  
-  /* Create the form using the serialized data */
-  $scope.sendCreateTaskForm = function() {
-	$('#create-task-form input[name="task-html"]').val($scope.toolboxJsonString);
-	$('#create-task-form').submit();
-  }
   
   $scope.elemTypes = [
     {code:'textField', name: 'Text Field'},
@@ -268,7 +261,8 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
 	  }
   };
 
-  $scope.$on('masterFormSubmit', function() {
-    alert('The toolbox got informed');
+  $scope.$on('submitCreateTaskForm', function() {
+    $scope.serialize();
+    pageService.toolboxJsonString = $scope.toolboxJsonString;
   });
 });
