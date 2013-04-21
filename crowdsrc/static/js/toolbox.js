@@ -321,7 +321,8 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
   
   /* When the solution form should be submited */ 
   $scope.$on('prepareCompleteTaskForm', function() {
-	  $scope.extractInputs();
+	$scope.extractInputs();
+	pageService.setInputsJson(window.JSON.stringify($scope.inputs));
   });
   
 });

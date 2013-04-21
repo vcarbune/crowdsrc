@@ -30,7 +30,7 @@
 <p> Access path: {{ solution.access_path.description }} </p>
 {% endif %}
 
-<form ng-app="angularjs-toolbox" method="post" action="{% url 'crowdapp.views.complete_task' solution.task.id %}">
+<form ng-app="angularjs-toolbox" id="complete-task-form" method="post" action="{% url 'crowdapp.views.complete_task' solution.task.id %}">
 	{% csrf_token %}
 	{% if solution.access_path %}
 		<input type=hidden name="access_path_id" value="{{solution.access_path.id}}" />
@@ -45,6 +45,8 @@
 	    </ul>
   	</div>
   	<!-- End Toolbox -->
+  	
+  	<input name="inputs" type="hidden" value='' />
 	
 	<br />
 	<div ng-controller="MasterFormCtrl">

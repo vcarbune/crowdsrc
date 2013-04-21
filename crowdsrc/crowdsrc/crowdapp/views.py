@@ -78,8 +78,8 @@ def edit_task(request, task_id=None):
             for i in range(0, len(items), 1):
                 input_type = get_input_type(items[i]['type'])
                 if input_type != None:
-                    taskInput = TaskInput(task = task, index=i, type=input_type)
-                    taskInput.save()
+                    task_input = TaskInput(task = task, index=i, type=input_type)
+                    task_input.save()
             
             # save access paths
             accesspaths = accesspath_formset.save(commit=False)
@@ -126,18 +126,24 @@ def complete_task(request, task_id):
                 solution.access_path = None
                 
         # Extract input values
-        task_input_values = []
+        task_inputs = json.loads(request.POST['inputs'])
         
-        # TODO: extract input values
-
-        if check_solution_values(task_input_values):
+        if check_solution_values(task_inputs): # TODO: validate input
+            for input_val_dict in task_inputs:
+                try:
+                    task_input = TaskInput.objects.get(task=task, index=input_val_dict['id'])
+                    input_value = TaskInputValue(taskinput=task_input, value=input_val_dict['value'])
+                    input_value.save()
+                except ObjectDoesNotExist:
+                    pass
+            
             solution.status = 1
             solution.save()
             return redirect(reverse('crowdapp.views.view_solution', args=[solution.id]))
         else:
             solution.status = 0
             solution.save()
-            message = "You have errors in your solution."
+            message = "You have errors in your solution." # TODO: get descriptive errors from validation
     else:
         solution, created = Solution.objects.get_or_create(worker=profile, task=task, created_at=datetime.now())
         if created:
