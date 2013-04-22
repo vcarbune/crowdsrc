@@ -282,7 +282,7 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
 		  id: $scope.content.length,
 		  type: $scope.newElemType,
 		  desc: '',
-		  itemContent: {},
+		  itemContent: '',
 	  });
   };
   

@@ -106,7 +106,6 @@ def view_task(request, task_id):
 
     if task.creator.id != profile.id:
         raise Http404
-    
 
 @login_required
 def complete_task(request, task_id):
@@ -141,7 +140,6 @@ def complete_task(request, task_id):
                 except ObjectDoesNotExist:
                     pass
             
-            
             return redirect(reverse('crowdapp.views.view_solution', args=[solution.id]))
         else:
             solution.status = 0
@@ -151,6 +149,8 @@ def complete_task(request, task_id):
         solution, created = Solution.objects.get_or_create(worker=profile, task=task, created_at=datetime.now())
         if created:
             solution.access_path = task.get_random_access_path()
+            resources = solution.task.get_random_resources(int(num_res))
+            solution.resources = resources
             solution.save()
         
     return render(request, 'task/complete.html', {'solution': solution, 'message': message})

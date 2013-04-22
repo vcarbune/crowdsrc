@@ -81,7 +81,7 @@ function ParagraphCtrl($scope, toggleStateService, serializationService, inputEx
   });
   
   $scope.init = function() {
-	if (!$scope.itemContent) {  
+	if (!$scope.itemContent || $scope.itemContent == '') {  
       $scope.itemContent = {
         type: 'paragraph',
         name: 'Paragraph',
@@ -104,7 +104,7 @@ function TextFieldCtrl($scope, toggleStateService, serializationService, inputEx
   });
   
   $scope.init = function() {
-	if (!$scope.itemContent) {
+	if (!$scope.itemContent || $scope.itemContent == '') {
 	  $scope.itemContent = {
 	    type: 'textField',
 	    name: 'Text Field',
@@ -141,7 +141,7 @@ function CheckboxCtrl($scope, toggleStateService, serializationService, inputExt
   });
   
   $scope.init = function() {
-	if (!$scope.itemContent) {
+	if (!$scope.itemContent || $scope.itemContent == '') {
 	  $scope.itemContent = {
 	    type: 'checkbox',
 	    name: 'CheckBox',
@@ -178,7 +178,7 @@ function RadioGroupCtrl($scope, toggleStateService, serializationService, inputE
   });
   
   $scope.init = function() {
-	if (!$scope.itemContent) {
+	if (!$scope.itemContent || $scope.itemContent == '') {
 	  $scope.itemContent = {
 	    type: 'radioGroup',
 	    name: 'Radio Group'
@@ -264,7 +264,7 @@ function RankingCtrl($scope, toggleStateService, serializationService, inputExtr
   $scope.init = function() {
 	$scope.currentRank = 0;
 
-	if (!$scope.itemContent) {
+	if (!$scope.itemContent || $scope.itemContent == '') {
 	  $scope.itemContent = {
 	    type: 'ranking',
 	    name: 'Ranking Component'
@@ -387,7 +387,7 @@ function ImageGroupCtrl($scope, $http, toggleStateService, serializationService,
   });
   
   $scope.init = function() {
-	  if (!$scope.itemContent) {
+	  if (!$scope.itemContent || $scope.itemContent == '') {
 	    $scope.itemContent = {
 	      type: 'imageGroup',
 	      name: 'Image Group'
