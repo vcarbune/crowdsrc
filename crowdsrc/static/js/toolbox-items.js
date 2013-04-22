@@ -49,12 +49,12 @@ function ToolboxItemCtrl($scope, toggleStateService, serializationService, input
   };
   
   $scope.extractInput = function() {	 
-	input = $scope.getInput();
+	  input = $scope.getInput();
 	
-	if (input) {
-	  inputExtractionService.appendInput(input);
-      console.log(serializationService.getInputs());
-	}
+	  if (input) {
+	    inputExtractionService.appendInput(input);
+        console.log(serializationService.getInputs());
+	  }
   }
   
   $scope.getInput = function() {
@@ -360,13 +360,13 @@ function ImageGroupCtrl($scope, $http, toggleStateService, serializationService,
   });
   
   $scope.init = function() {
-	if (!$scope.itemContent) {
-	  $scope.itemContent = {
-	    type: 'imageGroup',
-	    name: 'Image Group'
-	  };
-	  $scope.itemContent.nrImagesPerTask = DEFAULT_IMG_PER_TASK;
-	}
+	  if (!$scope.itemContent) {
+	    $scope.itemContent = {
+	      type: 'imageGroup',
+	      name: 'Image Group'
+	    };
+	    $scope.itemContent.nrImagesPerTask = DEFAULT_IMG_PER_TASK;
+	  }
   }
 
   MAX_PREVIEW_IMG = 10;
@@ -397,29 +397,4 @@ function ImageGroupCtrl($scope, $http, toggleStateService, serializationService,
         $scope.files.push(element.files[i]);
     $scope.refreshPreviewImages();
   }
-
-//  $scope.uploadFiles = function() {
-//    fd = new FormData();
-//    for(i = 0; i < $scope.files.length; ++i)
-//      fd.append('files', $scope.files[i]);
-//    request = {
-//      method: 'POST',
-//      url: '/upload_files/',
-//      data: fd,
-//      headers: {'Content-Type': undefined},
-//      transformRequest: angular.identity
-//    };
-//
-//    $http(request).
-//      success(function(data, status, headers, config) {
-//        alert('success!');
-//      }).
-//      error(function(data, status, headers, config) {
-//        alert('error status ' + status);
-//        console.log(data);
-//      }).
-//      then(function(response) {
-//        console.log(response);
-//      });
-//  }
 };
