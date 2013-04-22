@@ -394,6 +394,12 @@ function ImageGroupCtrl($scope, $http, toggleStateService, serializationService,
 	    };
 	    $scope.itemContent.nrImagesPerTask = DEFAULT_IMG_PER_TASK;
 	  }
+	  else {
+		if ($scope.itemContent.solutionId) {
+		  console.log('We have the solution id in the imageGroup: ' + $scope.itemContent.solutionId);
+		  // TODO: load the images
+		}
+	  }
   }
 
   MAX_PREVIEW_IMG = 10;

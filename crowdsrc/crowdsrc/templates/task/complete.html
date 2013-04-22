@@ -37,7 +37,7 @@
 	{% endif %}
 	
 	<!-- Begin Toolbox -->
-	<div ng-controller="ToolboxCtrl" ng-init="init({{ solution.task.content }}, 'PREVIEW')" class="toolbox">
+	<div ng-controller="ToolboxCtrl" ng-init="init({{ solution.task.content }}, 'PREVIEW', {{solution.id}})" class="toolbox">
 	    <ul ui-sortable="sortableOptions" ng-model="content" class="toolbox-item-list">
 	    	<li ng-repeat="item in content" class="toolbox-item">
 	    		<toolbox-item content="item" itemcontent="item.itemContent"></toolbox-item>

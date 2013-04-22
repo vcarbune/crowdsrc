@@ -17,4 +17,3 @@ def get_input_type(type):
         return INPUT_TYPES[type]
     else:
         return None
-    

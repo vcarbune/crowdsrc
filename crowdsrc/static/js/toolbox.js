@@ -257,8 +257,18 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
 	  axis: 'y'
   };
   
-  $scope.init = function(jsonItems, state) {
+  $scope.init = function(jsonItems, state, solutionId) { 
+	  
+	// TODO: find a better way to get the resources than to receive the solution id and 
+	// to use a hardcoded url in the imageGroup component 
+	if (solutionId !== undefined) {
+      $scope.solutionId = solutionId;
+	}  
+	  
 	for (var item in jsonItems) {
+	  if (jsonItems[item].type == 'imageGroup' && $scope.solutionId) {
+		  jsonItems[item].solutionId = solutionId;
+	  }	
 	  $scope.addExistingElement(jsonItems[item]);
 	}
 	  
