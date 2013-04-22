@@ -124,4 +124,4 @@ class TaskInputValue(models.Model):
     value = models.CharField(max_length=200)
     
     def __unicode__(self):
-        return answer.__unicode__ + ": " + value
+        return self.taskinput.__unicode__() + ": " + self.value

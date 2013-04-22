@@ -85,7 +85,7 @@ function ParagraphCtrl($scope, toggleStateService, serializationService, inputEx
       $scope.itemContent = {
         type: 'paragraph',
         name: 'Paragraph',
-        paragraphText: 'Enter text here...'	  
+        paragraphText: 'Enter text here...'
       };
 	}
   }
@@ -110,6 +110,12 @@ function TextFieldCtrl($scope, toggleStateService, serializationService, inputEx
 	    name: 'Text Field',
 	    textFieldLabel: 'Label:'
 	  };
+	}
+	else {
+	  // set the input value, in case we view a solution
+	  if ($scope.itemContent.inputValue) {
+	    $scope.textFieldValue = $scope.itemContent.inputValue;
+	  }
 	}
   };
   
@@ -141,6 +147,12 @@ function CheckboxCtrl($scope, toggleStateService, serializationService, inputExt
 	    name: 'CheckBox',
 	    checkBoxLabel: 'Label'
 	  };
+	}
+	else {
+	  // set the input value, in case we view a solution
+	  if ($scope.itemContent.inputValue) {
+	    $scope.checkBoxValue = $scope.itemContent.inputValue;
+	  }
 	}
   }
   
@@ -181,6 +193,11 @@ function RadioGroupCtrl($scope, toggleStateService, serializationService, inputE
           name: item.name
         });
       });
+      
+      // set the input value, in case we view a solution
+      if ($scope.itemContent.inputValue) {
+    	$scope.radioValue = $scope.itemContent.inputValue;
+      }
 	}
   }
 
@@ -245,12 +262,14 @@ function RankingCtrl($scope, toggleStateService, serializationService, inputExtr
   });
   
   $scope.init = function() {
+	$scope.currentRank = 0;
+
 	if (!$scope.itemContent) {
 	  $scope.itemContent = {
 	    type: 'ranking',
 	    name: 'Ranking Component'
 	  };
-	  $scope.items = []
+	  $scope.items = [];
 	}
 	else {
 	  $scope.items = [];
@@ -262,11 +281,19 @@ function RankingCtrl($scope, toggleStateService, serializationService, inputExtr
           state: item.state
         });
       });
+      
+      // set the input value, in case we view a solution
+      if ($scope.itemContent.inputValue) { 
+    	var order=$scope.itemContent.inputValue.split(" ", $scope.items.length);
+    	for (var i in order) {
+		  $scope.items[i].rank = order[i];
+		  $scope.items[i].state = 'selected';
+    	}
+      }
 	}
   }
   
-  $scope.orderedItems = [];
-  $scope.currentRank = 0;
+  
   
   $scope.addItem = function() {
 	  $scope.items.push({

@@ -117,7 +117,7 @@ app.directive('toolboxItem', function($compile) {
   var textFieldTemplate =
 	  "<div ng-controller='TextFieldCtrl' ng-init='init()' class='task-generic-item'>" +
       "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.textFieldLabel'>{{itemContent.textFieldLabel}}</div>" + 
-      "<input id='task_{{content.id}}' ng-model='textFieldValue' name='task_{{content.id}}' type='text' ng-disabled='disabled' />" +
+      "<input id='task_{{content.id}}' ng-model='textFieldValue' name='task_{{content.id}}' value='{{textFieldValue}}' type='text' ng-disabled='disabled' />" +
       "</div>";
   
   var checkboxTemplate = 
@@ -273,7 +273,7 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
 		  id: $scope.content.length,
 		  type: elem.type,
 		  desc: '',
-		  itemContent: elem,
+		  itemContent: elem
 	  });
   };
   
@@ -282,7 +282,7 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
 		  id: $scope.content.length,
 		  type: $scope.newElemType,
 		  desc: '',
-		  content: {},
+		  itemContent: {},
 	  });
   };
   

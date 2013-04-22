@@ -202,14 +202,24 @@ def all_tasks(request):
 def view_solution(request, solution_id):
     try:
         solution = Solution.objects.get(id=solution_id)
+        profile = get_profile(request.user)
     except ObjectDoesNotExist:
         raise Http404
     
-    profile = get_profile(request.user)
     if solution.worker.id != profile.id and solution.task.creator.id != profile.id:
         raise Http404
+
+    # Inject values in the json for the task    
+    task_items = json.loads(solution.task.content)
     
-    return render(request, 'solution/solution.html', {'solution': solution})
+    for i in range(0, len(task_items), 1):
+        task_input_values = solution.taskinputvalue_set.filter(taskinput__index=i)
+        if len(task_input_values) > 0:
+            task_items[i]['inputValue'] = task_input_values[0].value
+        
+    task_items = json.dumps(task_items)
+    
+    return render(request, 'solution/solution.html', {'solution': solution, 'task_items': task_items})
 
 @login_required
 def process_solution(request, solution_id, approved):
