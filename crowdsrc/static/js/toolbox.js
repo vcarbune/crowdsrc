@@ -320,7 +320,7 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
   $scope.extractInputs = function() {
     inputExtractionService.start();
     $scope.inputs = inputExtractionService.getInputs();
-    alert(window.JSON.stringify($scope.inputs));
+    //alert(window.JSON.stringify($scope.inputs));
   };
 
   /* When the task form should be submited */ 

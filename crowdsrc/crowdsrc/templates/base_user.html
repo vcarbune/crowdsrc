@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block welcome_message %}
-<font size='4'>Glad to have you back, {{user|profile}}!</font>
+<span>Logged in as {{user|profile}}!</span> <a href="/logout/">Logout</a>
 {% endblock %}
 
 {% block sidebar %}							
