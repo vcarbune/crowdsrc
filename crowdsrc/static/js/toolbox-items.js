@@ -150,8 +150,9 @@ function CheckboxCtrl($scope, toggleStateService, serializationService, inputExt
 	}
 	else {
 	  // set the input value, in case we view a solution
-	  if ($scope.itemContent.inputValue) {
-	    $scope.checkBoxValue = $scope.itemContent.inputValue;
+	  if ($scope.itemContent.inputValue !== undefined) {
+		$scope.checkBoxValue = ($scope.itemContent.inputValue.toLowerCase() == 'true');
+	    console.log($scope.checkBoxValue);
 	  }
 	}
   }
@@ -396,8 +397,27 @@ function ImageGroupCtrl($scope, $http, toggleStateService, serializationService,
 	  }
 	  else {
 		if ($scope.itemContent.solutionId) {
-		  console.log('We have the solution id in the imageGroup: ' + $scope.itemContent.solutionId);
-		  // TODO: load the images
+		  request = {
+	        method: 'GET',
+	        url: '/get_solution_resources/' + $scope.itemContent.solutionId + '/' + $scope.itemContent.nrImagesPerTask + '/',
+	        transformRequest: angular.identity
+	      };
+				  
+	      $http(request).
+	        success(function(data, status, headers, config) {
+	          $scope.previewImgs = [];
+	          for (i in data.resources) {
+	        	  console.log(decodeURI(data.resources[i].url));
+	        	  $scope.previewImgs.push(decodeURI(data.resources[i].url));
+	          }
+	        }).
+	        error(function(data, status, headers, config) {
+	          console.log(data);
+	        }).
+	        then(function(response) {
+	          console.log(response);
+	        }
+	      );
 		}
 	  }
   }
