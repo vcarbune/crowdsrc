@@ -30,7 +30,7 @@
     <!-- "ui-sortable" makes the list sortable by dragging items up and down. -->
     
     <ul ui-sortable="sortableOptions" ng-model="content" class="toolbox-item-list">
-    	<li ng-repeat="item in content" class="toolbox-item">
+    	<li ng-repeat="item in content" class="toolbox-item" id="{{item.id}}">
     		<toolbox-item  content="item" ></toolbox-item>
     		<button type="button" ng-click="removeElement(item.id)" ng-show="isEditable()">Remove</button>
     	</li>
@@ -43,10 +43,9 @@
     </div>
 
     <button type="button" ng-click="serialize()">Serialize</button>
-    <input ng-model="toolboxJsonString" type="hidden" name="toolboxJsonString" />
 
     <br><br>
-    <div>Serialized items: {{toolboxJsonString}}</div>
+    <div>Serialized items: {{toolboxJsonString()}}</div>
   </div>
 {% endverbatim %}
 </body>

@@ -18,7 +18,7 @@ app.factory('toolboxService', function($rootScope, internalService) {
   var toolboxService = {};
 
   toolboxService.getToolboxStringifiedJson = function() {
-    return internalService.serializationService.getContent();
+    return internalService.serializationService.getSortedContent();
   };
 
   toolboxService.getInputsStringifiedJson = function() {
@@ -66,6 +66,21 @@ function SerializationService(angularRootScope) {
   this.getContent = function() {
     return window.JSON.stringify(this.content);
   };
+
+  // FIXME: To make the code cleaner and page-independent, the permutation
+  // should be given as parameter, rather than using the jQuery hack.
+  this.getSortedContent = function() {
+    var permutation = $('.toolbox-item-list').sortable('toArray');
+
+    var orderedContent = new Array(this.content.length);
+    for (var index = 0; index < this.content.length; index++) {
+      var id = parseInt(permutation[index]);
+      orderedContent[index] = this.content[id];
+    }
+    
+    return window.JSON.stringify(orderedContent);
+  };
+
 };
 
 SerializationService.EVENTS = {

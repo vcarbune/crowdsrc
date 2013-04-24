@@ -44,8 +44,6 @@ function ToolboxItemCtrl($scope, internalService)
 
     if (typeof $scope.itemContent == "object")
       internalService.serializationService.appendItem($scope.itemContent);
-
-    console.log(internalService.serializationService.getContent());
   };
   
   $scope.extractInput = function() {	 
@@ -53,11 +51,11 @@ function ToolboxItemCtrl($scope, internalService)
 	
 	  if (input)
 	    internalService.inputExtractionService.appendInput(input);
-  }
+  };
   
   $scope.getInput = function() {
 	  return null;
-  }
+  };
 
   $scope.$on('serializationStart', $scope.serialize);
   $scope.$on('inputExtractionStart', $scope.extractInput);
@@ -76,14 +74,17 @@ function ParagraphCtrl($scope, internalService)
     internalService: internalService,
   });
   
-  $scope.init = function() {
-	if (!$scope.itemContent || $scope.itemContent == '') {  
-      $scope.itemContent = {
-        type: 'paragraph',
-        name: 'Paragraph',
-        paragraphText: 'Enter text here...'
-      };
-	}
+  $scope.init = function(id) {
+	  if (!$scope.itemContent || $scope.itemContent == '') {  
+        $scope.itemContent = {
+          type: 'paragraph',
+          name: 'Paragraph',
+          paragraphText: 'Enter text here...'
+        };
+
+        if (id !== undefined)
+          $scope.itemContent.id = id;
+	  }
   }
 };
 
@@ -97,28 +98,30 @@ function TextFieldCtrl($scope, internalService)
     internalService: internalService,
   });
   
-  $scope.init = function() {
-	if (!$scope.itemContent || $scope.itemContent == '') {
-	  $scope.itemContent = {
-	    type: 'textField',
-	    name: 'Text Field',
-	    textFieldLabel: 'Label:'
-	  };
-	}
-	else {
-	  // set the input value, in case we view a solution
-	  if ($scope.itemContent.inputValue) {
-	    $scope.textFieldValue = $scope.itemContent.inputValue;
+  $scope.init = function(id) {
+	  if (!$scope.itemContent || $scope.itemContent == '') {
+	    $scope.itemContent = {
+	      type: 'textField',
+	      name: 'Text Field',
+	      textFieldLabel: 'Label:'
+	    };
+	  } else {
+	    // set the input value, in case we view a solution
+	    if ($scope.itemContent.inputValue) {
+	      $scope.textFieldValue = $scope.itemContent.inputValue;
+	    }
 	  }
-	}
+
+    if (id !== undefined)
+      $scope.itemContent.id = id;
   };
   
   $scope.getInput = function() {	 
-	return {
-		id: $scope.content.id,
-		type: 'text',
-		value: $scope.textFieldValue
-	};
+	  return {
+		  id: $scope.content.id,
+		  type: 'text',
+		  value: $scope.textFieldValue
+	  };
   };
 };
 
@@ -132,7 +135,7 @@ function CheckboxCtrl($scope, internalService)
     internalService: internalService,
   });
   
-  $scope.init = function() {
+  $scope.init = function(id) {
 	  if (!$scope.itemContent || $scope.itemContent == '') {
 	    $scope.itemContent = {
 	      type: 'checkbox',
@@ -145,6 +148,9 @@ function CheckboxCtrl($scope, internalService)
 		    $scope.checkBoxValue = ($scope.itemContent.inputValue.toLowerCase() == 'true');
 	    }
 	  }
+
+    if (id !== undefined)
+      $scope.itemContent.id = id;
   }
   
   $scope.getInput = function() {	 
@@ -166,7 +172,7 @@ function RadioGroupCtrl($scope, internalService)
     internalService: internalService,
   });
   
-  $scope.init = function() {
+  $scope.init = function(id) {
 	if (!$scope.itemContent || $scope.itemContent == '') {
 	  $scope.itemContent = {
 	    type: 'radioGroup',
@@ -188,6 +194,8 @@ function RadioGroupCtrl($scope, internalService)
     	$scope.radioValue = $scope.itemContent.inputValue;
       }
 	}
+  if (id !== undefined)
+    $scope.itemContent.id = id;
   }
 
   $scope.radioValue = '0';
@@ -248,7 +256,7 @@ function RankingCtrl($scope, internalService)
     internalService: internalService,
   });
   
-  $scope.init = function() {
+  $scope.init = function(id) {
 	$scope.currentRank = 0;
 
 	if (!$scope.itemContent || $scope.itemContent == '') {
@@ -257,8 +265,7 @@ function RankingCtrl($scope, internalService)
 	    name: 'Ranking Component'
 	  };
 	  $scope.items = [];
-	}
-	else {
+	} else {
 	  $scope.items = [];
       angular.forEach($scope.itemContent.items, function(item) {
         $scope.items.push({
@@ -271,13 +278,16 @@ function RankingCtrl($scope, internalService)
       
       // set the input value, in case we view a solution
       if ($scope.itemContent.inputValue) { 
-    	var order=$scope.itemContent.inputValue.split(" ", $scope.items.length);
-    	for (var i in order) {
-		  $scope.items[i].rank = order[i];
-		  $scope.items[i].state = 'selected';
-    	}
+    	  var order=$scope.itemContent.inputValue.split(" ", $scope.items.length);
+    	  for (var i in order) {
+		      $scope.items[i].rank = order[i];
+		      $scope.items[i].state = 'selected';
+    	  }
       }
 	}
+
+    if (id !== undefined)
+      $scope.itemContent.id = id;
   }
   
   
@@ -348,16 +358,16 @@ function RankingCtrl($scope, internalService)
   };
   
   $scope.getInput = function() {	 
-	value = '';
-	for (i in $scope.items) {
-		value = value + $scope.items[i].rank + ' ';
-	}
+	  value = '';
+	  for (i in $scope.items) {
+		  value = value + $scope.items[i].rank + ' ';
+	  }
 	
-	return {
-		id: $scope.content.id,
-		type: 'ranking',
-		value: value
-	};
+	  return {
+		  id: $scope.content.id,
+		  type: 'ranking',
+		  value: value
+	  };
   };
 };
 
@@ -368,7 +378,7 @@ function ImageGroupCtrl($scope, $http, internalService) {
 
   angular.injector().invoke(ToolboxItemCtrl, this, {
     $scope: $scope,
-    internalService: internalService,
+    internalService: internalService
   });
   
   $scope.init = function() {
@@ -378,8 +388,7 @@ function ImageGroupCtrl($scope, $http, internalService) {
 	      name: 'Image Group'
 	    };
 	    $scope.itemContent.nrImagesPerTask = DEFAULT_IMG_PER_TASK;
-	  }
-	  else {
+	  } else {
 		if ($scope.itemContent.solutionId) {
 		  request = {
 	        method: 'GET',
@@ -404,6 +413,9 @@ function ImageGroupCtrl($scope, $http, internalService) {
 	      );
 		}
 	  }
+
+    if (id !== undefined)
+      $scope.itemContent.id = id;
   }
 
   MAX_PREVIEW_IMG = 10;
