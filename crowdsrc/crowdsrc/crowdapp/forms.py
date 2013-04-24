@@ -37,7 +37,7 @@ class CreateTaskForm(ModelForm):
     
     class Meta:
         model = Task
-        fields = ('name', 'content', 'is_active', 'cost')
+        fields = ('name', 'content', 'is_active', 'cost', 'qualifications')
         
 class TaskAdminForm(ModelForm):
     html = forms.CharField(widget=forms.Textarea)
