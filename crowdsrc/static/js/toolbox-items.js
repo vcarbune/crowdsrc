@@ -1,7 +1,7 @@
 /**
  * Toolbox - Generic Item Controller
  */
-function ToolboxItemCtrl($scope, toggleStateService, serializationService, inputExtractionService)
+function ToolboxItemCtrl($scope, internalService)
 {
   $scope.makeEditableForWorker = function() {
     $scope.isEditable = false;
@@ -19,15 +19,15 @@ function ToolboxItemCtrl($scope, toggleStateService, serializationService, input
   };
 
   $scope.updateItemState = function() {
-    switch(toggleStateService.getState())
+    switch(internalService.stateService.getState())
     {
-    case toggleStateService.STATE.EDIT:
+    case StateService.STATES.EDIT:
       $scope.makeEditableForCreator();	
       break;
-    case toggleStateService.STATE.PREVIEW:
+    case StateService.STATES.PREVIEW:
       $scope.makeEditableForWorker();
       break;
-    case toggleStateService.STATE.COMPLETED:
+    case StateService.STATES.COMPLETED:
       $scope.makeCompleted();
       break;
     default:
@@ -43,18 +43,16 @@ function ToolboxItemCtrl($scope, toggleStateService, serializationService, input
       $scope.prepareSerialization();
 
     if (typeof $scope.itemContent == "object")
-      serializationService.appendItem($scope.itemContent);
+      internalService.serializationService.appendItem($scope.itemContent);
 
-    console.log(serializationService.getContent());
+    console.log(internalService.serializationService.getContent());
   };
   
   $scope.extractInput = function() {	 
 	  input = $scope.getInput();
 	
-	  if (input) {
-	    inputExtractionService.appendInput(input);
-        console.log(serializationService.getInputs());
-	  }
+	  if (input)
+	    internalService.inputExtractionService.appendInput(input);
   }
   
   $scope.getInput = function() {
@@ -71,13 +69,11 @@ function ToolboxItemCtrl($scope, toggleStateService, serializationService, input
 /**
  * Toolbox - Text Field Controller.
  */
-function ParagraphCtrl($scope, toggleStateService, serializationService, inputExtractionService)
+function ParagraphCtrl($scope, internalService)
 {
   angular.injector().invoke(ToolboxItemCtrl, this, {
     $scope: $scope,
-    toggleStateService: toggleStateService,
-    serializationService: serializationService,
-    inputExtractionService: inputExtractionService
+    internalService: internalService,
   });
   
   $scope.init = function() {
@@ -94,13 +90,11 @@ function ParagraphCtrl($scope, toggleStateService, serializationService, inputEx
 /**
  * Toolbox - Text Field Controller.
  */
-function TextFieldCtrl($scope, toggleStateService, serializationService, inputExtractionService)
+function TextFieldCtrl($scope, internalService)
 {
   angular.injector().invoke(ToolboxItemCtrl, this, {
     $scope: $scope,
-    toggleStateService: toggleStateService,
-    serializationService: serializationService,
-    inputExtractionService: inputExtractionService 
+    internalService: internalService,
   });
   
   $scope.init = function() {
@@ -131,51 +125,45 @@ function TextFieldCtrl($scope, toggleStateService, serializationService, inputEx
 /**
  * Toolbox - Checkbox Controller.
  */
-function CheckboxCtrl($scope, toggleStateService, serializationService, inputExtractionService)
+function CheckboxCtrl($scope, internalService)
 {
   angular.injector().invoke(ToolboxItemCtrl, this, {
     $scope: $scope,
-    toggleStateService: toggleStateService,
-    serializationService: serializationService,
-    inputExtractionService: inputExtractionService
+    internalService: internalService,
   });
   
   $scope.init = function() {
-	if (!$scope.itemContent || $scope.itemContent == '') {
-	  $scope.itemContent = {
-	    type: 'checkbox',
-	    name: 'CheckBox',
-	    checkBoxLabel: 'Label'
-	  };
-	}
-	else {
-	  // set the input value, in case we view a solution
-	  if ($scope.itemContent.inputValue !== undefined) {
-		$scope.checkBoxValue = ($scope.itemContent.inputValue.toLowerCase() == 'true');
-	    console.log($scope.checkBoxValue);
+	  if (!$scope.itemContent || $scope.itemContent == '') {
+	    $scope.itemContent = {
+	      type: 'checkbox',
+	      name: 'CheckBox',
+	      checkBoxLabel: 'Label'
+	    };
+	  } else {
+	    // set the input value, in case we view a solution
+	    if ($scope.itemContent.inputValue !== undefined) {
+		    $scope.checkBoxValue = ($scope.itemContent.inputValue.toLowerCase() == 'true');
+	    }
 	  }
-	}
   }
   
   $scope.getInput = function() {	 
-	return {
-		id: $scope.content.id,
-		type: 'boolean',
-		value: $scope.checkBoxValue
-	};
+	  return {
+		  id: $scope.content.id,
+		  type: 'boolean',
+		  value: $scope.checkBoxValue
+	  };
   };
 };
 
 /**
  * Toolbox - Radio Group Controller.
  */
-function RadioGroupCtrl($scope, toggleStateService, serializationService, inputExtractionService)
+function RadioGroupCtrl($scope, internalService)
 {
   angular.injector().invoke(ToolboxItemCtrl, this, {
     $scope: $scope,
-    toggleStateService: toggleStateService,
-    serializationService: serializationService,
-    inputExtractionService: inputExtractionService
+    internalService: internalService,
   });
   
   $scope.init = function() {
@@ -253,13 +241,11 @@ function RadioGroupCtrl($scope, toggleStateService, serializationService, inputE
 /**
  * Toolbox - Ranking Component Controller.
  */
-function RankingCtrl($scope, toggleStateService, serializationService, inputExtractionService)
+function RankingCtrl($scope, internalService)
 {
   angular.injector().invoke(ToolboxItemCtrl, this, {
     $scope: $scope,
-    toggleStateService: toggleStateService,
-    serializationService: serializationService,
-    inputExtractionService: inputExtractionService
+    internalService: internalService,
   });
   
   $scope.init = function() {
@@ -378,13 +364,11 @@ function RankingCtrl($scope, toggleStateService, serializationService, inputExtr
 /**
  * Toolbox - Image Group Controller.
  */
-function ImageGroupCtrl($scope, $http, toggleStateService, serializationService, inputExtractionService) {
+function ImageGroupCtrl($scope, $http, internalService) {
 
   angular.injector().invoke(ToolboxItemCtrl, this, {
     $scope: $scope,
-    toggleStateService: toggleStateService,
-    serializationService: serializationService,
-    inputExtractionService: inputExtractionService
+    internalService: internalService,
   });
   
   $scope.init = function() {

@@ -2,83 +2,6 @@
 
 // You MUST define in the page: app = angularjs.module('angularjs-toolbox');
 
-// This service serializes the toolbox and all the components.
-app.factory('serializationService', function($rootScope) {
-  var serializationService = {};
-  serializationService.content = [];
-
-  serializationService.appendItem = function(item) {
-    this.content.push(item);
-  };
-  
-  serializationService.start = function() {
-    this.content = [];
-    $rootScope.$broadcast('serializationStart');
-  };
-
-  serializationService.getContent = function() {
-    return window.JSON.stringify(this.content);
-  };
-
-  return serializationService;
-});
-
-//This service extracts the input values from all components.
-app.factory('inputExtractionService', function($rootScope) {
-  var inputExtractionService = {};
-  inputExtractionService.inputs = [];
-
-  inputExtractionService.appendInput = function(input) {
-    this.inputs.push(input);
-  };
-  
-  inputExtractionService.getInputs = function() {
-    return this.inputs;
-  };
-  
-  inputExtractionService.start = function() {
-    this.inputs = [];
-    $rootScope.$broadcast('inputExtractionStart');
-  };
-
-  return inputExtractionService;
-});
-
-// This service broadcasts to each component whether it needs to change
-// its state or not (e.g. preview for workers or edit for creators)
-app.factory('toggleStateService', function($rootScope) {
-  var toggleStateService = {};
-
-  toggleStateService.STATE = {
-    PREVIEW: 'PREVIEW',
-    EDIT: 'EDIT',
-    COMPLETED: 'COMPLETED'
-  };
-  toggleStateService.currentState = toggleStateService.STATE.EDIT;
-
-  toggleStateService.validateValue = function(value)
-  {
-    if (value == this.STATE.PREVIEW || value == this.STATE.EDIT || this.STATE.COMPLETED)
-      return;
-
-    console.log('Incompatible state value: ' + value);
-    value = this.STATE.PREVIEW;
-  };
-
-  toggleStateService.setState = function(value) {
-    this.validateValue(value);
-
-    this.currentState = value;
-    $rootScope.$broadcast('stateChanged');
-  };
-
-  toggleStateService.getState = function() {
-    return this.currentState;
-  };
-
-  return toggleStateService;
-});
-
 // For contenteditable data-binding.
 app.directive('contenteditable', function() {
   return {
@@ -206,27 +129,22 @@ app.directive('toolboxItem', function($compile) {
 /**
  * Toolbox - Master Controller
  */
-app.controller('ToolboxCtrl', function($scope, toggleStateService, serializationService, 
-		inputExtractionService, pageService) {
-	
-  $scope.state = toggleStateService.STATE.EDIT;
+app.controller('ToolboxCtrl', function($scope, internalService) {
+  $scope.state = StateService.STATES.EDIT;
  
   $scope.isEditable = function() {
-    return $scope.state == toggleStateService.STATE.EDIT;
+    return $scope.state == StateService.STATES.EDIT;
   };
  
   $scope.changeState = function(newState) {
     switch(newState)
     {
-    case toggleStateService.STATE.EDIT:
+    case StateService.STATES.EDIT:
       $scope.state = newState;
       $('.toolbox-item-list').sortable("enable");
       break;
-    case toggleStateService.STATE.PREVIEW:
-      $scope.state = newState;
-      $('.toolbox-item-list').sortable("disable");
-      break;
-    case toggleStateService.STATE.COMPLETED:
+    case StateService.STATES.PREVIEW:
+    case StateService.STATES.COMPLETED:
       $scope.state = newState;
       $('.toolbox-item-list').sortable("disable");
       break;
@@ -235,7 +153,7 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
       break;
     }
 
-    toggleStateService.setState($scope.state);
+    internalService.stateService.setState($scope.state);
   };
 
   $scope.elemTypes = [
@@ -258,24 +176,23 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
   };
   
   $scope.init = function(jsonItems, state, solutionId) { 
+	  // TODO: find a better way to get the resources than to receive the solution id and 
+	  // to use a hardcoded url in the imageGroup component 
+	  if (solutionId !== undefined) {
+        $scope.solutionId = solutionId;
+	  }  
 	  
-	// TODO: find a better way to get the resources than to receive the solution id and 
-	// to use a hardcoded url in the imageGroup component 
-	if (solutionId !== undefined) {
-      $scope.solutionId = solutionId;
-	}  
+	  for (var item in jsonItems) {
+	    if (jsonItems[item].type == 'imageGroup' && $scope.solutionId) {
+		    jsonItems[item].solutionId = solutionId;
+	    }	
+	    $scope.addExistingElement(jsonItems[item]);
+	  }
 	  
-	for (var item in jsonItems) {
-	  if (jsonItems[item].type == 'imageGroup' && $scope.solutionId) {
-		  jsonItems[item].solutionId = solutionId;
-	  }	
-	  $scope.addExistingElement(jsonItems[item]);
-	}
-	  
-	if (state) {
-	  $scope.state = state;
-	  toggleStateService.setState($scope.state);
-  	}
+	  if (state) {
+	    $scope.state = state;
+	    internalService.stateService.setState($scope.state);
+  	  }
   };
   
   $scope.addExistingElement = function(elem) {
@@ -312,27 +229,17 @@ app.controller('ToolboxCtrl', function($scope, toggleStateService, serialization
   
   /* Method called when serializing the toolbox */
   $scope.serialize = function() {
-    serializationService.start();
-    $scope.toolboxJsonString = serializationService.getContent();
+    internalService.serializationService.start();
   };
   
   /* Method called when extracting the input values */
   $scope.extractInputs = function() {
-    inputExtractionService.start();
-    $scope.inputs = inputExtractionService.getInputs();
-    //alert(window.JSON.stringify($scope.inputs));
+    internalService.inputExtractionService.start();
   };
 
   /* When the task form should be submited */ 
-  $scope.$on('prepareCreateTaskForm', function() {
-    $scope.serialize();
-    pageService.toolboxJsonString = $scope.toolboxJsonString;
-  });
+  $scope.$on('prepareCreateTaskForm', $scope.serialize);
   
   /* When the solution form should be submited */ 
-  $scope.$on('prepareCompleteTaskForm', function() {
-	$scope.extractInputs();
-	pageService.setInputsJson(window.JSON.stringify($scope.inputs));
-  });
-  
+  $scope.$on('prepareCompleteTaskForm', $scope.extractInputs);
 });

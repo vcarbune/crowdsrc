@@ -1,31 +1,13 @@
-
-app.factory('pageService', function($rootScope) {
-	var pageService = {};
-	pageService.inputsJsonString = '';
-	
-	pageService.prepareCompleteTaskForm = function() {
-	  $rootScope.$broadcast('prepareCompleteTaskForm');
-	};
-	
-	pageService.setInputsJson = function(json) {
-		this.inputsJsonString = json;
-	}
-	
-	pageService.getInputsJson = function() {
-		return this.inputsJsonString;
-	}
-	
-	return pageService;
-});
-
 /**
- * Form Controller
+ * The MasterFormCtrl defined in this file is used when **completing** a task.
  */
-app.controller('MasterFormCtrl', function($scope, pageService) {
+app.controller('MasterFormCtrl', function($scope, toolboxService) {
   $scope.submitForm = function() {
-	pageService.prepareCompleteTaskForm();
-	inputsJson = pageService.getInputsJson();
-	$('#complete-task-form input[name="inputs"]').val(inputsJson);
-	$('#complete-task-form').submit();
+	  toolboxService.prepareToolboxInputElements();
+
+	  $('#complete-task-form input[name="inputs"]').val(
+        toolboxService.getInputsStringifiedJson());
+
+	  $('#complete-task-form').submit();
   };
 });
