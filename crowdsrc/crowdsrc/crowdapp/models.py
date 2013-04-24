@@ -34,9 +34,7 @@ class UserProfile(models.Model):
 
     def can_solve(self, task):
         times_solved = Solution.objects.filter(worker=self, task=task).count()
-        if times_solved < task.max_solutions():
-            return True
-        return False
+        return task.can_be_solved(times_solved)
     
     def __unicode__(self):
         return self.first_name + " " + self.last_name
@@ -82,8 +80,6 @@ class Task(models.Model):
 
         # generate resource set candidate
         # assume maximum 100 tries are needed
-        print "number of resources of task"
-        print self.max_solutions()
         for iter in range(100):
             selected_resources = []  
             ids = []
@@ -102,13 +98,18 @@ class Task(models.Model):
     
     # returns number of times a worker can solve the task
     # counts number of distinct resource sets a worker can get
-    def max_solutions(self):
+    def can_be_solved(self, times_solved):
         if self.resources_per_task == 0:
-            return 1
+            return times_solved < 1
         total_res = Resource.objects.filter(task = self).count()
         if total_res == self.resources_per_task:
-            return 1
-        return compute_combinations(total_res, self.resources_per_task)
+            return times_solved < 1
+        total_times = 1L
+        for i in range(self.resources_per_task):
+          total_times *= (total_res-i)/(i+1)
+          if total_times > times_solved:
+            return True
+        return False
 
     def __unicode__(self):
         return self.name
