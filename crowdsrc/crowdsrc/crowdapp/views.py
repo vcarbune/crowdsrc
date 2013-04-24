@@ -5,7 +5,7 @@ from datetime import datetime
 
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect, HttpRequest, Http404
@@ -34,6 +34,7 @@ def register(request):
             user = user_form.save()
             profile = profile_form.save(commit=False)
             profile.user = user
+            profile.user.user_permissions.add(Permission.objects.get(codename="Worker"))
             profile.save()
             
             new_user = authenticate(username=request.POST['user-username'],

@@ -14,9 +14,16 @@ class Qualification(models.Model):
     def __unicode__(self):
         return self.name
 
+class CustomUser(User):
+    class Meta:
+        permissions = (
+            ('Worker', 'Limited access'),
+            ('Task Creator', 'Extended access'),
+        )
+
 class UserProfile(models.Model):
     
-    user = models.OneToOneField(User)    
+    user = models.OneToOneField(CustomUser)    
     last_login = models.DateTimeField(default=datetime.now)
 
     first_name = models.CharField(max_length=200)

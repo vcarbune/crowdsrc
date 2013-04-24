@@ -12,7 +12,7 @@ class UserCreateForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
     class Meta:
-        model = User
+        model = CustomUser
         fields = ("username", "email", "password1", "password2")
 
     def save(self, commit=True):
@@ -61,10 +61,4 @@ def get_accesspath_formset(task):
     else:
         return AccessPathFormSetWithExtra(instance=task, prefix='accesspath')
         
-        
-        
-        
-        
-        
-
         
