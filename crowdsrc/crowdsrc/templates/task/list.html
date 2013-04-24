@@ -27,10 +27,10 @@
             <td> {{ task.cost }} </td>
             <td> {{ task.created_at }} </td>
             <td>
-                {% if user|solved:task %}
-                     Solved 
+                {% if task.can_solve %}
+                    <a href="{% url "crowdapp.views.complete_task" task.id %}"> Complete task </a>
                 {% else %}
-                     <a href="{% url "crowdapp.views.complete_task" task.id %}"> Complete task </a>
+                    Solved
                 {% endif %}
             </td>
         </tr>

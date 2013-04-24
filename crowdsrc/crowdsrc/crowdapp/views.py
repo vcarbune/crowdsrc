@@ -80,7 +80,11 @@ def edit_task(request, task_id=None):
                 if input_type != None:
                     task_input = TaskInput(task = task, index=i, type=input_type)
                     task_input.save()
-            
+            # get number of resources
+                if items[i]['type'] == 'imageGroup':
+                    task.resources_per_task = int(items[i]['nrImagesPerTask'])
+                    task.save()
+               
             # save access paths
             accesspaths = accesspath_formset.save(commit=False)
             for ap in accesspaths:
@@ -108,22 +112,15 @@ def view_task(request, task_id):
         raise Http404
 
 @login_required
-def complete_task(request, task_id):
-    try:
-        profile = get_profile(request.user)
-        task = Task.objects.get(id=task_id)
-    except ObjectDoesNotExist:
-        raise Http404
-    
-    message = "" 
+def complete_task(request, task_id, solution_id=0):
+
+    message = ""
+
     if request.method == 'POST':
-        solution, created = Solution.objects.get_or_create(worker=profile, task=task)
-        if created:
-            if 'access_path_id' in request.POST:
-                solution.access_path = AccessPath.objects.get(id=request.POST['access_path_id'])
-            else:
-                solution.access_path = None
-                
+        try:
+          solution = Solution.objects.get(id=solution_id)
+        except ObjectDoesNotExist:
+          raise Http404
         # Extract input values
         task_inputs = json.loads(request.POST['inputs'])
         
@@ -134,7 +131,7 @@ def complete_task(request, task_id):
             
             for input_val_dict in task_inputs:
                 try:
-                    task_input = TaskInput.objects.get(task=task, index=input_val_dict['id'])
+                    task_input = TaskInput.objects.get(task=solution.task, index=input_val_dict['id'])
                     input_value = TaskInputValue(solution=solution, taskinput=task_input, value=input_val_dict['value'])
                     input_value.save()
                 except ObjectDoesNotExist:
@@ -146,10 +143,14 @@ def complete_task(request, task_id):
             solution.save()
             message = "You have errors in your solution." # TODO: get descriptive errors from validation
     else:
-        solution, created = Solution.objects.get_or_create(worker=profile, task=task, created_at=datetime.now())
-        if created:
-            solution.access_path = task.get_random_access_path()
-            solution.save()
+        try:
+          profile = get_profile(request.user)
+          task = Task.objects.get(id=task_id)
+        except ObjectDoesNotExist:
+          raise Http404
+        solution = Solution.objects.create(worker=profile, task=task, created_at=datetime.now(), access_path=task.get_random_access_path())
+        solution.resources = task.get_random_resources(profile)
+        solution.save()
         
     return render(request, 'task/complete.html', {'solution': solution, 'message': message})
 
@@ -186,11 +187,13 @@ def all_tasks(request):
     try:
         profile = get_profile(request.user)
         user_qualifs = set(profile.qualifications.all())
-        all_tasks = Task.objects.filter(is_active=True)
+        # TO DO: remove comment on next line
+        all_tasks = Task.objects.filter(is_active=True)#.exclude(creator=profile)
         good_tasks = []
         for task in all_tasks:
             task_qualifs = set(task.qualifications.all())
             if task_qualifs.issubset(user_qualifs):
+                task.can_solve = profile.can_solve(task)
                 good_tasks.append(task)
     except ObjectDoesNotExist:
         raise Http404
