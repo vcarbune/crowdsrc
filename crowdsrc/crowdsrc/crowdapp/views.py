@@ -35,7 +35,7 @@ def register(request):
             user = user_form.save()
             profile = profile_form.save(commit=False)
             profile.user = user
-            profile.user.user_permissions.add(Permission.objects.get(codename="Worker"))
+            profile.user.user_permissions.add(Permission.objects.get(codename="is_worker"))
             profile.save()
             
             new_user = authenticate(username=request.POST['user-username'],
