@@ -77,6 +77,7 @@
 		</div>
 	</div>
 	<br>
+  {{ task_form.qualifications.label}}: {{ task_form.qualifications }}
 
 	<!-- Begin Toolbox -->
 	<div ng-controller="ToolboxCtrl" 
@@ -85,10 +86,12 @@
 		{% endif %} 
 		class="toolbox">
 	    <ul ui-sortable="sortableOptions" ng-model="content" class="toolbox-item-list">
-	    	<li ng-repeat="item in content" class="toolbox-item">
+        {% verbatim %}
+    	  <li ng-repeat="item in content" class="toolbox-item" id="{{item.id}}">
 	    		<toolbox-item content="item" itemcontent="item.itemContent"></toolbox-item>
 	    		<button type="button" ng-click="removeElement(item.id)" ng-show="isEditable()">Remove</button>
 	    	</li>
+        {% endverbatim %}
 	    </ul>
 	    
 	    <div class="toolbox-new-elem">

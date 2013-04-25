@@ -32,25 +32,25 @@ app.directive('toolboxItem', function($compile) {
 
   // Note: not really important right now.
   var paragraphTemplate = 
-	  "<div ng-controller='ParagraphCtrl' ng-init='init()' class='task-generic-item'>" +
-      "<p for='task_{{content.id}}' contenteditable='{{isEditable}}'" +
+	  "<div ng-controller='ParagraphCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
+      "<p contenteditable='{{isEditable}}'" +
         "class='toolbox-editable' ng-model='itemContent.paragraphText'>{{itemContent.paragraphText}}</p>" +
       "</div>";
   
   var textFieldTemplate =
-	  "<div ng-controller='TextFieldCtrl' ng-init='init()' class='task-generic-item'>" +
+	  "<div ng-controller='TextFieldCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
       "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.textFieldLabel'>{{itemContent.textFieldLabel}}</div>" + 
       "<input id='task_{{content.id}}' ng-model='textFieldValue' name='task_{{content.id}}' value='{{textFieldValue}}' type='text' ng-disabled='disabled' />" +
       "</div>";
   
   var checkboxTemplate = 
-	  "<div ng-controller='CheckboxCtrl' ng-init='init()' class='task-generic-item'>" +
+	  "<div ng-controller='CheckboxCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
       "<input id='task_{{content.id}}' ng-model='checkBoxValue' name='task_{{content.id}}' type='checkbox' ng-disabled='disabled' />" +
       "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.checkBoxLabel'>{{itemContent.checkBoxLabel}}</div>" +
       "</div>";
   
   var radioGroupTemplate = 
-	  "<div ng-controller='RadioGroupCtrl' ng-init='init()' class='task-generic-item'>" +
+	  "<div ng-controller='RadioGroupCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
 	  "<div ng:repeat='i in items'>" +
       "<input type='radio' name='task_{{content.id}}' value='{{i.id}}' ng-model='radioValue' ng-change='setRadioValue(radioValue)' id='radio_{{i.id}}' ng-disabled='disabled' />" +
       "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='items[i.id].name'>{{items[i.id].name}}</div>" +
@@ -60,7 +60,8 @@ app.directive('toolboxItem', function($compile) {
       "</div>";
   
   var rankingTemplate = 
-	  "<div ng-controller='RankingCtrl' ng-init='init()' class='task-generic-item'>" +
+	  "<div ng-controller='RankingCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
+    "<div ng-model='itemContent.id' ng-show='false'>{{content.id}}</div>" +
 	  "<ul class='toolbox-ranking-list'>" +
 	  "<li ng-repeat='i in items' class='{{i.state}}'>" +
 	  	"<span class='toolbox-ranking-name toolbox-editable' " + 
@@ -74,7 +75,7 @@ app.directive('toolboxItem', function($compile) {
 
   var imageGroupTemplate =
       // Content for EDIT state.
-           "<div ng-controller='ImageGroupCtrl' ng-init='init()' class='task-generic-item'>" +
+      "<div ng-controller='ImageGroupCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
       "<label for='resources_{{content.id}}' ng-show='isEditable'>" +
         "Select images to upload:" +
       "</label><br/>" +
@@ -192,10 +193,16 @@ app.controller('ToolboxCtrl', function($scope, internalService) {
 	  if (state) {
 	    $scope.state = state;
 	    internalService.stateService.setState($scope.state);
-  	  }
+  	}
   };
   
   $scope.addExistingElement = function(elem) {
+    // Note: the IDs are valid only for saving, not for reconstructing. Hence,
+    // we override the previously stored IDs with new ones, given in the order
+    // the elements are added.
+
+    // FIXME: Don't store this IDs in the first place.
+    elem.id = $scope.content.length;
 	  $scope.content.push({
 		  id: $scope.content.length,
 		  type: elem.type,
@@ -242,4 +249,9 @@ app.controller('ToolboxCtrl', function($scope, internalService) {
   
   /* When the solution form should be submited */ 
   $scope.$on('prepareCompleteTaskForm', $scope.extractInputs);
+
+  /* Debugging */
+  $scope.toolboxJsonString = function() {
+    return internalService.serializationService.getContent();
+  };
 });
