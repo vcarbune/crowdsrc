@@ -103,8 +103,9 @@ class Task(models.Model):
         total_res = Resource.objects.filter(task = self).count()
         if total_res == self.resources_per_task:
             return times_solved < 1
+        k = min(self.resources_per_task, total_res - self.resources_per_task)
         total_times = 1L
-        for i in range(self.resources_per_task):
+        for i in range(k):
           total_times *= (total_res-i)/(i+1)
           if total_times > times_solved:
             return True
