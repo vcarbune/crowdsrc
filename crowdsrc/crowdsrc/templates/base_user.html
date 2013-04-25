@@ -4,15 +4,16 @@
 
 {% block menu %}
 	<li><a href="/all_tasks">View tasks</a></li>
+{% if user.is_task_creator %}
 	<li><a href="#">Manage tasks</a>
 		<ul>
 			<li><a href="/create_task">Create task</a></li>
 			<li><a href="/my_tasks">My tasks</a></li>
 		</ul>
 	</li>
+{% endif %}
 	<li><a href="#">My account</a></li>
 	<li><a href="/my_solutions/">My solutions</a></li>
-
 {% endblock %}
 
 {% block welcome_message %}

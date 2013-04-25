@@ -4,7 +4,7 @@ import uuid
 from datetime import datetime
 
 from django.core.urlresolvers import reverse
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User, Permission
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import authenticate, login, logout
@@ -24,6 +24,7 @@ import urllib
 
 @login_required
 def index(request):
+    request.user.is_task_creator = request.user.has_perm('crowdapp.is_task_creator')
     return render(request, 'home.html')
      
 def register(request):     
@@ -47,8 +48,9 @@ def register(request):
         
     return render(request, 'auth/register.html', {'user_form': user_form, 'profile_form': profile_form})
 
-@login_required
+@permission_required('crowdapp.is_task_creator', raise_exception=True)
 def edit_task(request, task_id=None):
+    request.user.is_task_creator = request.user.has_perm('crowdapp.is_task_creator')
     profile = get_profile(request.user)
     if task_id:
         try:
@@ -114,7 +116,7 @@ def view_task(request, task_id):
 
 @login_required
 def complete_task(request, task_id, solution_id=0):
-
+    request.user.is_task_creator = request.user.has_perm('crowdapp.is_task_creator')
     message = ""
 
     if request.method == 'POST':
@@ -176,6 +178,7 @@ def get_solution_resources(request, solution_id, num_res):
 
 @login_required
 def my_tasks(request):
+    request.user.is_task_creator = request.user.has_perm('crowdapp.is_task_creator')
     try:
         profile = get_profile(request.user)
         tasks = Task.objects.filter(creator=profile)
@@ -185,6 +188,7 @@ def my_tasks(request):
 
 @login_required
 def all_tasks(request):
+    request.user.is_task_creator = request.user.has_perm('crowdapp.is_task_creator')
     try:
         profile = get_profile(request.user)
         user_qualifs = set(profile.qualifications.all())
@@ -202,6 +206,7 @@ def all_tasks(request):
 
 @login_required
 def view_solution(request, solution_id):
+    request.user.is_task_creator = request.user.has_perm('crowdapp.is_task_creator')
     try:
         solution = Solution.objects.get(id=solution_id)
         profile = get_profile(request.user)
@@ -223,8 +228,9 @@ def view_solution(request, solution_id):
     
     return render(request, 'solution/solution.html', {'solution': solution, 'task_items': task_items})
 
-@login_required
+@permission_required('crowdapp.is_task_creator', raise_exception=True)
 def process_solution(request, solution_id, approved):
+    request.user.is_task_creator = request.user.has_perm('crowdapp.is_task_creator')
     try:
         solution = Solution.objects.get(id=solution_id)
         profile = get_profile(request.user)
@@ -246,14 +252,15 @@ def process_solution(request, solution_id, approved):
 
 @login_required
 def my_solutions(request):
-    
+    request.user.is_task_creator = request.user.has_perm('crowdapp.is_task_creator')
     profile = get_profile(request.user)
     solutions = Solution.objects.filter(worker=profile)
     
     return render(request, 'solution/my_solutions.html', {'solutions': solutions })
 
-@login_required
+@permission_required('crowdapp.is_task_creator', raise_exception=True)
 def task_solutions(request, task_id):
+    request.user.is_task_creator = request.user.has_perm('crowdapp.is_task_creator')
     try:
         task = Task.objects.get(id=task_id)
         profile = get_profile(request.user)

@@ -17,8 +17,8 @@ class Qualification(models.Model):
 class CustomUser(User):
     class Meta:
         permissions = (
-            ('Worker', 'Limited access'),
-            ('Task Creator', 'Extended access'),
+            ('is_worker', 'Worker access'),
+            ('is_task_creator', 'Task creator access'),
         )
 
 class UserProfile(models.Model):
