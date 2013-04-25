@@ -178,16 +178,20 @@ function RadioGroupCtrl($scope, internalService)
 	    type: 'radioGroup',
 	    name: 'Radio Group'
 	  };
-	  $scope.items = [];
+	  $scope.items = [
+            {id: 0, name: "New item"},
+            {id: 1, name: "New item"},
+            {id: 2, name: "New item"}
+          ];
 	}
 	else {
 	  $scope.items = [];
-      angular.forEach($scope.itemContent.items, function(item) {
-        $scope.items.push({
-          id: item.id,
-          name: item.name
-        });
-      });
+          angular.forEach($scope.itemContent.items, function(item) {
+            $scope.items.push({
+              id: item.id,
+              name: item.name
+            });
+          });
       
       // set the input value, in case we view a solution
       if ($scope.itemContent.inputValue) {
@@ -264,17 +268,22 @@ function RankingCtrl($scope, internalService)
 	    type: 'ranking',
 	    name: 'Ranking Component'
 	  };
-	  $scope.items = [];
+	  $scope.items = [
+            {id: 0, name: 'New item', rank: 100, state: 'free'},
+            {id: 1, name: 'New item', rank: 100, state: 'free'},
+            {id: 2, name: 'New item', rank: 100, state: 'free'},
+          ];
+
 	} else {
 	  $scope.items = [];
-      angular.forEach($scope.itemContent.items, function(item) {
-        $scope.items.push({
-          id: item.id,
-          name: item.name,
-          rank: item.rank,
-          state: item.state
-        });
-      });
+          angular.forEach($scope.itemContent.items, function(item) {
+            $scope.items.push({
+              id: item.id,
+              name: item.name,
+              rank: item.rank,
+              state: item.state
+            });
+          });
       
       // set the input value, in case we view a solution
       if ($scope.itemContent.inputValue) { 

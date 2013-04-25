@@ -12,17 +12,13 @@
 }
 </style>
 
-<div class="form_errors">
-	{{ user_form.errors }} 
-	{{ profile_form.errors }} 
-</div>
-
 <h2>Register</h2>
 <form method="post" action="{% url "crowdapp.views.register" %}" id="register_form" style="width: 200px;">
 	{% csrf_token %}
 	<fieldset class="input" style="border: 0 none;">
 		{{ user_form.as_p }} 
 		{{ profile_form.as_p }} 
+                <p> Hold down "Control" or "Command" on a Mac, to select more than one. </p>
 		<input type="submit" value="Register" />
 	</fieldset>
 </form>

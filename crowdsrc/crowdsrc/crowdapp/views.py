@@ -51,7 +51,6 @@ def register(request):
 @permission_required('crowdapp.is_task_creator', raise_exception=True)
 def edit_task(request, task_id=None):
     request.user.is_task_creator = request.user.has_perm('crowdapp.is_task_creator')
-    profile = get_profile(request.user)
     if task_id:
         try:
             task = Task.objects.get(id=task_id)
@@ -102,17 +101,6 @@ def edit_task(request, task_id=None):
         task_form = CreateTaskForm(instance=task, prefix='task')
         accesspath_formset = get_accesspath_formset(task)
     return render(request, 'task/edit.html', {'task_form': task_form, 'accesspath_formset': accesspath_formset})
-
-@login_required
-def view_task(request, task_id):
-    try:
-        profile = get_profile(request.user)
-        task = Task.objects.get(id=task_id)
-    except ObjectDoesNotExist:
-        raise Http404
-
-    if task.creator.id != profile.id:
-        raise Http404
 
 @login_required
 def complete_task(request, task_id, solution_id=0):

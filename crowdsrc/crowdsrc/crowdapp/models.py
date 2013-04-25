@@ -37,8 +37,6 @@ class UserProfile(models.Model):
     
     qualifications = models.ManyToManyField(Qualification, null=True, blank=True)
     
-    is_taskcreator = models.BooleanField(default=False)
-
     def can_solve(self, task):
         times_solved = Solution.objects.filter(worker=self, task=task).count()
         return task.can_be_solved(times_solved)
@@ -46,12 +44,6 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.first_name + " " + self.last_name
 
-def compute_combinations(n, k):
-    answer = 1
-    for i in range(k):
-        answer = answer * (n-i)/(i+1)
-    return answer
-    
 class Task(models.Model):
     creator = models.ForeignKey(UserProfile)
     name = models.CharField(max_length=200)

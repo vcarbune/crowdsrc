@@ -13,7 +13,6 @@
     <table class="task_list">
         <tr>
             <th> Task Name </th>
-            <th> Creator </th>
             <th> Cost </th>
             <th> Creation Date </th>
             <th> Is active </th>
@@ -23,7 +22,6 @@
     {% for task in tasks %}
         <tr>
             <td> {{ task.name }} </td>
-            <td> {{ task.creator }} </td>
             <td> {{ task.cost }} </td>
             <td> {{ task.created_at }} </td>
             <td>
