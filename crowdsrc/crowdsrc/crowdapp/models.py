@@ -162,7 +162,7 @@ class Solution(models.Model):
     
 class TaskInput(models.Model):
     task = models.ForeignKey(Task)
-    type = models.SmallIntegerField(choices=ANSWER_TYPES, default=0)
+    type = models.SmallIntegerField(default=0)
     index = models.SmallIntegerField(default=0)
     
     def __unicode__(self):
