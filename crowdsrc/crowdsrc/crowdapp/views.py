@@ -214,7 +214,7 @@ def view_solution(request, solution_id):
         raise Http404
     
     if solution.worker.id != profile.id and solution.task.creator.id != profile.id:
-        raise Http404
+        raise PermissionDenied
 
     # Inject values in the json for the task    
     task_items = json.loads(solution.task.content)
@@ -238,7 +238,7 @@ def process_solution(request, solution_id, approved):
         raise Http404
 
     if solution.task.creator.id != profile.id:
-        raise Http404
+        raise PermissionDenied
     
     if int(approved) == 1:
         solution.status = 2
@@ -254,7 +254,7 @@ def process_solution(request, solution_id, approved):
 def my_solutions(request):
     request.user.is_task_creator = request.user.has_perm('crowdapp.is_task_creator')
     profile = get_profile(request.user)
-    solutions = Solution.objects.filter(worker=profile)
+    solutions = Solution.objects.filter(worker=profile).exclude(status=0)
     
     return render(request, 'solution/my_solutions.html', {'solutions': solutions })
 
@@ -278,7 +278,7 @@ def task_statistics(request, task_id):
         task = Task.objects.get(id=task_id)
         profile = get_profile(request.user)
         if task.creator != profile:
-            raise Http404
+            raise PermissionDenied
     except ObjectDoesNotExist:
         raise Http404
     
