@@ -4,6 +4,7 @@ import uuid
 from datetime import datetime
 
 from django.core.urlresolvers import reverse
+from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User, Permission
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
@@ -116,7 +117,6 @@ def complete_task(request, task_id, solution_id=0):
         task_inputs = json.loads(request.POST['inputs'])
         
         if check_solution_values(task_inputs): # TODO: validate input
-            
             solution.status = 1
             solution.save()
             
@@ -139,9 +139,16 @@ def complete_task(request, task_id, solution_id=0):
           task = Task.objects.get(id=task_id)
         except ObjectDoesNotExist:
           raise Http404
-        solution = Solution.objects.create(worker=profile, task=task, created_at=datetime.now(), access_path=task.get_random_access_path())
+        if profile.can_solve(task) == False:
+          raise PermissionDenied
+        try:
+          solution = Solution.objects.get(worker=profile, task=task, status=0)
+        except ObjectDoesNotExist:
+          solution = Solution(worker=profile, task=task, access_path=task.get_random_access_path(), created_at=datetime.now())
+          solution.status = 0
+          solution.save()
+
         solution.resources = task.get_random_resources(profile)
-        solution.save()
         
     return render(request, 'task/complete.html', {'solution': solution, 'message': message})
 

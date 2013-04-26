@@ -38,7 +38,7 @@ class UserProfile(models.Model):
     qualifications = models.ManyToManyField(Qualification, null=True, blank=True)
     
     def can_solve(self, task):
-        times_solved = Solution.objects.filter(worker=self, task=task).count()
+        times_solved = Solution.objects.filter(worker=self, task=task).exclude(status=0).count()
         return task.can_be_solved(times_solved)
     
     def __unicode__(self):
