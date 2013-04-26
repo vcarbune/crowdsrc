@@ -1,0 +1,18 @@
+{% extends "base_user.html" %} 
+
+{% block title %}
+  My account
+{% endblock %}
+{% block content %}
+
+<h2>My account</h2>
+<form method="post" action="{% url "crowdapp.views.account" %}" id="account_form" style="width: 200px">
+    {% csrf_token %}
+    <fieldset class="input" style="border: 0 none;">
+        {{ profile_form.as_p }} 
+	<input type="submit" value="Update account data" />
+    </fieldset>
+
+</form>
+
+{% endblock %}
