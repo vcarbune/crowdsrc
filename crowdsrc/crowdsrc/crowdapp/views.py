@@ -19,6 +19,7 @@ from django.views.decorators.csrf import csrf_exempt
 from models import *
 from forms import *
 from helpers import *
+from stats import *
 
 import json
 import urllib
@@ -63,6 +64,8 @@ def edit_task(request, task_id=None):
     if request.method == 'POST':
         task_form = CreateTaskForm(instance=task, data=request.POST, prefix='task')
         accesspath_formset = AccessPathFormSet(instance=task, data=request.POST, prefix='accesspath')
+        
+        # FIXME: should clean the accesspath_formset, if the task_form is not valid
         
         if task_form.is_valid() and accesspath_formset.is_valid():
             # save task
@@ -125,7 +128,7 @@ def complete_task(request, task_id, solution_id=0):
                     task_input = TaskInput.objects.get(task=solution.task, index=input_val_dict['id'])
                     input_value = TaskInputValue(solution=solution, taskinput=task_input, value=input_val_dict['value'])
                     input_value.save()
-                except ObjectDoesNotExist:
+                except:
                     pass
             
             return redirect(reverse('crowdapp.views.view_solution', args=[solution.id]))
@@ -265,21 +268,24 @@ def task_solutions(request, task_id):
         raise Http404
     
     return render(request, 'solution/task_solutions.html', {'task': task })
+
+@permission_required('crowdapp.is_task_creator', raise_exception=True)
+def task_statistics(request, task_id):
+    request.user.is_task_creator = request.user.has_perm('crowdapp.is_task_creator')
+    try:
+        task = Task.objects.get(id=task_id)
+        profile = get_profile(request.user)
+        if task.creator != profile:
+            raise Http404
+    except ObjectDoesNotExist:
+        raise Http404
+    
+    total_stats, ap_stats_map = get_task_stats(task)
+    
+    return render(request, 'task/statistics.html', {'task': task, 'task_stats': task_stats })
     
 def toolbox_dev(request):
     return render(request, 'dev/toolbox.html');
 
-
-@csrf_exempt
-def upload_files(request):
-    unique_foldername = str(uuid.uuid4())
-    os.makedirs(os.path.join(settings.UPLOADS_PATH, unique_foldername))
-    
-    for aFile in request.FILES.getlist('files'):
-        full_path = os.path.join(settings.UPLOADS_PATH, unique_foldername, aFile.name)
-        destination = open(full_path, 'wb+') 
-        for chunk in aFile.chunks():
-            destination.write(chunk)
-    return HttpResponse(json.dumps({"folder_name": unique_foldername}), mimetype="application/json")
 
 

@@ -22,11 +22,11 @@
 {% endblock %}
 
 {% block title %}
-  Create new task
+	{% if task_form.instance.id %} Edit task {% else %} Create task {% endif %}
 {% endblock %}
 {% block content %}
 
-<h2>Create Task</h2>
+<h2>{% if task_form.instance.id %} Edit task {% else %} Create task {% endif %}</h2>
 
 <form ng-app="angularjs-toolbox" method="post" 
 	action="{% if task_form.instance.id %} {% url 'crowdapp.views.edit_task' task_form.instance.id %} {% else %} {% url 'crowdapp.views.edit_task' %} {% endif %} " 
@@ -43,7 +43,7 @@
 	{{ task_form.name.label_tag }}: {{ task_form.name }} {{ task_form.name.errors }}
 	<br><br>
 	
-	{% if not task_form.instance.accesspath_set.all %}
+	{% if accesspath_formset.initial_form_count == 0 %}
 		<button type="button" id="add-accesspaths">Add access paths</button>
 		<script type="text/javascript">
 			$('#add-accesspaths').click(function(){
@@ -52,7 +52,7 @@
 			});
 		</script>
 	{% endif %}
-	<div id="accesspaths" {% if not task_form.instance.accesspath_set.all %}style="display:none;"{% endif %}>
+	<div id="accesspaths" {% if accesspath_formset.initial_form_count == 0 %} style="display:none;"{% endif %}>
 		Access Paths:
 		<div id="accesspath-formset">
 			{{ accesspath_formset.management_form }}

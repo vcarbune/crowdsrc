@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     # Task related urls
     url(r'^create_task/$', 'crowdapp.views.edit_task'),
     url(r'^edit_task/(?P<task_id>\d+)/$', 'crowdapp.views.edit_task'),
+    
     url(r'^complete_task/(?P<task_id>\d+)/$', 'crowdapp.views.complete_task'),
     url(r'^complete_task/(?P<task_id>\d+)/(?P<solution_id>\d+)$', 'crowdapp.views.complete_task'),
     url(r'^my_tasks/$', 'crowdapp.views.my_tasks'),
@@ -27,6 +28,7 @@ urlpatterns = patterns('',
     url(r'^my_solutions/$', 'crowdapp.views.my_solutions'),
     url(r'^view_solution/(?P<solution_id>\d+)/$', 'crowdapp.views.view_solution'),
     
+    url(r'^task_statistics/(?P<task_id>\d+)/$', 'crowdapp.views.task_statistics'),
     url(r'^task_solutions/(?P<task_id>\d+)/$', 'crowdapp.views.task_solutions'),
     url(r'^process_solution/(?P<solution_id>\d+)/(?P<approved>\d+)/$', 'crowdapp.views.process_solution'),
     
@@ -37,7 +39,4 @@ urlpatterns = patterns('',
 
     # Toolbox development URL
     url(r'^toolbox/$', 'crowdapp.views.toolbox_dev'),
-    
-    # Uploading images for resources
-    url(r'^upload_files/$', 'crowdapp.views.upload_files'),
 )
