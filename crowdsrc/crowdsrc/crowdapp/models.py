@@ -38,8 +38,17 @@ class UserProfile(models.Model):
     qualifications = models.ManyToManyField(Qualification, null=True, blank=True)
     
     def can_solve(self, task):
+        if self.is_qualified(task) == False:
+            return False
         times_solved = Solution.objects.filter(worker=self, task=task).exclude(status=0).count()
         return task.can_be_solved(times_solved)
+
+    def is_qualified(self, task):
+        task_qualifs = set(task.qualifications.all())
+        user_qualifs = set(self.qualifications.all())
+        if task_qualifs.issubset(user_qualifs):
+            return True
+        return False
     
     def __unicode__(self):
         return self.first_name + " " + self.last_name

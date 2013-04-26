@@ -55,8 +55,11 @@ def edit_task(request, task_id=None):
     if task_id:
         try:
             task = Task.objects.get(id=task_id)
+            profile = get_profile(request.user)
         except ObjectDoesNotExist:
             raise Http404
+        if task.creator != profile:
+            raise PermissionDenied
     else:
         task = None
         
@@ -191,8 +194,7 @@ def all_tasks(request):
         all_tasks = Task.objects.filter(is_active=True)#.exclude(creator=profile)
         good_tasks = []
         for task in all_tasks:
-            task_qualifs = set(task.qualifications.all())
-            if task_qualifs.issubset(user_qualifs):
+            if profile.is_qualified(task):
                 task.can_solve = profile.can_solve(task)
                 good_tasks.append(task)
     except ObjectDoesNotExist:
@@ -260,7 +262,7 @@ def task_solutions(request, task_id):
         task = Task.objects.get(id=task_id)
         profile = get_profile(request.user)
         if task.creator != profile:
-            raise Http404
+            raise PermissionDenied
     except ObjectDoesNotExist:
         raise Http404
     
