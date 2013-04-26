@@ -50,6 +50,20 @@ def register(request):
         
     return render(request, 'auth/register.html', {'user_form': user_form, 'profile_form': profile_form})
 
+@login_required
+def account(request):
+    try:
+        profile = get_profile(request.user)
+    except ObjectDoesNotExist:
+        raise Http404
+    if request.method == 'POST':
+        profile_form = ProfileForm(data=request.POST, prefix='profile', instance=profile)
+        if profile_form.is_valid():
+            profile_form.save()  
+    else :
+        profile_form = ProfileForm(prefix='profile', instance=profile)
+    return render(request, 'auth/account.html', {'profile_form': profile_form})
+
 @permission_required('crowdapp.is_task_creator', raise_exception=True)
 def edit_task(request, task_id=None):
     request.user.is_task_creator = request.user.has_perm('crowdapp.is_task_creator')

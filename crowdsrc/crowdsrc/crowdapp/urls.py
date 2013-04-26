@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^register/$', 'crowdapp.views.register'),
     url(r'^accounts/profile/$', RedirectView.as_view(url='/', permanent=True)),
+    url(r'^account/$', 'crowdapp.views.account'), 
 
     # Task related urls
     url(r'^create_task/$', 'crowdapp.views.edit_task'),
