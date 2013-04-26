@@ -38,8 +38,17 @@ class UserProfile(models.Model):
     qualifications = models.ManyToManyField(Qualification, null=True, blank=True)
     
     def can_solve(self, task):
-        times_solved = Solution.objects.filter(worker=self, task=task).count()
+        if self.is_qualified(task) == False:
+            return False
+        times_solved = Solution.objects.filter(worker=self, task=task).exclude(status=0).count()
         return task.can_be_solved(times_solved)
+
+    def is_qualified(self, task):
+        task_qualifs = set(task.qualifications.all())
+        user_qualifs = set(self.qualifications.all())
+        if task_qualifs.issubset(user_qualifs):
+            return True
+        return False
     
     def __unicode__(self):
         return self.first_name + " " + self.last_name
@@ -103,8 +112,9 @@ class Task(models.Model):
         total_res = Resource.objects.filter(task = self).count()
         if total_res == self.resources_per_task:
             return times_solved < 1
+        k = min(self.resources_per_task, total_res - self.resources_per_task)
         total_times = 1L
-        for i in range(self.resources_per_task):
+        for i in range(k):
           total_times *= (total_res-i)/(i+1)
           if total_times > times_solved:
             return True
@@ -152,7 +162,7 @@ class Solution(models.Model):
     
 class TaskInput(models.Model):
     task = models.ForeignKey(Task)
-    type = models.SmallIntegerField(choices=ANSWER_TYPES, default=0)
+    type = models.SmallIntegerField(default=0)
     index = models.SmallIntegerField(default=0)
     
     def __unicode__(self):

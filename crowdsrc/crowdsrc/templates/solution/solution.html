@@ -40,11 +40,9 @@
   </tr>
   {% endif %}
   <tr>
-    <th> Access path: </th>
     {% if solution.access_path %}
+    <th> Description: </th>
     <td> {{ solution.access_path.description }} </td>
-    {% else %}
-    <td> None </td>
     {% endif %}
   </tr>
   <tr>

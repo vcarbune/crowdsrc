@@ -4,6 +4,7 @@ import uuid
 from datetime import datetime
 
 from django.core.urlresolvers import reverse
+from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User, Permission
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
@@ -18,6 +19,7 @@ from django.views.decorators.csrf import csrf_exempt
 from models import *
 from forms import *
 from helpers import *
+from stats import *
 
 import json
 import urllib
@@ -54,14 +56,19 @@ def edit_task(request, task_id=None):
     if task_id:
         try:
             task = Task.objects.get(id=task_id)
+            profile = get_profile(request.user)
         except ObjectDoesNotExist:
             raise Http404
+        if task.creator != profile:
+            raise PermissionDenied
     else:
         task = None
         
     if request.method == 'POST':
         task_form = CreateTaskForm(instance=task, data=request.POST, prefix='task')
         accesspath_formset = AccessPathFormSet(instance=task, data=request.POST, prefix='accesspath')
+        
+        # FIXME: should clean the accesspath_formset, if the task_form is not valid
         
         if task_form.is_valid() and accesspath_formset.is_valid():
             # save task
@@ -116,7 +123,6 @@ def complete_task(request, task_id, solution_id=0):
         task_inputs = json.loads(request.POST['inputs'])
         
         if check_solution_values(task_inputs): # TODO: validate input
-            
             solution.status = 1
             solution.save()
             
@@ -125,7 +131,7 @@ def complete_task(request, task_id, solution_id=0):
                     task_input = TaskInput.objects.get(task=solution.task, index=input_val_dict['id'])
                     input_value = TaskInputValue(solution=solution, taskinput=task_input, value=input_val_dict['value'])
                     input_value.save()
-                except ObjectDoesNotExist:
+                except:
                     pass
             
             return redirect(reverse('crowdapp.views.view_solution', args=[solution.id]))
@@ -139,9 +145,16 @@ def complete_task(request, task_id, solution_id=0):
           task = Task.objects.get(id=task_id)
         except ObjectDoesNotExist:
           raise Http404
-        solution = Solution.objects.create(worker=profile, task=task, created_at=datetime.now(), access_path=task.get_random_access_path())
+        if profile.can_solve(task) == False:
+          raise PermissionDenied
+        try:
+          solution = Solution.objects.get(worker=profile, task=task, status=0)
+        except ObjectDoesNotExist:
+          solution = Solution(worker=profile, task=task, access_path=task.get_random_access_path(), created_at=datetime.now())
+          solution.status = 0
+          solution.save()
+
         solution.resources = task.get_random_resources(profile)
-        solution.save()
         
     return render(request, 'task/complete.html', {'solution': solution, 'message': message})
 
@@ -184,8 +197,7 @@ def all_tasks(request):
         all_tasks = Task.objects.filter(is_active=True)#.exclude(creator=profile)
         good_tasks = []
         for task in all_tasks:
-            task_qualifs = set(task.qualifications.all())
-            if task_qualifs.issubset(user_qualifs):
+            if profile.is_qualified(task):
                 task.can_solve = profile.can_solve(task)
                 good_tasks.append(task)
     except ObjectDoesNotExist:
@@ -202,7 +214,7 @@ def view_solution(request, solution_id):
         raise Http404
     
     if solution.worker.id != profile.id and solution.task.creator.id != profile.id:
-        raise Http404
+        raise PermissionDenied
 
     # Inject values in the json for the task    
     task_items = json.loads(solution.task.content)
@@ -226,7 +238,7 @@ def process_solution(request, solution_id, approved):
         raise Http404
 
     if solution.task.creator.id != profile.id:
-        raise Http404
+        raise PermissionDenied
     
     if int(approved) == 1:
         solution.status = 2
@@ -242,7 +254,7 @@ def process_solution(request, solution_id, approved):
 def my_solutions(request):
     request.user.is_task_creator = request.user.has_perm('crowdapp.is_task_creator')
     profile = get_profile(request.user)
-    solutions = Solution.objects.filter(worker=profile)
+    solutions = Solution.objects.filter(worker=profile).exclude(status=0)
     
     return render(request, 'solution/my_solutions.html', {'solutions': solutions })
 
@@ -253,26 +265,29 @@ def task_solutions(request, task_id):
         task = Task.objects.get(id=task_id)
         profile = get_profile(request.user)
         if task.creator != profile:
-            raise Http404
+            raise PermissionDenied
     except ObjectDoesNotExist:
         raise Http404
     
     return render(request, 'solution/task_solutions.html', {'task': task })
+
+@permission_required('crowdapp.is_task_creator', raise_exception=True)
+def task_statistics(request, task_id):
+    request.user.is_task_creator = request.user.has_perm('crowdapp.is_task_creator')
+    try:
+        task = Task.objects.get(id=task_id)
+        profile = get_profile(request.user)
+        if task.creator != profile:
+            raise PermissionDenied
+    except ObjectDoesNotExist:
+        raise Http404
+    
+    total_stats, ap_stats_map = get_task_stats(task)
+    
+    return render(request, 'task/statistics.html', {'task': task, 'task_stats': task_stats })
     
 def toolbox_dev(request):
     return render(request, 'dev/toolbox.html');
 
-
-@csrf_exempt
-def upload_files(request):
-    unique_foldername = str(uuid.uuid4())
-    os.makedirs(os.path.join(settings.UPLOADS_PATH, unique_foldername))
-    
-    for aFile in request.FILES.getlist('files'):
-        full_path = os.path.join(settings.UPLOADS_PATH, unique_foldername, aFile.name)
-        destination = open(full_path, 'wb+') 
-        for chunk in aFile.chunks():
-            destination.write(chunk)
-    return HttpResponse(json.dumps({"folder_name": unique_foldername}), mimetype="application/json")
 
 
