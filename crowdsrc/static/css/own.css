@@ -1,3 +1,8 @@
+/* All Pages */
+h2 {
+	padding: 15px !important;
+}
+
 /* Main Page */
 #welcome_message
 {
@@ -53,4 +58,60 @@ td
 	display:inline-block;
 }
 
+/* Registration Form Styles */
+.registration-form {
+	margin-left: 20px;
+}
 
+
+.registration-fieldset {
+	padding: 1em;
+}
+
+.registration-fieldset label {
+	float:left;
+	width:25%;
+	margin-right:0.5em;
+	padding-top:0.2em;
+	text-align: right;
+	font-size: 100%;
+	font-weight: bold;
+}
+
+.registration-fieldset input {
+	font-size: 12px;
+	padding: 4px 2px;
+	border: 1px solid gray;
+	margin: 2px 0 20px 10px;
+}
+
+.registration-form input[type='submit'] 
+{
+	position: absolute;
+	margin-left: 26%;
+	width: 150px;
+}
+
+.registration-fieldset input:focus,
+.registration-fieldset select:focus {
+	border: 1px solid darkblue;
+}
+
+.registration-fieldset select {
+	border: 1px solid gray;
+	padding: 2px;
+}
+
+/* Note: if fields are changed, this CSS needs to change too. */
+.registration-fieldset p:nth-child(5)
+{
+	padding-top: 25px;
+}
+
+.registration-fieldset p:nth-child(9) select,
+.registration-fieldset p:nth-child(10) select,
+.registration-fieldset p:nth-child(11) select,
+.registration-fieldset p:nth-child(12) select
+{
+	width: 150px;
+}

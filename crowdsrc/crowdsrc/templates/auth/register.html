@@ -6,6 +6,7 @@
 
 {% block content %}
 
+<!-- Still a TODO: think about how these tooltips can be displayed.. -->
 <style type="text/css">
 .helptext {
 	visibility: hidden;
@@ -13,14 +14,15 @@
 </style>
 
 <h2>Register</h2>
-<form method="post" action="{% url "crowdapp.views.register" %}" id="register_form" style="width: 200px;">
+
+<form method="post" action="{% url "crowdapp.views.register" %}" id="register_form" class="registration-form">
 	{% csrf_token %}
-	<fieldset class="input" style="border: 0 none;">
+	<fieldset class="input registration-fieldset" style="border: 0 none;">
 		{{ user_form.as_p }} 
 		{{ profile_form.as_p }} 
-                <p> Hold down "Control" or "Command" on a Mac, to select more than one. </p>
-		<input type="submit" value="Register" />
+    <!--<p> Hold down "Control" or "Command" on a Mac, to select more than one. </p>-->
 	</fieldset>
+	<input type="submit" value="Register" />
 </form>
 
 {% endblock %} 
