@@ -16,7 +16,7 @@
    font-weight: normal;
    font-style: normal;
    position: relative;
-   width: 100%;
+   width: 60%;
    min-height: 100%;
    left: 0;
    top: 0;
@@ -281,9 +281,8 @@ ol
    list-style-position: inside;
 }
 
-html, body
-{
-   height: 100%;
+html, body{
+  height: 99.6%;
 }
 
 body
@@ -307,13 +306,6 @@ body
    display: block;
    content: " ";
 }
-
-form
-{
-   padding: 0 !important;
-   margin: 0 !important;
-}
-
 table.position
 {
    position: relative;
@@ -385,8 +377,8 @@ li p, .art-postcontent li p, .art-blockcontent li p
   display: inline-block;
   position: absolute;
   min-width: 50px;
-  top: 22px;
-  left: 1.9%;
+  top: 12px;
+  left: 1.5%;
   line-height: 100%;
   margin-left: -5px !important;
   -webkit-transform: rotate(0deg);
@@ -409,10 +401,17 @@ font-weight: bold;
 font-style: normal;
 text-decoration: none;
 text-align: left;
-  padding: 0;
-  margin: 0;
-  color: #161A22 !important;
-  white-space: nowrap;
+padding: 0;
+margin: 0;
+
+color: white;
+text-shadow:
+  -1px -1px 0 #000,  
+   1px -1px 0 #000,
+  -1px 1px 0 #000,
+   1px 1px 0 #000;
+
+white-space: nowrap;
 }
 
 
@@ -428,7 +427,6 @@ text-align: left;
    box-shadow:0 0 5px 3px rgba(0, 0, 0, 0.3);
    border:1px solid #53432E;
    border-top:none;
-   border-bottom:none;
    margin:0 auto;
    position:relative;
    cursor:auto;
@@ -441,7 +439,7 @@ text-align: left;
 .art-header
 {
    margin:0 auto;
-   height: 100px;
+   height: 63px;
    background-image: url("../img/header.jpg");
    background-position: center top;
    background-repeat: no-repeat;
@@ -858,7 +856,6 @@ ul.art-hmenu ul
 {
    display: table-cell;
    vertical-align: top;
-   padding: 10px;
 }
 
 /* need only for content layout in post content */ 
@@ -914,6 +911,7 @@ button.art-button
    float: left;
 }
 
+/*
 input, select, textarea, a.art-search-button span
 {
    vertical-align: middle;
@@ -922,7 +920,7 @@ input, select, textarea, a.art-search-button span
    font-weight: bold;
    font-style: normal;
 }
-
+*/
 .art-block select 
 {
    width:96%;
@@ -977,13 +975,11 @@ input.art-button
 
 input[type="text"], input[type="password"], input[type="email"], input[type="url"], textarea
 {
-   /*background: #E0E0E0;
-   border-width: 0; */
    margin:0 auto;
 }
+
 input[type="text"], input[type="password"], input[type="email"], input[type="url"], textarea
 {
-   /*width: 100%; */
    padding: 4px 4px;
    color: #383838 !important;
    font-size: 12px;
@@ -992,6 +988,7 @@ input[type="text"], input[type="password"], input[type="email"], input[type="url
    font-style: normal;
    text-shadow: none;
 }
+
 input.art-error, textarea.art-error
 {
    background: #E0E0E0;
@@ -2054,7 +2051,7 @@ blockquote p,
    background: linear-gradient(top, #8F8F8F 0, #B5B5B5 100%) no-repeat;
    -svg-background: linear-gradient(top, #8F8F8F 0, #B5B5B5 100%) no-repeat;
    border-top:1px solid #A0A0A0;
-   padding:20px;
+   padding-bottom:10px;
    margin:10px auto 0;
    position: relative;
    color: #241D14;
@@ -2230,31 +2227,6 @@ blockquote p,
    padding-left: 10px;
 }
 
-.art-page-footer, 
-.art-page-footer a,
-.art-page-footer a:link,
-.art-page-footer a:visited,
-.art-page-footer a:hover
-{
-   font-family: Arial;
-   font-size: 10px;
-   letter-spacing: normal;
-   word-spacing: normal;
-   font-style: normal;
-   font-weight: normal;
-   text-decoration: underline;
-   color: #483A28;
-}
-
-.art-page-footer
-{
-   position: relative;
-   z-index: auto !important;
-   padding: 1em;
-   text-align: center !important;
-   text-decoration: none;
-   color: #383838;
-}
 
 .art-lightbox-wrapper 
 {

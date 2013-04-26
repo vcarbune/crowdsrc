@@ -10,6 +10,8 @@
       <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
+<link rel="stylesheet" href="{{ STATIC_URL }}css/login.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}css/font-awesome.css">
 <link rel="stylesheet" href="{{ STATIC_URL }}css/own.css">
 <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css"
 	media="screen">
@@ -54,6 +56,7 @@
 	padding-right: 15px;
 	padding-left: 15px;
 }
+
 </style>
 </head>
 
@@ -61,15 +64,12 @@
 	<div id="art-main">
 		<div class="art-sheet clearfix">
 			<header class="art-header">
-				<div class="art-shapes"></div>
 				<h1 class="art-headline" data-left="1.9%">
-					<a href="#">Crowdsourcing</a>
+					<a href="/">CrowdIt</a>
 				</h1>
 			</header>
 			<nav class="art-nav">
 				<ul class="art-hmenu">
-					<li><a href="/">Home</a></li>
-					
 					{% block menu %}{% endblock %}
 				</ul>
 				<div id="welcome_message" class="art-hmenu">
@@ -81,25 +81,22 @@
 					<div class="art-content-layout-row">
 						<div class="art-layout-cell art-content">
 							<div class="flash-message">{{ message }}</div>
+
 							{% block content %}{% endblock %}
 						</div>
+            
+            <!-- Ignoring this for now. Maybe re-use later.
 						<div class="art-layout-cell art-sidebar1">
 							{% block sidebar%}
-							
 							{% endblock %}
 						</div>
+            -->
 					</div>
 				</div>
 			</div>
 			<footer class="art-footer">
-				<p>
-					<a href="#">About</a>&nbsp;| <a href="#">Terms</a>| <a href="#">Contact</a>
-				</p>
 				<p>Copyright © 2013. All Rights Reserved.</p>
-				<p class="art-page-footer">
-					<span id="art-footnote-links"><a href="http://www.ethz.ch/"
-						target="_blank">ETH Zurich</a></span>
-				</p>
+				<a href="http://www.ethz.ch/" target="_blank">ETH Zurich</a>
 			</footer>
 		</div>
 	</div>
