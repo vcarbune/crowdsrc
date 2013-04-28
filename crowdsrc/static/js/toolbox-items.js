@@ -104,7 +104,7 @@ ParagraphCtrl.TYPE = 'paragraph';
 ParagraphCtrl.ICON = 'paragraph.png';
 ParagraphCtrl.HTML = 
   "<div ng-controller='ParagraphCtrl' ng-init='init(content.id)' >" +
-    "<p contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.paragraphText'>{{itemContent.paragraphText}}</p>" +
+    "<p contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.paragraphText'>Enter text here...</p>" +
   "</div>";
 
 ToolboxItemCtrl.StringToCtrlMap[ParagraphCtrl.TYPE] = ParagraphCtrl;
@@ -158,7 +158,7 @@ TextFieldCtrl.TYPE = 'textField';
 TextFieldCtrl.ICON = 'textField.png'
 TextFieldCtrl.HTML =
   "<div ng-controller='TextFieldCtrl' ng-init='init(content.id)' >" +
-    "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.textFieldLabel'>{{itemContent.textFieldLabel}}</div>" + 
+    "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.textFieldLabel'>Enter contents here... </div>" + 
     "<input id='task_{{content.id}}' ng-model='textFieldValue' name='task_{{content.id}}' value='{{textFieldValue}}' type='text' ng-disabled='disabled' />" +
   "</div>";
 
@@ -220,7 +220,7 @@ NumberFieldCtrl.TYPE = 'numberField';
 NumberFieldCtrl.ICON = 'numberField.png'
 NumberFieldCtrl.HTML =
   "<div ng-controller='NumberFieldCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
-    "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.textFieldLabel'>{{itemContent.textFieldLabel}}</div>" + 
+    "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.textFieldLabel'>Label: </div>" + 
     "<input id='task_{{content.id}}' ng-model='textFieldValue' name='task_{{content.id}}' value='{{textFieldValue}}' type='text' ng-disabled='disabled' />" +
   "</div>";
 
@@ -269,7 +269,7 @@ CheckboxCtrl.ICON = 'checkbox.png';
 CheckboxCtrl.HTML =
   "<div ng-controller='CheckboxCtrl' ng-init='init(content.id)' >" +
     "<input id='task_{{content.id}}' ng-model='checkBoxValue' name='task_{{content.id}}' type='checkbox' ng-disabled='disabled' />" +
-    "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.checkBoxLabel'>{{itemContent.checkBoxLabel}}</div>" +
+    "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.checkBoxLabel'>Label</div>" +
   "</div>";
 
 ToolboxItemCtrl.StringToCtrlMap[CheckboxCtrl.TYPE] = CheckboxCtrl;
@@ -370,7 +370,7 @@ RadioGroupCtrl.HTML =
     "<span ng-click='addItem()' ng-show='isEditable' class='toolbox-item-add' title='Add Item'></span>" +
     "<div ng:repeat='i in items'>" +
       "<input type='radio' name='task_{{content.id}}' value='{{i.id}}' ng-model='radioValue' ng-change='setRadioValue(radioValue)' id='radio_{{i.id}}' ng-disabled='disabled' />" +
-      "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='items[i.id].name'>{{items[i.id].name}}</div>" +
+      "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='items[i.id].name'>New Item</div>" +
       "<span ng-click='removeItem(i.id)' ng-show='isEditable' class='toolbox-item-remove'></span>" +
     "</div>" +
   "</div>";
@@ -524,7 +524,7 @@ RankingCtrl.HTML =
 	  "<ul class='toolbox-ranking-list'>" +
 	    "<li ng-repeat='i in items' class='{{i.state}}'>" +
 	  	  "<span class='toolbox-ranking-name toolbox-editable' " + 
-            "contenteditable='{{isEditable}}' ng-click='toggleSelectItem(i.id)' ng-model='items[i.id].name'>{{items[i.id].name}}</span>" +
+            "contenteditable='{{isEditable}}' ng-click='toggleSelectItem(i.id)' ng-model='items[i.id].name'>New Item</span>" +
 	  	  "<span class='toolbox-ranking-rank' ng-hide='isEditable || i.state===\"free\"'>{{i.rank}}</span>" +
 	  	  "<span ng-click='removeItem(i.id)' ng-show='isEditable' class='toolbox-item-remove'></span>" +
 	    "</li>" +
