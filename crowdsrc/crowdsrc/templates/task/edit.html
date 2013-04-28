@@ -31,9 +31,16 @@
   // Instead of hooking up in Django form generation, we're changing some
   // elements after the page load (less hassle and faster for minor changes).
   function onBodyLoad() {
-    document.getElementById('id_task-name').placeholder =
-        'Descriptive title of your task';
-  }
+    $('id_task-name').placeholder = 'Descriptive title of your task';
+  };
+
+  function onRemoveIconMouseOver(evt) {
+    evt.target.parentNode.parentNode.style.background = '#DDD';
+  };
+
+  function onRemoveIconMouseOut(evt) {
+    evt.target.parentNode.parentNode.style.background = '#FFF';
+  };
 </script>
 {% endblock %}
 
@@ -101,7 +108,7 @@
       <div class="toolbox-icons-list">
         {% verbatim %}
         <span class="toolbox-icon" ng-repeat="component in toolboxItemCtrls" ng-click="addElement('{{component.TYPE}}')">
-          <img src="/static/img/toolbox-icons/{{component.ICON}}" title="{{component.NAME}}">
+          <img src="/static/img/toolbox-icons/{{component.ICON}}" title="{{component.NAME}}" />
         </span>
         {% endverbatim %}
       </div>
@@ -109,8 +116,11 @@
 	    <ul ui-sortable="sortableOptions" ng-model="content" class="toolbox-item-list">
         {% verbatim %}
     	  <li ng-repeat="item in content" class="toolbox-item" id="{{item.id}}">
+	    		<div ng-click="removeElement(item.id)" ng-show="isEditable()" class="toolbox-remove-component">
+            <img src="/static/img/toolbox-icons/remove.png" title="Remove Component" class="toolbox-remove-component-image"
+                onMouseOver="onRemoveIconMouseOver(event);" onMouseOut="onRemoveIconMouseOut(event);" />
+          </div>
 	    		<toolbox-item content="item" itemcontent="item.itemContent"></toolbox-item>
-	    		<button type="button" ng-click="removeElement(item.id)" ng-show="isEditable()">Remove</button>
 	    	</li>
         {% endverbatim %}
 	    </ul>

@@ -95,7 +95,7 @@ ParagraphCtrl.NAME = 'Paragraph Component';
 ParagraphCtrl.TYPE = 'paragraph';
 ParagraphCtrl.ICON = 'paragraph.png';
 ParagraphCtrl.HTML = 
-  "<div ng-controller='ParagraphCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
+  "<div ng-controller='ParagraphCtrl' ng-init='init(content.id)' >" +
     "<p contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.paragraphText'>{{itemContent.paragraphText}}</p>" +
   "</div>";
 
@@ -142,7 +142,7 @@ TextFieldCtrl.NAME = 'Text Field Component';
 TextFieldCtrl.TYPE = 'textField';
 TextFieldCtrl.ICON = 'textField.png'
 TextFieldCtrl.HTML =
-  "<div ng-controller='TextFieldCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
+  "<div ng-controller='TextFieldCtrl' ng-init='init(content.id)' >" +
     "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.textFieldLabel'>{{itemContent.textFieldLabel}}</div>" + 
     "<input id='task_{{content.id}}' ng-model='textFieldValue' name='task_{{content.id}}' value='{{textFieldValue}}' type='text' ng-disabled='disabled' />" +
   "</div>";
@@ -189,7 +189,7 @@ CheckboxCtrl.NAME = 'Checkbox Component';
 CheckboxCtrl.TYPE = 'checkbox';
 CheckboxCtrl.ICON = 'checkbox.png';
 CheckboxCtrl.HTML =
-  "<div ng-controller='CheckboxCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
+  "<div ng-controller='CheckboxCtrl' ng-init='init(content.id)' >" +
     "<input id='task_{{content.id}}' ng-model='checkBoxValue' name='task_{{content.id}}' type='checkbox' ng-disabled='disabled' />" +
     "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.checkBoxLabel'>{{itemContent.checkBoxLabel}}</div>" +
   "</div>";
@@ -288,7 +288,7 @@ RadioGroupCtrl.NAME = 'Radio Group Component';
 RadioGroupCtrl.TYPE = 'radioGroup';
 RadioGroupCtrl.ICON = 'radioGroup.png';
 RadioGroupCtrl.HTML = 
-  "<div ng-controller='RadioGroupCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
+  "<div ng-controller='RadioGroupCtrl' ng-init='init(content.id)' >" +
     "<div ng:repeat='i in items'>" +
       "<input type='radio' name='task_{{content.id}}' value='{{i.id}}' ng-model='radioValue' ng-change='setRadioValue(radioValue)' id='radio_{{i.id}}' ng-disabled='disabled' />" +
       "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='items[i.id].name'>{{items[i.id].name}}</div>" +
@@ -433,7 +433,7 @@ RankingCtrl.NAME = 'Ranking Component';
 RankingCtrl.TYPE = 'ranking';
 RankingCtrl.ICON = 'ranking.png';
 RankingCtrl.HTML =
-  "<div ng-controller='RankingCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
+  "<div ng-controller='RankingCtrl' ng-init='init(content.id)' >" +
     "<div ng-model='itemContent.id' ng-show='false'>{{content.id}}</div>" +
 	  "<ul class='toolbox-ranking-list'>" +
 	    "<li ng-repeat='i in items' class='{{i.state}}'>" +
@@ -530,16 +530,13 @@ ImageGroupCtrl.NAME = 'Image Group';
 ImageGroupCtrl.TYPE = 'imageGroup';
 ImageGroupCtrl.ICON = 'imageGroup.png';
 ImageGroupCtrl.HTML =
-  "<div ng-controller='ImageGroupCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
+  "<div ng-controller='ImageGroupCtrl' ng-init='init(content.id)' >" +
     // Content for EDIT state.
-    "<label for='resources_{{content.id}}' ng-show='isEditable'>Select images to upload: </label>" +
-    "<br/>" +
-
+    "<label for='resources_{{content.id}}' ng-show='isEditable'>Task Images: </label>" +
     "<input type='file' name='resource_files' ng-model-instant onchange='angular.element(this).scope().setFiles(this)' ng-show='isEditable' multiple required />" +
-    "<p ng-show='isEditable'> Number of images per single task: </p>" +
-    
-    "<input ng-model='itemContent.nrImagesPerTask' type='text' ng-show='isEditable' ng-change='refreshPreviewImages()' required />" +
-    "<button type='button' ng-click='uploadFiles()' ng-show='isEditable'> Upload resources </button>" +
+    "<p ng-show='isEditable'>Used Images: " +
+      "<input ng-model='itemContent.nrImagesPerTask' type='number' min='1' max='10' ng-show='isEditable' ng-change='refreshPreviewImages()' required />" +
+    "</p>" +
     
     // Content for PREVIEW state.
     "<div style='text-align:center; margin: 0 auto; overflow: hidden;' ng-hide='isEditable'>" +

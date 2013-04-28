@@ -127,6 +127,9 @@ app.controller('ToolboxCtrl', function($scope, internalService) {
 	  });
   };
   
+  $scope.addElement(CheckboxCtrl.TYPE);
+  $scope.addElement(ImageGroupCtrl.TYPE);
+ 
   $scope.removeElement = function (id) {
 	  for (var i=0; i<$scope.content.length; i++) {
 		  if ($scope.content[i].id == id) {

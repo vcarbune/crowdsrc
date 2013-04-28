@@ -10,6 +10,29 @@
 	cursor: pointer;
 }
 
+.toolbox-container input[type='checkbox'],
+.toolbox-container input[type='file']
+{
+	border: 0;
+	padding: 0;
+	margin: 2px;
+}
+
+.toolbox-container input[type='number']
+{
+	margin: 0;
+	width: 35px;
+}
+
+.toolbox-remove-component {
+	position: relative;
+}
+
+.toolbox-remove-component img {
+	position: absolute;
+	right: 0px;
+}
+
 .toolbox-state-btn {
 }
 
@@ -23,9 +46,10 @@
 }
 
 .toolbox-item {
-	max-width: 500px;
-	padding: 5px;
+	display: block;
 	margin-bottom: 2px;
+
+	padding: 5px;
 /*
 	border: 1px solid #333;
 	background: #EEE;
