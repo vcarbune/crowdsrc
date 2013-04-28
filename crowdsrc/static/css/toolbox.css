@@ -110,3 +110,10 @@
 
 	background: url('/static/img/toolbox-icons/list-remove-3.png');
 }
+
+.toolbox-warning-message {
+	position: relative;
+	top: -8px;
+	height: 32px;
+	color: red;
+}

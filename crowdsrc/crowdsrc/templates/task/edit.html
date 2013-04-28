@@ -45,15 +45,6 @@
     });
 
     qualificationsContainer.appendChild(newQualificationLabel);
-
-    /*
-    var addRemoveBtn = document.createElement('span');
-    addRemoveBtn.classList.add('create-task-qualification-label-add-remove');
-    addRemoveBtn.appendChild(document.createTextNode('+'));
-
-    newQualificationLabel.appendChild(addRemoveBtn);
-    */
-
   }
 
   function createQualificationTags()
@@ -138,6 +129,7 @@
           <img src="/static/img/toolbox-icons/{{component.ICON}}" title="{{component.NAME}}" />
         </span>
         {% endverbatim %}
+        <span ng-bind='warning' class='toolbox-warning-message'></span>
       </div>
 
 	    <ul ui-sortable="sortableOptions" ng-model="content" class="toolbox-item-list">

@@ -125,7 +125,19 @@ app.controller('ToolboxCtrl', function($scope, internalService) {
   };
   
   $scope.addElement = function(type) {
-	  $scope.content.push({
+    if (!(type in ToolboxItemCtrl.StringToCtrlMap))
+      return;
+
+    if (type == ImageGroupCtrl.TYPE) {
+      if ($scope.hasImageGroup) {
+        $scope.warning = 'There already is an Image Group!';
+        return;
+      } else {
+        $scope.hasImageGroup = true;
+      }
+    }
+
+    $scope.content.push({
 		  id: $scope.content.length,
 		  type: type,
 		  desc: ToolboxItemCtrl.StringToCtrlMap[type].NAME,
@@ -133,11 +145,6 @@ app.controller('ToolboxCtrl', function($scope, internalService) {
 	  });
   };
 
-  /* Debugging */
-  /*
-  $scope.addElement(CheckboxCtrl.TYPE);
-  $scope.addElement(ImageGroupCtrl.TYPE);
-  */
   $scope.removeElement = function (id) {
 	  for (var i=0; i<$scope.content.length; i++) {
 		  if ($scope.content[i].id == id) {
