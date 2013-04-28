@@ -148,6 +148,55 @@ TextFieldCtrl.HTML =
   "</div>";
 
 ToolboxItemCtrl.StringToCtrlMap[TextFieldCtrl.TYPE] = TextFieldCtrl;
+
+/**
+ * Toolbox - Number Field Controller.
+ */
+function NumberFieldCtrl($scope, internalService)
+{
+  angular.injector().invoke(ToolboxItemCtrl, this, {
+    $scope: $scope,
+    internalService: internalService,
+  });
+  
+  $scope.init = function(id) {
+	  if (!$scope.itemContent || $scope.itemContent == '') {
+	    $scope.itemContent = {
+	      type: 'numberField',
+	      name: 'Number Field',
+	      textFieldLabel: 'Label:'
+	    };
+	  } else {
+	    // set the input value, in case we view a solution
+	    if ($scope.itemContent.inputValue) {
+	      $scope.textFieldValue = $scope.itemContent.inputValue;
+	    }
+	  }
+
+    if (id !== undefined)
+      $scope.itemContent.id = id;
+  };
+  
+  $scope.getInput = function() {	 
+	  return {
+		  id: $scope.content.id,
+		  type: 'number',
+		  value: $scope.textFieldValue
+	  };
+  };
+};
+
+NumberFieldCtrl.NAME = 'Number Field Component';
+NumberFieldCtrl.TYPE = 'numberField';
+NumberFieldCtrl.ICON = 'numberField.png'
+NumberFieldCtrl.HTML =
+  "<div ng-controller='NumberFieldCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
+    "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.textFieldLabel'>{{itemContent.textFieldLabel}}</div>" + 
+    "<input id='task_{{content.id}}' ng-model='textFieldValue' name='task_{{content.id}}' value='{{textFieldValue}}' type='text' ng-disabled='disabled' />" +
+  "</div>";
+
+ToolboxItemCtrl.StringToCtrlMap[NumberFieldCtrl.TYPE] = NumberFieldCtrl;
+
 /**
  * Toolbox - Checkbox Controller.
  */

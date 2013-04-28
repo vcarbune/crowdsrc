@@ -22,14 +22,15 @@ def get_task_stats(task):
     for task_input in task_inputs:
         task_input_values = task_input.taskinputvalue_set.all()
         
+        # if the input is a ranking component
         if task_input.type == INPUT_TYPES['ranking']:
             num_elems = len(task_input_values[0].value.strip().split(' '))
             
             total_scores = [0] * num_elems  
-            total_squared_scores = [0] * num_elems
+            total_squared_scores = [0] * num_elems # useful for computing the variances
             
             ap_scores_map = {}
-            ap_squared_scores_map = {}
+            ap_squared_scores_map = {} 
             for ap in access_paths:
                 ap_scores_map[ap.id] = [0] * num_elems
                 ap_squared_scores_map[ap.id] = [0] * num_elems  
@@ -78,7 +79,7 @@ def get_task_stats(task):
                 ap_stats_map[ap.id].append({'task_input': task_input, 
                                             'stats': {'scores': zip(ap_mean_scores, ap_var_scores)}})
                 
-                
+        # if the input is a radio button group       
         elif task_input.type == INPUT_TYPES['radioGroup']:
             total_value_counts = {}
             ap_value_counts_map = {}
@@ -109,7 +110,29 @@ def get_task_stats(task):
                 print "Radio value counts:" + str(ap_value_counts_map[ap.id])
                 ap_stats_map[ap.id].append({'task_input': task_input, 
                                             'stats': {'counts': ap_value_counts_map[ap.id]}})
-        
+        # if the input is a checkbox
+        elif task_input.type == INPUT_TYPES['checkbox']:
+            total_counts = [0,0]
+            ap_counts_map = {}
+            for ap in access_paths:
+                ap_counts_map[ap.id] = [0,0]
+            for input_value in task_input_values:
+                if input_value.value == 'True':
+                    total_counts[1] += 1
+                else:
+                    total_counts[0] += 1
+                ap = input_value.solution.access_path if input_value.solution.access_path else None
+                if ap:
+                    if input_value.value == 'True':
+                        ap_counts_map[ap.id][1] += 1
+                    else:
+                        ap_counts_map[ap.id][0] += 1
+            total_stats.append({'task_input': task_input, 'stats': {'counts': total_counts}})
+            for ap in access_paths:
+                ap_stats_map[ap.id].append({'task_input': task_input, 
+                                            'stats': {'counts': ap_counts_map[ap.id]}})
+            
+            
     return total_stats, ap_stats_map
 
                         

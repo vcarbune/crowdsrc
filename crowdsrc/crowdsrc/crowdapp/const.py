@@ -1,12 +1,14 @@
-INPUT_TYPES = {'textField': 0, 
+INPUT_TYPES = {'textField': 0,
                'checkbox': 1, 
                'radioGroup': 2, 
-               'ranking': 3}
+               'ranking': 3,
+               'numberField': 4}
 
 INPUT_TYPE_NAMES = {0: 'Text Field',
                     1: 'Checkbox',
-                    2: 'Radio button group',
-                    3: 'Ranking'}
+                    2: 'Radio Button Group',
+                    3: 'Ranking',
+                    4: 'Number Field'}
 
 GENDERS = (
     ('M', "Male"),
@@ -19,14 +21,6 @@ STATUSES = (
     (2, "Approved"),
     (3, "Rejected"),
 )
-
-ANSWER_TYPES = (
-    (0, "Free Text"),
-    (1, "Boolean"),
-    (2, "Number"),
-    (3, "Ranking"),
-)
-
 
 COUNTRIES = (
     ('CH', ('Switzerland')),

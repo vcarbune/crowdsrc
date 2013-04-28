@@ -3,7 +3,13 @@
 
 <div class="input_stats_box">
 	<p class="input_title" style="font-weight: bold;">{{elem.task_input.type|input_type_name}}</p>
-	{% if elem.task_input.type == 2 %} <!-- Radio group -->
+	{% if elem.task_input.type == 1 %} <!-- Checkbox -->
+		<p>Counts</p>
+		<ul>
+			<li>False: {{ elem.stats.counts.0 }}</li>
+			<li>True: {{ elem.stats.counts.1 }}</li>
+		</ul>
+	{% elif elem.task_input.type == 2 %} <!-- Radio group -->
 		<p>Counts for all choices:</p>
 		<table>
 		<thead>
