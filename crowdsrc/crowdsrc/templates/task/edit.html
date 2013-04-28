@@ -100,8 +100,8 @@
 		class="toolbox-container">
       <div class="toolbox-icons-list">
         {% verbatim %}
-        <span class="toolbox-icon" ng-repeat="type in elemTypes" ng-click="addElement('{{type.code}}')">
-          <img src="/static/img/toolbox-icons/{{type.icon}}" title="{{type.name}}">
+        <span class="toolbox-icon" ng-repeat="component in toolboxItemCtrls" ng-click="addElement('{{component.TYPE}}')">
+          <img src="/static/img/toolbox-icons/{{component.ICON}}" title="{{component.NAME}}">
         </span>
         {% endverbatim %}
       </div>

@@ -23,11 +23,13 @@
 }
 
 .toolbox-item {
-	border: 1px solid #333;
 	max-width: 500px;
 	padding: 5px;
-	background: #EEE;
 	margin-bottom: 2px;
+/*
+	border: 1px solid #333;
+	background: #EEE;
+*/
 }
 
 .placeholder {

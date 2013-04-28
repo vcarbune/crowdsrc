@@ -27,92 +27,8 @@ app.directive('contenteditable', function() {
 
 
 app.directive('toolboxItem', function($compile) {
-  // FIXME: each toolbox item can have the HTML in a separate file. This
-  // requires different angular JS directives (needs change in ToolboxCtrl also).
-
-  // Note: not really important right now.
-  var paragraphTemplate = 
-	  "<div ng-controller='ParagraphCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
-      "<p contenteditable='{{isEditable}}'" +
-        "class='toolbox-editable' ng-model='itemContent.paragraphText'>{{itemContent.paragraphText}}</p>" +
-      "</div>";
-  
-  var textFieldTemplate =
-	  "<div ng-controller='TextFieldCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
-      "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.textFieldLabel'>{{itemContent.textFieldLabel}}</div>" + 
-      "<input id='task_{{content.id}}' ng-model='textFieldValue' name='task_{{content.id}}' value='{{textFieldValue}}' type='text' ng-disabled='disabled' />" +
-      "</div>";
-  
-  var checkboxTemplate = 
-	  "<div ng-controller='CheckboxCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
-      "<input id='task_{{content.id}}' ng-model='checkBoxValue' name='task_{{content.id}}' type='checkbox' ng-disabled='disabled' />" +
-      "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.checkBoxLabel'>{{itemContent.checkBoxLabel}}</div>" +
-      "</div>";
-  
-  var radioGroupTemplate = 
-	  "<div ng-controller='RadioGroupCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
-	  "<div ng:repeat='i in items'>" +
-      "<input type='radio' name='task_{{content.id}}' value='{{i.id}}' ng-model='radioValue' ng-change='setRadioValue(radioValue)' id='radio_{{i.id}}' ng-disabled='disabled' />" +
-      "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='items[i.id].name'>{{items[i.id].name}}</div>" +
-      "<button type='button' ng-click='removeItem(i.id)' ng-show='isEditable'>Remove Item</button>" +
-      "</div>" +
-      "<button type='button' ng-click='addItem()' ng-show='isEditable'>Add Item</button>" +
-      "</div>";
-  
-  var rankingTemplate = 
-	  "<div ng-controller='RankingCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
-    "<div ng-model='itemContent.id' ng-show='false'>{{content.id}}</div>" +
-	  "<ul class='toolbox-ranking-list'>" +
-	  "<li ng-repeat='i in items' class='{{i.state}}'>" +
-	  	"<span class='toolbox-ranking-name toolbox-editable' " + 
-          "contenteditable='{{isEditable}}' ng-click='toggleSelectItem(i.id)' ng-model='items[i.id].name'>{{items[i.id].name}}</span>" +
-	  	"<span class='toolbox-ranking-rank' ng-hide='isEditable || i.state===\"free\"'>{{i.rank}}</span>" +
-	  	"<button type='button' ng-click='removeItem(i.id)' ng-show='isEditable'>Remove Item</button>" +
-	  "</li>" +
-      "</ul>" +
-      "<br /><button type='button' ng-click='addItem()' ng-show='isEditable'>Add Item</button>" +
-      "</div>";
-
-  var imageGroupTemplate =
-      // Content for EDIT state.
-      "<div ng-controller='ImageGroupCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
-      "<label for='resources_{{content.id}}' ng-show='isEditable'>" +
-        "Select images to upload:" +
-      "</label><br/>" +
-      "<input type='file' name='resource_files' ng-model-instant onchange='angular.element(this).scope().setFiles(this)' ng-show='isEditable' multiple required />" +
-      "<p ng-show='isEditable'>" +
-        "Number of images per single task:" +
-      "</p>" +
-      "<input ng-model='itemContent.nrImagesPerTask' type='text' ng-show='isEditable' ng-change='refreshPreviewImages()' required />" +
-      "<button type='button' ng-click='uploadFiles()' ng-show='isEditable'> Upload resources </button>" +
-      // Content for PREVIEW state.
-      "<div style='text-align:center; margin: 0 auto; overflow: hidden;' ng-hide='isEditable'>" +
-        "<div style='float:left' ng-repeat='image in previewImgs' ng-hide='isEditable'>" +
-          "<img src={{image}} ng-hide='isEditable' Hspace='30' />" +
-          "<br/>Image {{$index+1}}<br/><br/>" +
-         "</div ng-hide='isEditable'>" +
-      "</div ng-hide='isEditable'>" +
-      "</div>";
-  
-  var getTemplate = function(taskElementType) { 
-    switch(taskElementType) {
-      case 'textField':
-    	  return textFieldTemplate;
-      case 'checkbox':
-      	return checkboxTemplate;
-      case 'paragraph':
-    	  return paragraphTemplate; 
-      case 'radioGroup':
-    	  return radioGroupTemplate;  
-      case 'ranking':
-    	  return rankingTemplate; 
-      case 'imageGroup':
-          return imageGroupTemplate;
-    }
-  };
-
   var linker = function(scope, element, attrs) {
-    element.html(getTemplate(scope.content.type));
+    element.html(ToolboxItemCtrl.StringToCtrlMap[scope.content.type].HTML);
     $compile(element.contents())(scope);
   };
 
@@ -136,6 +52,8 @@ app.controller('ToolboxCtrl', function($scope, internalService) {
   $scope.isEditable = function() {
     return $scope.state == StateService.STATES.EDIT;
   };
+
+  $scope.toolboxItemCtrls = ToolboxItemCtrl.StringToCtrlMap;
  
   $scope.changeState = function(newState) {
     switch(newState)
@@ -157,15 +75,6 @@ app.controller('ToolboxCtrl', function($scope, internalService) {
     internalService.stateService.setState($scope.state);
   };
 
-  $scope.elemTypes = [
-    {code:'textField', name: 'Text Field', icon: 'textField.png'},
-    {code:'paragraph', name: 'Paragraph', icon: 'paragraph.png'},
-    {code:'checkbox', name: 'Checkbox', icon: 'checkbox.png'},
-    {code:'radioGroup', name: 'Radio Group', icon: 'radioGroup.png'},
-    {code:'ranking', name: 'Ranking Component', icon: 'ranking.png'},
-    {code:'imageGroup', name: 'Image Group', icon: 'imageGroup.png'},
-  ];
-  
   /* List of elements currently in the toolbox for the current task */
   $scope.content = [];
   
@@ -182,7 +91,7 @@ app.controller('ToolboxCtrl', function($scope, internalService) {
 	  }  
 	  
 	  for (var item in jsonItems) {
-	    if (jsonItems[item].type == 'imageGroup' && $scope.solutionId) {
+	    if (jsonItems[item].type == ImageGroupCtrl.TYPE && $scope.solutionId) {
 		    jsonItems[item].solutionId = solutionId;
 	    }	
 	    $scope.addExistingElement(jsonItems[item]);
