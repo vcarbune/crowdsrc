@@ -338,12 +338,12 @@ RadioGroupCtrl.TYPE = 'radioGroup';
 RadioGroupCtrl.ICON = 'radioGroup.png';
 RadioGroupCtrl.HTML = 
   "<div ng-controller='RadioGroupCtrl' ng-init='init(content.id)' >" +
+    "<span ng-click='addItem()' ng-show='isEditable' class='toolbox-item-add' title='Add Item'></span>" +
     "<div ng:repeat='i in items'>" +
       "<input type='radio' name='task_{{content.id}}' value='{{i.id}}' ng-model='radioValue' ng-change='setRadioValue(radioValue)' id='radio_{{i.id}}' ng-disabled='disabled' />" +
       "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='items[i.id].name'>{{items[i.id].name}}</div>" +
-      "<button type='button' ng-click='removeItem(i.id)' ng-show='isEditable'>Remove Item</button>" +
+      "<span ng-click='removeItem(i.id)' ng-show='isEditable' class='toolbox-item-remove'></span>" +
     "</div>" +
-    "<button type='button' ng-click='addItem()' ng-show='isEditable'>Add Item</button>" +
   "</div>";
 
 ToolboxItemCtrl.StringToCtrlMap[RadioGroupCtrl.TYPE] = RadioGroupCtrl;  
@@ -484,16 +484,15 @@ RankingCtrl.ICON = 'ranking.png';
 RankingCtrl.HTML =
   "<div ng-controller='RankingCtrl' ng-init='init(content.id)' >" +
     "<div ng-model='itemContent.id' ng-show='false'>{{content.id}}</div>" +
+    "<span ng-click='addItem()' ng-show='isEditable' class='toolbox-item-add'></span>" +
 	  "<ul class='toolbox-ranking-list'>" +
 	    "<li ng-repeat='i in items' class='{{i.state}}'>" +
 	  	  "<span class='toolbox-ranking-name toolbox-editable' " + 
             "contenteditable='{{isEditable}}' ng-click='toggleSelectItem(i.id)' ng-model='items[i.id].name'>{{items[i.id].name}}</span>" +
 	  	  "<span class='toolbox-ranking-rank' ng-hide='isEditable || i.state===\"free\"'>{{i.rank}}</span>" +
-	  	  "<button type='button' ng-click='removeItem(i.id)' ng-show='isEditable'>Remove Item</button>" +
+	  	  "<span ng-click='removeItem(i.id)' ng-show='isEditable' class='toolbox-item-remove'></span>" +
 	    "</li>" +
     "</ul>" +
-    "<br />" +
-    "<button type='button' ng-click='addItem()' ng-show='isEditable'>Add Item</button>" +
   "</div>";
 
 ToolboxItemCtrl.StringToCtrlMap[RankingCtrl.TYPE] = RankingCtrl;

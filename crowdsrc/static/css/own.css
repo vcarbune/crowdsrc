@@ -41,18 +41,6 @@ td
 	width: 50%;
 }
 
-#accesspath-formset
-{
-	border: 1px solid #888; 
-	padding: 10px 20px 10px 5px;
-}
-
-#accesspath-formset label
-{
-	display:inline-block;
-	width: 100px;
-}
-
 #accesspath-formset input, #accesspath-formset textarea
 {
 	display:inline-block;
@@ -141,6 +129,19 @@ td
 	padding: 15px;
 }
 
+.create-task-form button {
+	border: 0;
+}
+
+.create-task-qualification-label {
+	border-radius: 5px;
+	cursor: default;
+}
+
+.create-task-qualification-selected {
+	background: #AAA;
+}
+
 #id_task-name {
 	width: 300px;
 	margin-left: 10px;
@@ -149,7 +150,54 @@ td
 #id_task-cost {
 	margin: 5px 0px 0px 8px;
 }
+
 #id_task-qualifications {
 	width: 150px;
 	background: white;
+}
+
+/* Access Path Forms */
+.access-path-form {
+	margin-bottom: 15px;
+	position: relative;
+	border: 1px solid #EEE;
+}
+
+.access-path-form-description {
+	position: relative;
+	top: -10px;
+	padding: 0px 10px;
+	background: white;
+	color: gray;
+}
+
+.access-path-form textarea {
+	padding: 0;
+	margin: 0;
+}
+
+.access-path-form label
+{
+	margin-left: 10px;
+	display:inline-block;
+	width: 100px;
+}
+
+.access-path-form .delete-row {
+	position: absolute;
+	right: 2px;
+	top: 2px;
+
+	background: url('/static/img/toolbox-icons/remove.png');
+	width: 16px;
+	height: 16px;
+}
+
+#accesspaths .add-row {
+	display: block;
+
+	width: 24px;
+	height: 24px;
+
+	background: url('/static/img/toolbox-icons/list-add-3.png');
 }

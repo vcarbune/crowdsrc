@@ -30,8 +30,46 @@
 <script type="text/javascript">
   // Instead of hooking up in Django form generation, we're changing some
   // elements after the page load (less hassle and faster for minor changes).
+  function addQualificationLabelFromOption(option)
+  {
+    var qualificationsContainer = $('.create-task-qualifications-container')[0];
+
+    var newQualificationLabel = document.createElement('button');
+    newQualificationLabel.type = 'button';
+    newQualificationLabel.classList.add('create-task-qualification-label');
+    newQualificationLabel.appendChild(document.createTextNode(option.label));
+
+    newQualificationLabel.addEventListener('click', function() {
+      option.selected = !option.selected;
+      this.classList.toggle('create-task-qualification-selected');
+    });
+
+    qualificationsContainer.appendChild(newQualificationLabel);
+
+    /*
+    var addRemoveBtn = document.createElement('span');
+    addRemoveBtn.classList.add('create-task-qualification-label-add-remove');
+    addRemoveBtn.appendChild(document.createTextNode('+'));
+
+    newQualificationLabel.appendChild(addRemoveBtn);
+    */
+
+  }
+
+  function createQualificationTags()
+  {
+    var multipleQualificationSelect = $('#id_task-qualifications')[0];
+    $(multipleQualificationSelect).hide();
+    for (var i = 0; i < multipleQualificationSelect.options.length; i++) {
+      addQualificationLabelFromOption(multipleQualificationSelect.options[i]);
+    }
+  };
+
   function onBodyLoad() {
     document.querySelector('#id_task-name').placeholder = 'Descriptive title of your task';
+    document.querySelector('#id_task-cost').type = 'number';
+
+    createQualificationTags();
   };
 
   /* FIXME: Implement a method to support hiding the X for removing a component
@@ -81,8 +119,10 @@
 	
 	{{ task_form.name.label_tag }}: {{ task_form.name }} {{ task_form.name.errors }}
   <br>
-	{{ task_form.cost.label_tag }}: <input id="id_task-cost" name="task-cost" type="number" /> {{ task_form.cost.errors }}
+	{{ task_form.cost.label_tag }}: {{ task_form.cost }} {{ task_form.cost.errors }}
 	{{ task_form.is_active }} {{ task_form.is_active.label_tag}}
+  <br>
+  {{ task_form.qualifications.label}}: <span class="create-task-qualifications-container"></span>
 
 	<!-- Begin Toolbox -->
 	<div ng-controller="ToolboxCtrl" 
@@ -115,7 +155,7 @@
   	</div>
   	<!-- End Toolbox -->
 	{% if accesspath_formset.initial_form_count == 0 %}
-		<button type="button" id="add-accesspaths">Insert access paths</button>
+		<button type="button" id="add-accesspaths">Enable Access Paths</button>
     <!-- FIXME: This needs to be moved in the block pagescript. -->
 		<script type="text/javascript">
 			$('#add-accesspaths').click(function(){
@@ -125,12 +165,12 @@
 		</script>
 	{% endif %}
 	<div id="accesspaths" {% if accesspath_formset.initial_form_count == 0 %} style="display:none;"{% endif %}>
-		Access Paths:
 		<div id="accesspath-formset">
 			{{ accesspath_formset.management_form }}
 			{{ accesspath_formset.non_field_errors }}
 	    	{% for accesspath_form in accesspath_formset.forms %}
-	    		<div class="subform">
+	    		<div class="subform access-path-form">
+            <span class="access-path-form-description">Access Path</span>
 	    			{{ accesspath_form.as_p }}
 	    		</div>
 		    {% endfor %}
@@ -142,8 +182,8 @@
 		    	$(function() {
 		    		$(".subform").formset({
 		    			prefix: '{{ accesspath_formset.prefix }}',
-		    			deleteText: "Remove item",
-		    			addText: "Add",
+		    			deleteText: '',
+		    			addText: '',
 		    		});
 		    	});
 	    	</script>
@@ -151,11 +191,10 @@
 	</div>
 	<br>
 
-  {{ task_form.qualifications.label}}: {{ task_form.qualifications }}
+  <br>{{ task_form.qualifications }}
 
 	{{ task_form.content }}
 	{{ task_form.resource_files }}
-	<br>
   <div ng-controller="MasterFormCtrl">
 	  <button ng-click="submitForm()" type="button">Save</button>
   </div>

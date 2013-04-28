@@ -114,7 +114,7 @@ app.controller('ToolboxCtrl', function($scope, internalService) {
 	  $scope.content.push({
 		  id: $scope.content.length,
 		  type: elem.type,
-		  desc: '',
+		  desc: ToolboxItemCtrl.StringToCtrlMap[elem.type].NAME,
 		  itemContent: elem
 	  });
   };
@@ -127,10 +127,12 @@ app.controller('ToolboxCtrl', function($scope, internalService) {
 		  itemContent: '',
 	  });
   };
-  
+
+  /* Debugging */
+  /*
   $scope.addElement(CheckboxCtrl.TYPE);
   $scope.addElement(ImageGroupCtrl.TYPE);
- 
+  */
   $scope.removeElement = function (id) {
 	  for (var i=0; i<$scope.content.length; i++) {
 		  if ($scope.content[i].id == id) {

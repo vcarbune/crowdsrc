@@ -9,6 +9,7 @@
 }
 
 .toolbox-container input[type='checkbox'],
+.toolbox-container input[type='radio'],
 .toolbox-container input[type='file']
 {
 	border: 0;
@@ -90,4 +91,22 @@
 .toolbox-editable {
 	/* Related to our beloved label and contenteditable problem on firefox. */
 	display: inline;
+}
+
+.toolbox-item-add {
+	display: inline-block;
+
+	width: 24px;
+	height: 24px;
+
+	background: url('/static/img/toolbox-icons/list-add-3.png');
+}
+
+.toolbox-item-remove {
+	margin: 0px 0px -2px 5px;
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+
+	background: url('/static/img/toolbox-icons/list-remove-3.png');
 }
