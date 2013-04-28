@@ -156,6 +156,13 @@ app.controller('ToolboxCtrl', function($scope, internalService) {
   $scope.extractInputs = function() {
     internalService.inputExtractionService.start();
   };
+  
+  /* Method called when validating the input values */
+  $scope.validate = function() {
+	  internalService.validationService.start();
+  }
+  
+  $scope.$on('prepareValidation', $scope.validate);
 
   /* When the task form should be submited */ 
   $scope.$on('prepareCreateTaskForm', $scope.serialize);

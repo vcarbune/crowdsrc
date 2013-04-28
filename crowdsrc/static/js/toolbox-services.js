@@ -16,6 +16,12 @@
  */
 app.factory('toolboxService', function($rootScope, internalService) {
   var toolboxService = {};
+  
+  toolboxService.checkInputValues = function() {
+	  $rootScope.$broadcast('prepareValidation');
+	  console.log('After validating: ' + internalService.validationService.isValid());
+	  return internalService.validationService.isValid();
+  }
 
   toolboxService.getToolboxStringifiedJson = function() {
     return internalService.serializationService.getSortedContent();
@@ -40,12 +46,35 @@ app.factory('toolboxService', function($rootScope, internalService) {
 app.factory('internalService', function($rootScope) {
   var internalService = {};
 
+  internalService.validationService = new ValidationService($rootScope);
   internalService.serializationService = new SerializationService($rootScope);
   internalService.inputExtractionService = new InputExtractionService($rootScope);
   internalService.stateService = new StateService($rootScope);
 
   return internalService;
 });
+
+/**
+ * The ValidationService checks for the entered values when a task is completed.
+ */
+function ValidationService(angularRootScope) {
+  this.invalidate = function() {
+    this.valid = false;
+  };
+  
+  this.isValid = function() {
+	return this.valid;
+  }
+  
+  this.start = function() {
+    this.valid = true;
+    angularRootScope.$broadcast(ValidationService.EVENTS.START);
+  };
+};
+
+ValidationService.EVENTS = {
+  START: 'validationStart'
+};
 
 /**
  * The SerializationService handles the transformation of each toolbox component

@@ -4,11 +4,8 @@
 app.controller('MasterFormCtrl', function($scope, toolboxService) {
   $scope.submitForm = function() {
     toolboxService.prepareToolboxFormElements();
-
-	  $('#create-task-form input[name="task-content"]').val(
-        toolboxService.getToolboxStringifiedJson());
-
-	  $('#create-task-form').submit();
+    $('#create-task-form input[name="task-content"]').val(toolboxService.getToolboxStringifiedJson());
+    $('#create-task-form').submit();
   };
 });
 
