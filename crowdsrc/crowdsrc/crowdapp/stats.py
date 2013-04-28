@@ -28,6 +28,7 @@ def get_task_stats(task):
             total_sum_squared = 0 # Useful for computing the variance
             ap_sum_map = {}
             ap_sum_squared_map = {}
+            ap_count_map = {}
             
             for ap in access_paths:
                 ap_sum_map[ap.id] = 0

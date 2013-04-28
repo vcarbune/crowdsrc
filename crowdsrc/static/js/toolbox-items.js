@@ -35,6 +35,13 @@ function ToolboxItemCtrl($scope, internalService)
       break;
     }
   }
+  
+  $scope.doValidation = function() {
+	  $scope.validateInput();
+  };
+  
+  $scope.validateInput = function() {
+  }
 
   $scope.serialize = function() {
     // In case we need any particular dark magic for components,
@@ -57,6 +64,7 @@ function ToolboxItemCtrl($scope, internalService)
 	  return null;
   };
 
+  $scope.$on('validationStart', $scope.doValidation);
   $scope.$on('serializationStart', $scope.serialize);
   $scope.$on('inputExtractionStart', $scope.extractInput);
   $scope.$on('stateChanged', $scope.updateItemState);  
@@ -129,6 +137,13 @@ function TextFieldCtrl($scope, internalService)
       $scope.itemContent.id = id;
   };
   
+  $scope.validateInput = function() {
+	if (!$scope.textFieldValue) {
+      internalService.validationService.invalidate(); 
+      $scope.error = 'The field is empty.';
+	}
+  };
+  
   $scope.getInput = function() {	 
 	  return {
 		  id: $scope.content.id,
@@ -175,6 +190,20 @@ function NumberFieldCtrl($scope, internalService)
 
     if (id !== undefined)
       $scope.itemContent.id = id;
+  };
+  
+  $scope.validateInput = function() {
+	if (!$scope.textFieldValue) {
+      internalService.validationService.invalidate(); 
+      $scope.error = 'The field is empty.';
+	}
+	else {
+	  number = parseFloat($scope.textFieldValue);
+	  if (isNaN(number)) {
+		internalService.validationService.invalidate(); 
+	    $scope.error = 'The value is not a number.';
+	  }
+	} 
   };
   
   $scope.getInput = function() {	 
@@ -397,8 +426,6 @@ function RankingCtrl($scope, internalService)
       $scope.itemContent.id = id;
   }
   
-  
-  
   $scope.addItem = function() {
 	  $scope.items.push({
 		  id: $scope.items.length,
@@ -462,6 +489,15 @@ function RankingCtrl($scope, internalService)
         state: item.state
       });
     });
+  };
+  
+  $scope.validateInput = function() {
+	for (i in $scope.items) {
+	  if ($scope.items[i].state != 'selected') {
+		  internalService.validationService.invalidate();
+		  $scope.error = 'Not all items have been ranked.';
+	  }
+	} 
   };
   
   $scope.getInput = function() {	 

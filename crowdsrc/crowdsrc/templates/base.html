@@ -29,6 +29,12 @@
 
 <!-- please include particular page scripts, in head, using this block -->
 {% block pagescript %}{% endblock %}
+<script type="text/javascript">
+  function onLoad() {
+    if (onBodyLoad !== undefined)
+      onBodyLoad();
+  }
+</script>
 
 {% block head %}
 {% endblock %}
@@ -63,7 +69,7 @@
 </style>
 </head>
 
-<body onload="onBodyLoad()">
+<body onload="onLoad();">
 	<div id="art-main">
 		<div class="art-sheet clearfix">
 			<header class="art-header">

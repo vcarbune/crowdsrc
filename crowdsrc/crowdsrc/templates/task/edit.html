@@ -58,7 +58,7 @@
 
   function createQualificationTags()
   {
-    var multipleQualificationSelect = $('#id_task-qualifications')[0];
+    var multipleQualificationSelect = $('#id_task-qualifications');
     $(multipleQualificationSelect).hide();
     for (var i = 0; i < multipleQualificationSelect.options.length; i++) {
       addQualificationLabelFromOption(multipleQualificationSelect.options[i]);
@@ -128,6 +128,8 @@
 	<div ng-controller="ToolboxCtrl" 
 		{% if task_form.content.value %}
 		ng-init="init({{ task_form.content.value }}, 'EDIT')"
+		{% else %}
+		ng-init="initEmpty()"
 		{% endif %} 
 		class="toolbox-container">
       <div class="toolbox-icons-list">

@@ -36,5 +36,8 @@
 			</tr>
 		{% endfor %}
 		</table>
+	{% elif elem.task_input.type == 4 %} <!-- Number field -->
+		<p>Mean value: {{elem.stats.mean}}</p>
+		<p>Variance: {{elem.stats.variance}}</p>
 	{% endif %}
 </div>
