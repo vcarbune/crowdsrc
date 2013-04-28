@@ -31,7 +31,7 @@
 {% block pagescript %}{% endblock %}
 <script type="text/javascript">
   function onLoad() {
-    if (onBodyLoad !== undefined)
+    if (typeof(onBodyLoad) == 'function')
       onBodyLoad();
   }
 </script>

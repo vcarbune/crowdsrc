@@ -58,7 +58,7 @@
 
   function createQualificationTags()
   {
-    var multipleQualificationSelect = $('#id_task-qualifications');
+    var multipleQualificationSelect = $('#id_task-qualifications')[0];
     $(multipleQualificationSelect).hide();
     for (var i = 0; i < multipleQualificationSelect.options.length; i++) {
       addQualificationLabelFromOption(multipleQualificationSelect.options[i]);
