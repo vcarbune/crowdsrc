@@ -62,7 +62,7 @@ def get_task_stats(task):
             print "Ranking score variances: " + str(total_var_scores)
             
             total_stats.append({'task_input': task_input, 
-                                'stats': {'mean_scores': total_mean_scores, 'var_scores': total_var_scores}})
+                                'stats': { 'scores' : zip(total_mean_scores, total_var_scores)}})
             
             for ap in access_paths:
                 ap_mean_scores = [0] * num_elems
@@ -76,7 +76,7 @@ def get_task_stats(task):
                 print "Ranking score variances: " + str(ap_var_scores)
                 
                 ap_stats_map[ap.id].append({'task_input': task_input, 
-                                            'stats': {'mean_scores': ap_mean_scores, 'var_scores': ap_var_scores}})
+                                            'stats': {'scores': zip(ap_mean_scores, ap_var_scores)}})
                 
                 
         elif task_input.type == INPUT_TYPES['radioGroup']:

@@ -3,6 +3,11 @@ INPUT_TYPES = {'textField': 0,
                'radioGroup': 2, 
                'ranking': 3}
 
+INPUT_TYPE_NAMES = {0: 'Text Field',
+                    1: 'Checkbox',
+                    2: 'Radio button group',
+                    3: 'Ranking'}
+
 GENDERS = (
     ('M', "Male"),
     ('F', "Female"),

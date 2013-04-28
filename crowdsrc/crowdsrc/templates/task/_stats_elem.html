@@ -1,0 +1,34 @@
+
+{% load crowdapp_extras %}
+
+<div class="input_stats_box">
+	<p class="input_title" style="font-weight: bold;">{{elem.task_input.type|input_type_name}}</p>
+	{% if elem.task_input.type == 2 %} <!-- Radio group -->
+		<p>Counts for all choices:</p>
+		<table>
+		<thead>
+			<td>Id</td><td>Count</td>
+		</thead>
+			{% for count in elem.stats.counts %}
+				<tr>
+					<td>{{forloop.counter}}</td>
+					<td>{{count}}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% elif elem.task_input.type == 3 %} <!-- Ranking -->
+		<p>Scores for all choices:</p>
+		<table>
+		<thead>
+			<td>Id</td><td>Mean</td><td>Variance</td>
+		</thead>
+		{% for score in elem.stats.scores %}
+			<tr>
+				<td>{{forloop.counter}}</td> 
+				<td>{{score.0}}</td>
+				<td>{{score.1}}</td>
+			</tr>
+		{% endfor %}
+		</table>
+	{% endif %}
+</div>

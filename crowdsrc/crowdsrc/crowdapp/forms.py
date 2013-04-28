@@ -52,13 +52,13 @@ class AccessPathForm(ModelForm):
         model = AccessPath
         fields = ('name', 'description', 'cost', 'error')
 
-AccessPathFormSet = forms.models.inlineformset_factory(Task, AccessPath, form=AccessPathForm, extra=0, max_num=4, can_delete=True)
-AccessPathFormSetWithExtra = forms.models.inlineformset_factory(Task, AccessPath, form=AccessPathForm, extra=1, max_num=4, can_delete=True)
+AccessPathFormSet = forms.models.modelformset_factory(AccessPath, form=AccessPathForm, extra=0, max_num=4, can_delete=True)
+AccessPathFormSetWithExtra = forms.models.modelformset_factory(AccessPath, form=AccessPathForm, extra=1, max_num=4, can_delete=True)
 
 def get_accesspath_formset(task):
     if task and len(task.accesspath_set.all()) > 0:
-        return AccessPathFormSet(instance=task, prefix='accesspath')
+        return AccessPathFormSet(queryset=task.accesspath_set.all(), prefix='accesspath')
     else:
-        return AccessPathFormSetWithExtra(instance=task, prefix='accesspath')
+        return AccessPathFormSetWithExtra(queryset=AccessPath.objects.none(), prefix='accesspath')
         
         

@@ -1,12 +1,35 @@
 {% extends "base_user.html" %} 
 
+{% load crowdapp_extras %}
+
 {% block title %}Task statistics{% endblock %}
 
 {% block content %}
 
-<h2>Task Statistics</h2>
+<h2>{{ task.name }} </h2>
+<h3>Task Statistics</h3>
+<br>
+<h4>General statistics</h4>
+<p>Number of solutions: {{ num_sol }}</p>
+<p>Inputs:</p>
+{% for elem in total_stats %}
+	{% include 'task/_stats_elem.html' with elem=elem %}
+{% endfor %}
 
-
-
+{% if task.accesspath_set.all %}
+<br>
+<h4>Statistics for each access path</h4>
+{% for ap in task.accesspath_set.all %}
+	<br>
+	<div class="access_path_stats">
+		<p>Access path: {{ ap.name }} </p>
+		<p>Number of solutions: {{ num_sol_per_ap|get_item:ap.id }}</p>
+		<p>Inputs:</p>
+		{% for elem in ap_stats_map|get_item:ap.id %}
+			{% include 'task/_stats_elem.html' with elem=elem %}
+		{% endfor %}
+	</div>
+{% endfor %}
+{% endif %}
 
 {% endblock %}
