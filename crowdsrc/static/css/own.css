@@ -1,4 +1,4 @@
-/* All Pages */
+e* All Pages */
 h2 {
 	padding: 15px !important;
 }
@@ -64,11 +64,12 @@ td
 }
 
 
-.registration-fieldset {
+.standard-fieldset {
 	padding: 1em;
+	border: 0;
 }
 
-.registration-fieldset label {
+.standard-fieldset label {
 	float:left;
 	width:25%;
 	margin-right:0.5em;
@@ -78,30 +79,38 @@ td
 	font-weight: bold;
 }
 
-.registration-fieldset input {
+.standard-fieldset input,
+.create-task-form textarea,
+.create-task-form input {
 	font-size: 12px;
 	padding: 4px 2px;
 	border: 1px solid gray;
 	margin: 2px 0 20px 10px;
 }
 
-.registration-form input[type='submit'] 
+.registration-form input[type='submit'],
+.create-task-form input[type='submit'],
+.my-account-form input[type='submit']
 {
 	position: absolute;
 	margin-left: 26%;
 	width: 150px;
 }
 
-.registration-fieldset input:focus,
-.registration-fieldset select:focus {
+.standard-fieldset input:focus,
+.standard-fieldset select:focus,
+.create-task-form input:focus,
+.create-task-form select:focus,
+.create-task-form textarea:focus {
 	border: 1px solid darkblue;
 }
 
-.registration-fieldset select {
+.standard-fieldset select {
 	border: 1px solid gray;
 	padding: 2px;
 }
 
+/* Registration Field-Set Specifics */
 /* Note: if fields are changed, this CSS needs to change too. */
 .registration-fieldset p:nth-child(5)
 {
@@ -114,4 +123,19 @@ td
 .registration-fieldset p:nth-child(12) select
 {
 	width: 150px;
+}
+
+/* My Account Field-Set Specifics */
+.my-account-fieldset p:nth-child(3) select,
+.my-account-fieldset p:nth-child(5) select,
+.my-account-fieldset p:nth-child(6) select,
+.my-account-fieldset p:nth-child(7) select,
+.my-account-fieldset p:nth-child(8) select
+{
+	width: 150px;
+}
+
+/* Edit Task Form */
+.create-task-form {
+	border: 1px solid black;
 }

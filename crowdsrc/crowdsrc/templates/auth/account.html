@@ -6,12 +6,12 @@
 {% block content %}
 
 <h2>My account</h2>
-<form method="post" action="{% url "crowdapp.views.account" %}" id="account_form" style="width: 200px">
+<form method="post" action="{% url "crowdapp.views.account" %}" class="my-account-form">
     {% csrf_token %}
-    <fieldset class="input" style="border: 0 none;">
+    <fieldset class="input standard-fieldset my-account-fieldset">
         {{ profile_form.as_p }} 
-	<input type="submit" value="Update account data" />
     </fieldset>
+    <input type="submit" value="Update account data" />
 
 </form>
 
