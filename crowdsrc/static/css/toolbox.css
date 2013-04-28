@@ -1,6 +1,13 @@
-.toolbox {
-	border: 1px solid #333;
+.toolbox-container {
+	margin-top: 10px;
+
 	padding: 5px;
+	border: 1px solid black;
+}
+
+.toolbox-icon {
+	padding: 0px 5px;
+	cursor: pointer;
 }
 
 .toolbox-state-btn {

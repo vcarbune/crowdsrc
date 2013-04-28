@@ -390,7 +390,7 @@ function ImageGroupCtrl($scope, $http, internalService) {
     internalService: internalService
   });
   
-  $scope.init = function() {
+  $scope.init = function(id) {
 	  if (!$scope.itemContent || $scope.itemContent == '') {
 	    $scope.itemContent = {
 	      type: 'imageGroup',

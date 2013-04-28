@@ -158,16 +158,14 @@ app.controller('ToolboxCtrl', function($scope, internalService) {
   };
 
   $scope.elemTypes = [
-    {code:'textField', name: 'Text Field'},
-    {code:'paragraph', name: 'Paragraph'},
-    {code:'checkbox', name: 'Checkbox'},
-    {code:'radioGroup', name: 'Radio Group'},
-    {code:'ranking', name: 'Ranking Component'},
-    {code:'imageGroup', name: 'Image Group'},
+    {code:'textField', name: 'Text Field', icon: 'textField.png'},
+    {code:'paragraph', name: 'Paragraph', icon: 'paragraph.png'},
+    {code:'checkbox', name: 'Checkbox', icon: 'checkbox.png'},
+    {code:'radioGroup', name: 'Radio Group', icon: 'radioGroup.png'},
+    {code:'ranking', name: 'Ranking Component', icon: 'ranking.png'},
+    {code:'imageGroup', name: 'Image Group', icon: 'imageGroup.png'},
   ];
   
-  $scope.newElemType = '';
-
   /* List of elements currently in the toolbox for the current task */
   $scope.content = [];
   
@@ -211,10 +209,10 @@ app.controller('ToolboxCtrl', function($scope, internalService) {
 	  });
   };
   
-  $scope.addElement = function() {
+  $scope.addElement = function(type) {
 	  $scope.content.push({
 		  id: $scope.content.length,
-		  type: $scope.newElemType,
+		  type: type,
 		  desc: '',
 		  itemContent: '',
 	  });

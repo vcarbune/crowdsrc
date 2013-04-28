@@ -1,4 +1,4 @@
-e* All Pages */
+/* All Pages */
 h2 {
 	padding: 15px !important;
 }
@@ -138,4 +138,9 @@ td
 /* Edit Task Form */
 .create-task-form {
 	border: 1px solid black;
+	padding: 15px;
+}
+
+#id_task-name {
+	width: 300px;
 }

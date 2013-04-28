@@ -24,6 +24,19 @@
 {% block title %}
 	{% if task_form.instance.id %} Edit task {% else %} Create task {% endif %}
 {% endblock %}
+
+<!-- JavaScript used only on this page -->
+{% block pagescript %}
+<script type="text/javascript">
+  // Instead of hooking up in Django form generation, we're changing some
+  // elements after the page load (less hassle and faster for minor changes).
+  function onBodyLoad() {
+    document.getElementById('id_task-name').placeholder =
+        'Descriptive title of your task';
+  }
+</script>
+{% endblock %}
+
 {% block content %}
 
 <h2>{% if task_form.instance.id %} Edit task {% else %} Create task {% endif %}</h2>
@@ -41,10 +54,10 @@
 	{{ task_form.non_field_errors }}
 	
 	{{ task_form.name.label_tag }}: {{ task_form.name }} {{ task_form.name.errors }}
-	<br><br>
-	
+
 	{% if accesspath_formset.initial_form_count == 0 %}
-		<button type="button" id="add-accesspaths">Add access paths</button>
+		<button type="button" id="add-accesspaths">Insert access paths</button>
+    <!-- FIXME: This needs to be moved in the block pagescript. -->
 		<script type="text/javascript">
 			$('#add-accesspaths').click(function(){
 				$('#accesspaths').show();
@@ -62,7 +75,8 @@
 	    			{{ accesspath_form.as_p }}
 	    		</div>
 		    {% endfor %}
-	    	
+        
+        <!-- FIXME: This needs to be moved in the block pagescript. -->	
 	    	<script type="text/javascript">
 	    		$("#accesspath-formset label:contains('Delete')").hide(); <!-- TODO: find a better solution -->
 	    		
@@ -81,9 +95,17 @@
 	<!-- Begin Toolbox -->
 	<div ng-controller="ToolboxCtrl" 
 		{% if task_form.content.value %}
-			ng-init="init({{ task_form.content.value }}, 'EDIT')"
+		ng-init="init({{ task_form.content.value }}, 'EDIT')"
 		{% endif %} 
-		class="toolbox">
+		class="toolbox-container">
+      <div class="toolbox-icons-list">
+        {% verbatim %}
+        <span class="toolbox-icon" ng-repeat="type in elemTypes" ng-click="addElement('{{type.code}}')">
+          <img src="/static/img/toolbox-icons/{{type.icon}}" title="{{type.name}}">
+        </span>
+        {% endverbatim %}
+      </div>
+
 	    <ul ui-sortable="sortableOptions" ng-model="content" class="toolbox-item-list">
         {% verbatim %}
     	  <li ng-repeat="item in content" class="toolbox-item" id="{{item.id}}">
@@ -92,12 +114,6 @@
 	    	</li>
         {% endverbatim %}
 	    </ul>
-	    
-	    <div class="toolbox-new-elem">
-	    	Add new element: 
-	    	<select ng-model="newElemType" ng-options="i.code as i.name for i in elemTypes"></select> 
-	    	<button type="button" ng-click="addElement()">Add</button>
-	    </div>
   	</div>
   	<!-- End Toolbox -->
 

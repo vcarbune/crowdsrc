@@ -24,8 +24,11 @@
 <script src="{{ STATIC_URL }}js/lib/jquery.js"></script>
 <script src="{{ STATIC_URL }}js/lib/jquery.formset.js"></script>
 <script src="{{ STATIC_URL }}js/lib/script.js"></script>
-<script src="{{ STATIC_URL }}js/lib/script.responsive.js"></script> 
+<script src="{{ STATIC_URL }}js/lib/script.responsive.js"></script>
 <!-- jquery end -->
+
+<!-- please include particular page scripts, in head, using this block -->
+{% block pagescript %}{% endblock %}
 
 {% block head %}
 {% endblock %}
@@ -60,7 +63,7 @@
 </style>
 </head>
 
-<body>
+<body onload="onBodyLoad()">
 	<div id="art-main">
 		<div class="art-sheet clearfix">
 			<header class="art-header">
