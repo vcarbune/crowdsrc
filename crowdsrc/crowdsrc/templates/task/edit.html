@@ -31,16 +31,35 @@
   // Instead of hooking up in Django form generation, we're changing some
   // elements after the page load (less hassle and faster for minor changes).
   function onBodyLoad() {
-    $('id_task-name').placeholder = 'Descriptive title of your task';
+    document.querySelector('#id_task-name').placeholder = 'Descriptive title of your task';
   };
 
-  function onRemoveIconMouseOver(evt) {
-    evt.target.parentNode.parentNode.style.background = '#DDD';
+  /* FIXME: Implement a method to support hiding the X for removing a component
+   * when the mouse is not over it. The method below is just way too hacky and
+   * doesn't work good enough. Post-poning for now.
+   */
+
+  /*
+  function onToolboxListMouseOver(evt) {
+    var removeButton = evt.target.querySelector('.toolbox-remove-component');
+    $(removeButton).show();
   };
 
-  function onRemoveIconMouseOut(evt) {
-    evt.target.parentNode.parentNode.style.background = '#FFF';
+  function onToolboxItemMouseOver(evt) {
+    var removeButton = evt.target.parentNode.parentNode.querySelector('.toolbox-remove-component');
+    $(removeButton).show();
   };
+  
+  function onToolboxListMouseOut(evt) {
+    var removeButton = evt.target.querySelector('.toolbox-remove-component');
+    $(removeButton).hide();
+  };
+
+  function onToolboxItemMouseOut(evt) {
+    var removeButton = evt.target.parentNode.parentNode.querySelector('.toolbox-remove-component');
+    $(removeButton).hide();
+  };
+  */
 </script>
 {% endblock %}
 
@@ -61,7 +80,40 @@
 	{{ task_form.non_field_errors }}
 	
 	{{ task_form.name.label_tag }}: {{ task_form.name }} {{ task_form.name.errors }}
+  <br>
+	{{ task_form.cost.label_tag }}: <input id="id_task-cost" name="task-cost" type="number" /> {{ task_form.cost.errors }}
+	{{ task_form.is_active }} {{ task_form.is_active.label_tag}}
 
+	<!-- Begin Toolbox -->
+	<div ng-controller="ToolboxCtrl" 
+		{% if task_form.content.value %}
+		ng-init="init({{ task_form.content.value }}, 'EDIT')"
+		{% endif %} 
+		class="toolbox-container">
+      <div class="toolbox-icons-list">
+        {% verbatim %}
+        <span class="toolbox-icon" ng-repeat="component in toolboxItemCtrls" ng-click="addElement('{{component.TYPE}}')">
+          <img src="/static/img/toolbox-icons/{{component.ICON}}" title="{{component.NAME}}" />
+        </span>
+        {% endverbatim %}
+      </div>
+
+	    <ul ui-sortable="sortableOptions" ng-model="content" class="toolbox-item-list">
+        {% verbatim %}
+    	  <li ng-repeat="item in content" class="toolbox-item" id="{{item.id}}">
+        <!-- onMouseOver="onToolboxListMouseOver(event);" onMouseOut="onToolboxListMouseOut(event)"; -->
+	    		<div ng-click="removeElement(item.id)" ng-show="isEditable()" class="toolbox-remove-component">
+            <img src="/static/img/toolbox-icons/remove.png" title="Remove Component" class="toolbox-remove-component-image" />
+          </div>
+          <span class="toolbox-component-name">{{item.desc}}</span>
+	    		<toolbox-item content="item" itemcontent="item.itemContent">
+            <!-- onMouseOver="onToolboxItemMouseOver(event);" onMouseOut="onToolboxItemMouseOut(event);" -->
+          </toolbox-item>
+	    	</li>
+        {% endverbatim %}
+	    </ul>
+  	</div>
+  	<!-- End Toolbox -->
 	{% if accesspath_formset.initial_form_count == 0 %}
 		<button type="button" id="add-accesspaths">Insert access paths</button>
     <!-- FIXME: This needs to be moved in the block pagescript. -->
@@ -99,40 +151,8 @@
 	</div>
 	<br>
 
-	<!-- Begin Toolbox -->
-	<div ng-controller="ToolboxCtrl" 
-		{% if task_form.content.value %}
-		ng-init="init({{ task_form.content.value }}, 'EDIT')"
-		{% endif %} 
-		class="toolbox-container">
-      <div class="toolbox-icons-list">
-        {% verbatim %}
-        <span class="toolbox-icon" ng-repeat="component in toolboxItemCtrls" ng-click="addElement('{{component.TYPE}}')">
-          <img src="/static/img/toolbox-icons/{{component.ICON}}" title="{{component.NAME}}" />
-        </span>
-        {% endverbatim %}
-      </div>
-
-	    <ul ui-sortable="sortableOptions" ng-model="content" class="toolbox-item-list">
-        {% verbatim %}
-    	  <li ng-repeat="item in content" class="toolbox-item" id="{{item.id}}">
-	    		<div ng-click="removeElement(item.id)" ng-show="isEditable()" class="toolbox-remove-component">
-            <img src="/static/img/toolbox-icons/remove.png" title="Remove Component" class="toolbox-remove-component-image"
-                onMouseOver="onRemoveIconMouseOver(event);" onMouseOut="onRemoveIconMouseOut(event);" />
-          </div>
-	    		<toolbox-item content="item" itemcontent="item.itemContent"></toolbox-item>
-	    	</li>
-        {% endverbatim %}
-	    </ul>
-  	</div>
-  	<!-- End Toolbox -->
-
   {{ task_form.qualifications.label}}: {{ task_form.qualifications }}
-	<br>
-	{{ task_form.cost.label_tag }}: {{ task_form.cost }} {{ task_form.cost.errors }}
-	<br>
-	{{ task_form.is_active }} {{ task_form.is_active.label_tag}}
-	
+
 	{{ task_form.content }}
 	{{ task_form.resource_files }}
 	<br>

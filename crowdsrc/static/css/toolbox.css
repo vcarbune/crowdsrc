@@ -1,8 +1,6 @@
 .toolbox-container {
 	margin-top: 10px;
-
 	padding: 5px;
-	border: 1px solid black;
 }
 
 .toolbox-icon {
@@ -36,6 +34,14 @@
 .toolbox-state-btn {
 }
 
+.toolbox-component-name {
+	position: relative;
+	top: -12px;
+	padding: 0px 5px;
+	background: white;
+	color: gray;
+}
+
 .toolbox-new-elem {
 	margin-top: 10px;
 }
@@ -47,9 +53,9 @@
 
 .toolbox-item {
 	display: block;
-	margin-bottom: 2px;
-
-	padding: 5px;
+	margin: 12px 0px;
+	border: 1px solid #EEE;
+	padding: 3px 0px 4px 5px;
 /*
 	border: 1px solid #333;
 	background: #EEE;
@@ -58,7 +64,7 @@
 
 .placeholder {
 	border: 1px solid #333;
-    background: #AEF;
+	background: #AEF;
 }
 
 .toolbox-ranking-list {

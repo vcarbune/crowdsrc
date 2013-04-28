@@ -137,10 +137,19 @@ td
 
 /* Edit Task Form */
 .create-task-form {
-	border: 1px solid black;
+	margin-left: 15px;
 	padding: 15px;
 }
 
 #id_task-name {
 	width: 300px;
+	margin-left: 10px;
+}
+
+#id_task-cost {
+	margin: 5px 0px 0px 8px;
+}
+#id_task-qualifications {
+	width: 150px;
+	background: white;
 }

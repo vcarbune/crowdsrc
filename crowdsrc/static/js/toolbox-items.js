@@ -116,7 +116,7 @@ function TextFieldCtrl($scope, internalService)
 	    $scope.itemContent = {
 	      type: 'textField',
 	      name: 'Text Field',
-	      textFieldLabel: 'Label:'
+	      textFieldLabel: 'Label: '
 	    };
 	  } else {
 	    // set the input value, in case we view a solution
@@ -164,7 +164,7 @@ function NumberFieldCtrl($scope, internalService)
 	    $scope.itemContent = {
 	      type: 'numberField',
 	      name: 'Number Field',
-	      textFieldLabel: 'Label:'
+	      textFieldLabel: 'Label: '
 	    };
 	  } else {
 	    // set the input value, in case we view a solution

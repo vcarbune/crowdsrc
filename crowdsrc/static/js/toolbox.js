@@ -38,7 +38,8 @@ app.directive('toolboxItem', function($compile) {
     link: linker,
     scope: {
       content: '=',
-      itemContent: '=itemcontent'
+      itemContent: '=itemcontent',
+      desc: '=desc'
     }
   }
 });
@@ -122,7 +123,7 @@ app.controller('ToolboxCtrl', function($scope, internalService) {
 	  $scope.content.push({
 		  id: $scope.content.length,
 		  type: type,
-		  desc: '',
+		  desc: ToolboxItemCtrl.StringToCtrlMap[type].NAME,
 		  itemContent: '',
 	  });
   };
