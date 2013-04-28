@@ -101,7 +101,12 @@ app.controller('ToolboxCtrl', function($scope, internalService) {
 	  if (state) {
 	    $scope.state = state;
 	    internalService.stateService.setState($scope.state);
-  	}
+  	  }
+  };
+  
+  $scope.initEmpty = function() {
+	  $scope.addElement(CheckboxCtrl.TYPE);
+	  $scope.addElement(ImageGroupCtrl.TYPE);
   };
   
   $scope.addExistingElement = function(elem) {
@@ -128,9 +133,6 @@ app.controller('ToolboxCtrl', function($scope, internalService) {
 	  });
   };
   
-  $scope.addElement(CheckboxCtrl.TYPE);
-  $scope.addElement(ImageGroupCtrl.TYPE);
- 
   $scope.removeElement = function (id) {
 	  for (var i=0; i<$scope.content.length; i++) {
 		  if ($scope.content[i].id == id) {

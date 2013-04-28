@@ -88,6 +88,8 @@
 	<div ng-controller="ToolboxCtrl" 
 		{% if task_form.content.value %}
 		ng-init="init({{ task_form.content.value }}, 'EDIT')"
+		{% else %}
+		ng-init="initEmpty()"
 		{% endif %} 
 		class="toolbox-container">
       <div class="toolbox-icons-list">
