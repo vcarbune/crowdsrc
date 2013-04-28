@@ -2,6 +2,7 @@ from django import template
 from django.core.exceptions import ObjectDoesNotExist
 
 from crowdapp.models import *
+from crowdapp.const import *
 
 register = template.Library()
 
@@ -22,3 +23,14 @@ def solved(user, task):
             return False
     except ObjectDoesNotExist:
         return False
+    
+@register.filter
+def input_type_name(type):
+    if type in INPUT_TYPE_NAMES:
+        return INPUT_TYPE_NAMES[type]
+    else:
+        return ''
+    
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)

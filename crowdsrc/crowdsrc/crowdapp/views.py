@@ -80,9 +80,7 @@ def edit_task(request, task_id=None):
         
     if request.method == 'POST':
         task_form = CreateTaskForm(instance=task, data=request.POST, prefix='task')
-        accesspath_formset = AccessPathFormSet(instance=task, data=request.POST, prefix='accesspath')
-        
-        # FIXME: should clean the accesspath_formset, if the task_form is not valid
+        accesspath_formset = AccessPathFormSet(data=request.POST, prefix='accesspath')
         
         if task_form.is_valid() and accesspath_formset.is_valid():
             # save task
@@ -298,7 +296,16 @@ def task_statistics(request, task_id):
     
     total_stats, ap_stats_map = get_task_stats(task)
     
-    return render(request, 'task/statistics.html', {'task': task, 'task_stats': task_stats })
+    num_sol = len(task.solution_set.all())
+    num_sol_per_ap = {}
+    aps = task.accesspath_set.all()
+    
+    for ap in aps:
+        num_sol_per_ap[ap.id] = len(ap.solution_set.all())
+    
+    return render(request, 'task/statistics.html', {'task': task,
+                                                    'num_sol': num_sol, 'num_sol_per_ap': num_sol_per_ap,
+                                                    'total_stats': total_stats, 'ap_stats_map': ap_stats_map })
     
 def toolbox_dev(request):
     return render(request, 'dev/toolbox.html');
