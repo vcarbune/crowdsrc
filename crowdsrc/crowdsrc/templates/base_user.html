@@ -3,12 +3,12 @@
 {% load crowdapp_extras %} 
 
 {% block menu %}
-	<li><a href="/all_tasks">Task List</a></li>
+	<li><a href="/all_tasks">All Tasks</a></li>
 {% if user.is_task_creator %}
+	<li><a href="/my_tasks">My Tasks</a></li>
 	<li><a href="/create_task">Create Task</a></li>
-	<li><a href="/my_tasks">Own Tasks</a></li>
 {% endif %}
-	<li><a href="/my_solutions/">Solutions</a></li>
+	<li><a href="/my_solutions/">My Solutions</a></li>
 	<li><a href="/account/">Account</a></li>
   <li class="menu-entry-logout"><a href="/logout/">Logout</a></li>
 {% endblock %}
