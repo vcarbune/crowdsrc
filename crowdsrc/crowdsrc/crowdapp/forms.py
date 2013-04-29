@@ -57,8 +57,12 @@ AccessPathFormSetWithExtra = forms.models.modelformset_factory(AccessPath, form=
 
 def get_accesspath_formset(task):
     if task and len(task.accesspath_set.all()) > 0:
-        return AccessPathFormSet(queryset=task.accesspath_set.all(), prefix='accesspath')
+        ap_formset = AccessPathFormSet(queryset=task.accesspath_set.all(), prefix='accesspath')
+        ap_formset.is_empty = False
     else:
-        return AccessPathFormSetWithExtra(queryset=AccessPath.objects.none(), prefix='accesspath')
+        ap_formset = AccessPathFormSetWithExtra(queryset=AccessPath.objects.none(), prefix='accesspath')
+        ap_formset.is_empty = True
+    return ap_formset
+    
         
         

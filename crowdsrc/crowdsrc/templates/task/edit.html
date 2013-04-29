@@ -148,7 +148,9 @@
 	    </ul>
   	</div>
   	<!-- End Toolbox -->
-	{% if accesspath_formset.initial_form_count == 0 %}
+  	
+  	<!-- Begin Access Paths -->
+	{% if accesspath_formset.is_empty %}
 		<button type="button" id="add-accesspaths">Enable Access Paths</button>
     <!-- FIXME: This needs to be moved in the block pagescript. -->
 		<script type="text/javascript">
@@ -158,18 +160,18 @@
 			});
 		</script>
 	{% endif %}
-	<div id="accesspaths" {% if accesspath_formset.initial_form_count == 0 %} style="display:none;"{% endif %}>
+	<div id="accesspaths" {% if accesspath_formset.is_empty %} style="display:none;"{% endif %}>
 		<div id="accesspath-formset">
 			{{ accesspath_formset.management_form }}
 			{{ accesspath_formset.non_field_errors }}
 	    	{% for accesspath_form in accesspath_formset.forms %}
 	    		<div class="subform access-path-form">
-            <span class="access-path-form-description">Access Path</span>
+            		<span class="access-path-form-description">Access Path</span>
 	    			{{ accesspath_form.as_p }}
 	    		</div>
 		    {% endfor %}
         
-        <!-- FIXME: This needs to be moved in the block pagescript. -->	
+        	<!-- FIXME: This needs to be moved in the block pagescript. -->	
 	    	<script type="text/javascript">
 	    		$("#accesspath-formset label:contains('Delete')").hide(); <!-- TODO: find a better solution -->
 	    		
@@ -183,9 +185,11 @@
 	    	</script>
 		</div>
 	</div>
-	<br>
-
-  <br>{{ task_form.qualifications }}
+	<!-- End Access Paths -->
+	
+	<br><br>
+	
+	{{ task_form.qualifications }}
 
 	{{ task_form.content }}
 	{{ task_form.resource_files }}

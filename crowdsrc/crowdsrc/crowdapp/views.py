@@ -52,6 +52,7 @@ def register(request):
 
 @login_required
 def account(request):
+    request.user.is_task_creator = request.user.has_perm('crowdapp.is_task_creator')
     try:
         profile = get_profile(request.user)
     except ObjectDoesNotExist:
@@ -116,6 +117,9 @@ def edit_task(request, task_id=None):
                 return redirect(reverse('crowdapp.views.my_tasks'))
             else:
                 return redirect(reverse('crowdapp.views.edit_task', args=[task.id]))
+        else:
+            if len(accesspath_formset.forms) > 0:
+                accesspath_formset.is_empty = False
     else:
         task_form = CreateTaskForm(instance=task, prefix='task')
         accesspath_formset = get_accesspath_formset(task)

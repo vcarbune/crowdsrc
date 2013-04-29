@@ -400,9 +400,9 @@ function RankingCtrl($scope, internalService)
 	    name: 'Ranking Component'
 	  };
 	  $scope.items = [
-            {id: 0, name: 'New item', rank: 100, state: 'free'},
-            {id: 1, name: 'New item', rank: 100, state: 'free'},
-            {id: 2, name: 'New item', rank: 100, state: 'free'},
+            {id: 0, name: 'Item 1', rank: 100, state: 'free'},
+            {id: 1, name: 'Item 2', rank: 100, state: 'free'},
+            {id: 2, name: 'Item 3', rank: 100, state: 'free'},
           ];
 
 	} else {
