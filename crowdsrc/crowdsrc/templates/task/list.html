@@ -3,41 +3,48 @@
 {% load crowdapp_extras %}
 
 {% block title %}
-  View tasks
+  Task List
 {% endblock %}
 {% block content %}
 
-<h2>View All Tasks</h2>
-
-<br>
+<h2>Task List</h2>
 
 {% if tasks %}
-    <table class="task_list">
+  <table class="generic-table-list">
         <tr>
+            <th> Action </th>
             <th> Task Name </th>
             <th> Creator </th>
             <th> Cost </th>
             <th> Creation Date </th>
-            <th> Action </th>
         </tr>
     {% for task in tasks %}
-        <tr>
-            <td> {{ task.name }} </td>
+        <tr
+        {% if forloop.counter|divisibleby:2 %}
+          class="even"
+        {% else %}
+          class="odd"
+        {% endif %}
+        >
+            <td>
+                {% if task.can_solve %}
+                    <a href="{% url "crowdapp.views.complete_task" task.id %}">
+                      <img src="{{ STATIC_URL }}img/solve.png" title="Solve"/>
+                    </a>
+                {% else %}
+                    <img src="{{ STATIC_URL }}img/solved.png" title="Solved!"/>
+                {% endif %}
+            </td>
+            <td class="task-name"> {{ task.name }} </td>
             <td> {{ task.creator }} </td>
             <td> {{ task.cost }} </td>
             <td> {{ task.created_at }} </td>
-            <td>
-                {% if task.can_solve %}
-                    <a href="{% url "crowdapp.views.complete_task" task.id %}"> Complete task </a>
-                {% else %}
-                    Solved
-                {% endif %}
-            </td>
         </tr>
     {% endfor %}
-</table>
+  </table>
 {% else %}
     No active tasks available.
 {% endif %}
+
 
 {% endblock %}

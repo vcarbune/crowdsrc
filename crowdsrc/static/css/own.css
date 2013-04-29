@@ -232,3 +232,24 @@ select {
 	position: absolute;
 	right: 0px;
 }
+
+/* Table List Styling */
+.generic-table-list {
+	width: 90%;
+	margin: 0% 5% 0% 5%;
+	text-align: center;
+
+	border-collapse: collapse;
+}
+
+.generic-table-list .task-name {
+}
+.generic-table-list th {
+	font-size: 110%;
+	background: rgba(58, 69, 88, 0.8);
+	color: white;
+}
+
+.generic-table-list .even {
+	 background: #EEE;
+}

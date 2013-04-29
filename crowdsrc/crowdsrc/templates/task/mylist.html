@@ -1,44 +1,44 @@
 {% extends "base_user.html" %} 
 
 {% block title %}
-  View my tasks
+  Own Tasks
 {% endblock %}
 
 {% block content %}
 
-<h2>View My Tasks</h2>
+<h2>Own Tasks</h2>
 <br>
 
 {% if tasks %}
-    <table class="task_list">
+    <table class="generic-table-list">
         <tr>
+            <th> Actions </th>
             <th> Task Name </th>
             <th> Cost </th>
             <th> Creation Date </th>
-            <th> Is active </th>
-            <th> Edit </th>
-            <th> Manage solutions </th>
         </tr>
     {% for task in tasks %}
-        <tr>
-            <td> {{ task.name }} </td>
+        <tr
+        {% if forloop.counter|divisibleby:2 %}
+          class="even"
+        {% else %}
+          class="odd"
+        {% endif %}
+        >
+            <td>
+                {% if task.is_active %}
+                    <a href="{% url "crowdapp.views.task_solutions" task.id %}">
+                      <img src="{{ STATIC_URL }}img/view_solutions.png" title="Mark Solutions"/>
+                    </a>
+                {% else %}
+                    <a href="{% url "crowdapp.views.edit_task" task.id %}">
+                      <img src="{{ STATIC_URL }}img/edit_task.png" title="Edit Task"/>
+                    </a>
+                {% endif %}
+            </td>
+            <td class="task-name"> {{ task.name }} </td>
             <td> {{ task.cost }} </td>
             <td> {{ task.created_at }} </td>
-            <td>
-                {% if task.is_active %}
-                    Active
-                {% else %}
-                    Not Active
-                {% endif %}
-            </td>
-            <td>
-                {% if task.is_active %}
-                    Not editable
-                {% else %}
-                    <a href="{% url "crowdapp.views.edit_task" task.id %}"> Edit task </a>
-                {% endif %}
-            </td>
-            <td> <a href="{% url "crowdapp.views.task_solutions" task.id %}"> View solutions </a> </td>
         </tr>
     {% endfor %}
     </table>
