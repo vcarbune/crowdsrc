@@ -95,8 +95,6 @@
 .responsive .art-header 
 {
    width: auto;
-   height: auto;
-   min-height: 100px;
    min-width: 1%;
    background-position: center center !important;
    background-size: cover !important;

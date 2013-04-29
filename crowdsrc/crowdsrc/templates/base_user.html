@@ -3,21 +3,18 @@
 {% load crowdapp_extras %} 
 
 {% block menu %}
-	<li><a href="/all_tasks">View tasks</a></li>
+	<li><a href="/all_tasks">Task List</a></li>
 {% if user.is_task_creator %}
-	<li><a href="#">Manage tasks</a>
+	<li><a href="#">Manage Tasks</a>
 		<ul>
 			<li><a href="/create_task">Create task</a></li>
 			<li><a href="/my_tasks">My tasks</a></li>
 		</ul>
 	</li>
 {% endif %}
-	<li><a href="/account/">My account</a></li>
-	<li><a href="/my_solutions/">My solutions</a></li>
-{% endblock %}
-
-{% block welcome_message %}
-<span style="font-size: 12pt">Logged in as {{user|profile}}!</span> <a href="/logout/">Logout</a>
+	<li><a href="/account/">Account</a></li>
+	<li><a href="/my_solutions/">Solutions</a></li>
+  <li class="menu-entry-logout"><a href="/logout/">Logout</a></li>
 {% endblock %}
 
 {% block sidebar %}							

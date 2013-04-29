@@ -2,6 +2,7 @@
 #art-main
 {
    background: #E0E0E0;
+/*
    background: linear-gradient(top, #C7C7C7 0, #F7F7F7 250px) no-repeat;
    background: -webkit-linear-gradient(top, #C7C7C7 0, #F7F7F7 250px) no-repeat;
    background: -moz-linear-gradient(top, #C7C7C7 0, #F7F7F7 250px) no-repeat;
@@ -10,6 +11,8 @@
    background: linear-gradient(top, #C7C7C7 0, #F7F7F7 250px) no-repeat;
    -svg-background: linear-gradient(top, #C7C7C7 0, #F7F7F7 250px) no-repeat;
    background-attachment: fixed !important;
+*/
+   background: white;
    margin:0 auto;
    font-size: 13px;
    font-family: 'Open Sans', Arial, 'Arial Unicode MS', Helvetica, Sans-Serif;

@@ -226,3 +226,9 @@ select {
 .create-task-form .errorlist {
 	left: 7.5%;
 }
+
+.menu-entry-logout {
+	float: right;
+	position: absolute;
+	right: 0px;
+}
