@@ -18,6 +18,7 @@ urlpatterns = patterns('',
     # Task related urls
     url(r'^create_task/$', 'crowdapp.views.edit_task'),
     url(r'^edit_task/(?P<task_id>\d+)/$', 'crowdapp.views.edit_task'),
+    url(r'^delete_task/(?P<task_id>\d+)/$', 'crowdapp.views.delete_task'),
     
     url(r'^complete_task/(?P<task_id>\d+)/$', 'crowdapp.views.complete_task'),
     url(r'^complete_task/(?P<task_id>\d+)/(?P<solution_id>\d+)$', 'crowdapp.views.complete_task'),

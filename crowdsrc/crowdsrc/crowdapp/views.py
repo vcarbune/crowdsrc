@@ -126,6 +126,21 @@ def edit_task(request, task_id=None):
     return render(request, 'task/edit.html', {'task_form': task_form, 'accesspath_formset': accesspath_formset})
 
 @login_required
+def delete_task(request, task_id):
+    request.user.is_task_creator = request.user.has_perm('crowdapp.is_task_creator')
+    try:
+        task = Task.objects.get(id=task_id)
+        profile = get_profile(request.user)
+    except ObjectDoesNotExist:
+        raise Http404
+    if task.creator != profile:
+        raise PermissionDenied
+    
+    task.delete()
+    
+    return redirect(reverse('crowdapp.views.my_tasks'))
+
+@login_required
 def complete_task(request, task_id, solution_id=0):
     request.user.is_task_creator = request.user.has_perm('crowdapp.is_task_creator')
     message = ""

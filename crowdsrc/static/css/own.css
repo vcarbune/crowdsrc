@@ -286,3 +286,7 @@ select {
 {
 	margin: 2px;
 }
+
+a.action-icon {
+	text-decoration: none;
+}
