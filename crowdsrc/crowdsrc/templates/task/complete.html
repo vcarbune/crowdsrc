@@ -27,10 +27,10 @@
 
 {% block content %}
 
-<h2>Task: {{ solution.task.name }} </h2>
-
+<h2>{{ solution.task.name }}</h2>
+<div class="complete-task-container">
 {% if solution.access_path %}
-<p> Description : {{ solution.access_path.description }} </p>
+<p>Description: {{ solution.access_path.description }} </p>
 {% endif %}
 
 <form ng-app="angularjs-toolbox" id="complete-task-form" method="post" action="{% url 'crowdapp.views.complete_task' solution.task.id solution.id %}">
@@ -54,7 +54,9 @@
 	<br />
 	<div ng-controller="MasterFormCtrl">
 	  <button ng-click="submitForm()" type="button">Submit</button>
-    </div>
+  </div>
 </form>
+
+</div>
 
 {% endblock %}

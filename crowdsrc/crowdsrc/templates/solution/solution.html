@@ -53,9 +53,21 @@
     <th> Status: </th>
     <td> {{ solution.get_status_display }} </td>
   </tr>
+  <tr>
+    <th> Mark as: </th>
+    <td>
+{% if user|profile == solution.task.creator and solution.status == 1 %}
+      <a href="{% url "crowdapp.views.process_solution" solution.id 1 %}"><img src="{{ STATIC_URL }}img/solved.png" title="Approve!"/></a>
+      <span>Approved</span>
+	    &nbsp; &nbsp;
+      <a href="{% url "crowdapp.views.process_solution" solution.id 0 %}"><img src="{{ STATIC_URL }}img/rejected.png" title="Reject!"/></a>
+      <span>Rejected</span>
+{% endif %}
+    </td>
+
 </table>
 
-<div ng-app="angularjs-toolbox" id="solution_container">
+<div ng-app="angularjs-toolbox" id="solution_container" class="complete-task-container">
 	<!-- Begin Toolbox -->
 	<div ng-controller="ToolboxCtrl" ng-init="init({{ task_items }}, 'COMPLETED', {{solution.id}})" class="toolbox">
 	    <ul ui-sortable="sortableOptions" ng-model="content" class="toolbox-item-list">
@@ -66,10 +78,5 @@
 	</div>
 	<!-- End Toolbox -->
 </div>
-
-{% if user|profile == solution.task.creator and solution.status == 1 %}
-	<a href="{% url "crowdapp.views.process_solution" solution.id 1 %}">Approve</a>
-	<a href="{% url "crowdapp.views.process_solution" solution.id 0 %}">Deny</a>
-{% endif %}
 
 {% endblock %}
