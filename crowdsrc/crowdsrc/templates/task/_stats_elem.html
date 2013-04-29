@@ -1,10 +1,10 @@
 
 {% load crowdapp_extras %}
 
-<div class="input_stats_box">
-	<p class="input_title" style="font-weight: bold;">{{elem.task_input.type|input_type_name}}</p>
+<div class="stats-input-box">
+	<span class="stats-input-title">{{elem.task_input.type|input_type_name}}</span>
 	{% if elem.task_input.type == 1 %} <!-- Checkbox -->
-		<p>Counts</p>
+		<p>Counts:</p>
 		<ul>
 			<li>False: {{ elem.stats.counts.0 }}</li>
 			<li>True: {{ elem.stats.counts.1 }}</li>
@@ -13,7 +13,7 @@
 		<p>Counts for all choices:</p>
 		<table>
 		<thead>
-			<td>Id</td><td>Count</td>
+			<th>Id</th><th>Count</th>
 		</thead>
 			{% for count in elem.stats.counts %}
 				<tr>
@@ -26,7 +26,7 @@
 		<p>Scores for all choices:</p>
 		<table>
 		<thead>
-			<td>Id</td><td>Mean</td><td>Variance</td>
+			<th>Id</th><th>Mean</th><th>Variance</th>
 		</thead>
 		{% for score in elem.stats.scores %}
 			<tr>

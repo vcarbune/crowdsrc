@@ -290,3 +290,56 @@ select {
 a.action-icon {
 	text-decoration: none;
 }
+
+
+/* Task Statistics Styling */
+#task-stats-container {
+	margin: 10px;
+}
+
+#task-stats-container h3 {
+	font-weight: bold;
+	font-size: 18px;
+}
+
+#task-stats-container h4 {
+	font-weight: bold;
+	font-size: 16px;
+}
+
+#task-stats-container .stats-inputs-container {
+	border: 1px solid black;
+	padding: 5px;
+}
+
+#task-stats-container .stats-input-box {
+	margin: 10px 5px 10px 5px;
+	border: 1px solid #EEE;
+	padding: 3px 0px 4px 5px;
+}
+
+#task-stats-container .stats-input-title {
+	position: relative;
+	top: -12px;
+	padding: 0px 5px;
+	background: white;
+	color: gray;
+}
+
+#task-stats-container .stats-access-path-container {
+	margin: 10px 0 10px 0;
+}
+
+#task-stats-container .stats-inputs-header {
+	font-weight: bold;
+}
+
+#task-stats-container table, th, td {
+	border: 1px solid #EEE;
+}
+
+#task-stats-container th {
+	font-weight: bold;
+}
+
+
