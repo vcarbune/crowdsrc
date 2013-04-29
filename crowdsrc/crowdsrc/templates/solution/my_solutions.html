@@ -1,27 +1,37 @@
 {% extends "base_user.html" %}
 
 {% block title %}
-  My solutions
+  Submitted Solutions
 {% endblock %}
 
 {% block content %}
 
-<h2>My solutions:</h2>
-<br/>
+<h2>Submitted Solutions</h2>
 
 {% if solutions %} 
 
-<table class="task_list">
+<table class="generic-table-list">
   <tr>
+    <th> Status </th>
     <th> Task </th> 
     <th> Worker </th> 
-    <th> Status </th>
   </td>
 {% for solution in solutions %}
   <tr>
+    <td>
+      {% if solution.get_status_display == "Finished" %}
+        <img src="{{ STATIC_URL }}img/submitted_task.png" title="Submitted"/>
+      {% elif solution.get_status_display == "Approved" %}
+        <img src="{{ STATIC_URL }}img/solved.png" title="Approved"/>
+      {% elif solution.get_status_display == "Rejected" %}
+        <img src="{{ STATIC_URL }}img/rejected.png" title="Rejected"/>
+      {% else %}
+        This is bug. Please report it.
+      {% endif %}
+    
+    </td>
     <td><a href="{% url "crowdapp.views.view_solution" solution.id %}">{{ solution.task }}</a></td>
     <td>{{ solution.worker }}</td>
-    <td>{{ solution.get_status_display }}</td>
   </tr>
 {% endfor %}
 </table>
