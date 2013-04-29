@@ -96,10 +96,6 @@
 
 <h2>{% if task_form.instance.id %} Edit task {% else %} Create task {% endif %}</h2>
 
-<div class="create-task-helptext">
-Blabala
-</div>
-
 <form ng-app="angularjs-toolbox" method="post" 
 	action="{% if task_form.instance.id %} {% url 'crowdapp.views.edit_task' task_form.instance.id %} {% else %} {% url 'crowdapp.views.edit_task' %} {% endif %} " 
 	id="create-task-form" class="create-task-form" enctype="multipart/form-data">
@@ -117,10 +113,31 @@ Blabala
   <br>
 	{{ task_form.cost.label_tag }}: {{ task_form.cost }} {{ task_form.cost.errors }}
 	{{ task_form.is_active }} {{ task_form.is_active.label_tag}}
+        <a href="#" class="tooltip">
+          &nbsp;*
+          <span>
+            <img class="callout" src="/static/img/callout.gif" />
+            <strong> Active task </strong><br/>
+            Make the task active and available for the workers.<br/>
+            <strong> Inactive task </strong><br/>
+            An inactive task can still be edited.
+          </span>
+        </a>
   <br>
   {{ task_form.qualifications.label}}: <span class="create-task-qualifications-container"></span>
+  <a href="#" class="tooltip">
+    &nbsp;*
+    <span>
+      <img class="callout" src="/static/img/callout.gif" />
+      <strong> Worker qualifications </strong><br/>
+      Select and unselect qualifications by clicking on the labels.
+      Only workers with the specified qualification profile can attempt to complete the task.
+    </span>
+  </a>
 
 	<!-- Begin Toolbox -->
+<br/> 
+    
 	<div ng-controller="ToolboxCtrl" 
 		{% if task_form.content.value %}
 		ng-init="init({{ task_form.content.value }}, 'EDIT')"
@@ -136,6 +153,15 @@ Blabala
         {% endverbatim %}
         <span ng-bind='warning' class='toolbox-warning-message'></span>
       </div>
+      <a href="#" class="tooltip">
+        &nbsp;*
+          <span>
+            <img class="callout" src="/static/img/callout.gif" />
+            <strong> Toolbox </strong><br/>
+              Create the task form by clicking on the components icons.
+              Hover over the icon to display the component type.
+              Drag and drop to reorder the components.  
+      </a>
 
 	    <ul ui-sortable="sortableOptions" ng-model="content" class="toolbox-item-list">
         {% verbatim %}
