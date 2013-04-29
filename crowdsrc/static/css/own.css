@@ -35,6 +35,13 @@ td
 	text-color: #4444ff;
 }
 
+.create-task-helptext {
+	top: 15%;
+	right: 15%;
+	margin-right: 20px;
+
+	border: 1px solid black;
+}
 
 .create-task-form
 {
@@ -139,13 +146,16 @@ select {
 	border: 0;
 }
 
-.create-task-qualification-label {
+.create-task-qualifications-container .create-task-qualification-label {
 	border-radius: 5px;
-	cursor: default;
+	border: 1px solid blue;
+	cursor: pointer;
+	background: white;
 }
 
-.create-task-qualification-selected {
-	background: #AAA;
+.create-task-qualifications-container .create-task-qualification-selected {
+	font-weight: bold;
+	background: lightgreen;
 }
 
 #id_task-name {

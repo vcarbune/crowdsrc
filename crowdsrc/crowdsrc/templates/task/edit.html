@@ -96,6 +96,10 @@
 
 <h2>{% if task_form.instance.id %} Edit task {% else %} Create task {% endif %}</h2>
 
+<div class="create-task-helptext">
+Blabala
+</div>
+
 <form ng-app="angularjs-toolbox" method="post" 
 	action="{% if task_form.instance.id %} {% url 'crowdapp.views.edit_task' task_form.instance.id %} {% else %} {% url 'crowdapp.views.edit_task' %} {% endif %} " 
 	id="create-task-form" class="create-task-form" enctype="multipart/form-data">
