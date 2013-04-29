@@ -6,6 +6,38 @@ Crowdsourcing Application
 
 {% block content %}
 
-<h2>Home!</h2>
-
+<div class="padded">
+<h1>Welcome!</h1>
+  <p>To get started you can:</p>
+  {% if user.is_task_creator %}
+    <ul class="signicon">
+      <li>
+        <a href="/create_task">Create a task.</a><br>
+        Post a new task and assign it a specific worker profile.
+      </li>
+      <li>
+        <a href="/all_tasks">View tasks.</a><br>
+        Show active tasks that match your profile and solve them.
+      </li>
+      <li><a href="/my_tasks">Manage solutions.</a><br>
+        Accept or reject solutions submitted for your tasks by the workers.
+      </li>
+    </ul>
+  {% else %}
+    <ul class="signicon">
+      <li>
+        <a href="/all_tasks">View tasks.</a><br>
+        Show active tasks that match your profile and solve them.
+      </li>
+      <li>
+        <a href="/account">Account</a><br>
+        Update your qualifications to be matched to more tasks profiles.
+      </li>
+      <li>
+        <a href="/my_solutions">View solutions.</a><br>
+        Monitor the approval of your submitted solutions.
+      </li>
+    </ul>
+  {% endif %}
+</div>
 {% endblock %}
