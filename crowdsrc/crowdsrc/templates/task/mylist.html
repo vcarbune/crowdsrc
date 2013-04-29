@@ -27,14 +27,20 @@
         >
             <td>
                 {% if task.is_active %}
-                    <a href="{% url "crowdapp.views.task_solutions" task.id %}">
+                    <a class="action-icon" href="{% url "crowdapp.views.task_solutions" task.id %}">
                       <img src="{{ STATIC_URL }}img/view_solutions.png" title="Mark Solutions"/>
                     </a>
+                    <a class="action-icon" href="{% url "crowdapp.views.task_statistics" task.id %}">
+                      <img src="{{ STATIC_URL }}img/task_stats.png" title="Task Statistics"/>
+                    </a>
                 {% else %}
-                    <a href="{% url "crowdapp.views.edit_task" task.id %}">
+                    <a class="action-icon" href="{% url "crowdapp.views.edit_task" task.id %}">
                       <img src="{{ STATIC_URL }}img/edit_task.png" title="Edit Task"/>
                     </a>
                 {% endif %}
+                <a class="action-icon" href="{% url "crowdapp.views.delete_task" task.id %}">
+               	  <img src="{{ STATIC_URL }}img/delete.png" title="Delete Task"/>
+                </a>
             </td>
             <td class="task-name"> {{ task.name }} </td>
             <td> {{ task.cost }} </td>

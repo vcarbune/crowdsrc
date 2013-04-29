@@ -267,3 +267,7 @@ select {
 .view-solution-table {
 	bordeR: 1px solid green;
 }
+
+a.action-icon {
+	text-decoration: none;
+}
