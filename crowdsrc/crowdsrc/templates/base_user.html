@@ -5,12 +5,8 @@
 {% block menu %}
 	<li><a href="/all_tasks">Task List</a></li>
 {% if user.is_task_creator %}
-	<li><a href="#">Manage Tasks</a>
-		<ul>
-			<li><a href="/create_task">Create task</a></li>
-			<li><a href="/my_tasks">My tasks</a></li>
-		</ul>
-	</li>
+	<li><a href="/create_task">Create Task</a></li>
+	<li><a href="/my_tasks">Own Tasks</a></li>
 {% endif %}
 	<li><a href="/my_solutions/">Solutions</a></li>
 	<li><a href="/account/">Account</a></li>

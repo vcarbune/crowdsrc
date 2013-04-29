@@ -2,7 +2,7 @@
 
 {% load crowdapp_extras %} 
 
-{% block title %}Solution {{solution.task.name}}{% endblock %}
+{% block title %}Task Solution {% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/toolbox.css">
@@ -26,9 +26,9 @@
 
 {% block content %}
 
-<h2> View solution </h2> <br/>
+<h2> Solution for {{ solution.task.name }} </h2> <br/>
 
-<table class='task_list'>
+<table class='view-solution-table'>
   <tr>  
     <th> Task: </th>
     <td> {{ solution.task.name }} </td>

@@ -253,3 +253,7 @@ select {
 .generic-table-list .even {
 	 background: #EEE;
 }
+
+.view-solution-table {
+	bordeR: 1px solid green;
+}
