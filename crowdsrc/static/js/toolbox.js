@@ -105,8 +105,8 @@ app.controller('ToolboxCtrl', function($scope, internalService) {
   };
   
   $scope.initEmpty = function() {
-	  $scope.addElement(CheckboxCtrl.TYPE);
-	  $scope.addElement(ImageGroupCtrl.TYPE);
+	  //$scope.addElement(CheckboxCtrl.TYPE);
+	  //$scope.addElement(ImageGroupCtrl.TYPE);
   };
   
   $scope.addExistingElement = function(elem) {

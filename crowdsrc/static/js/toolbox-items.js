@@ -138,6 +138,7 @@ function TextFieldCtrl($scope, internalService)
   };
   
   $scope.validateInput = function() {
+	$scope.error = '';
 	if (!$scope.textFieldValue) {
       internalService.validationService.invalidate(); 
       $scope.error = 'The field is empty.';
@@ -160,6 +161,7 @@ TextFieldCtrl.HTML =
   "<div ng-controller='TextFieldCtrl' ng-init='init(content.id)' >" +
     "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.textFieldLabel'>Enter contents here... </div>" + 
     "<input id='task_{{content.id}}' ng-model='textFieldValue' name='task_{{content.id}}' value='{{textFieldValue}}' type='text' ng-disabled='disabled' />" +
+    "<span class='task-input-error'>{{error}}</span>" +
   "</div>";
 
 ToolboxItemCtrl.StringToCtrlMap[TextFieldCtrl.TYPE] = TextFieldCtrl;
@@ -193,6 +195,7 @@ function NumberFieldCtrl($scope, internalService)
   };
   
   $scope.validateInput = function() {
+	$scope.error = '';  
 	if (!$scope.textFieldValue) {
       internalService.validationService.invalidate(); 
       $scope.error = 'The field is empty.';
@@ -222,6 +225,7 @@ NumberFieldCtrl.HTML =
   "<div ng-controller='NumberFieldCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
     "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.textFieldLabel'>Label: </div>" + 
     "<input id='task_{{content.id}}' ng-model='textFieldValue' name='task_{{content.id}}' value='{{textFieldValue}}' type='text' ng-disabled='disabled' />" +
+    "<span class='task-input-error'>{{error}}</span>" +
   "</div>";
 
 ToolboxItemCtrl.StringToCtrlMap[NumberFieldCtrl.TYPE] = NumberFieldCtrl;
@@ -291,9 +295,9 @@ function RadioGroupCtrl($scope, internalService)
 	    name: 'Radio Group'
 	  };
 	  $scope.items = [
-            {id: 0, name: "New item"},
-            {id: 1, name: "New item"},
-            {id: 2, name: "New item"}
+            {id: 0, name: "Item 1"},
+            {id: 1, name: "Item 2"},
+            {id: 2, name: "Item 3"}
           ];
 	}
 	else {
@@ -492,6 +496,7 @@ function RankingCtrl($scope, internalService)
   };
   
   $scope.validateInput = function() {
+	$scope.error = '';  
 	for (i in $scope.items) {
 	  if ($scope.items[i].state != 'selected') {
 		  internalService.validationService.invalidate();
@@ -529,6 +534,7 @@ RankingCtrl.HTML =
 	  	  "<span ng-click='removeItem(i.id)' ng-show='isEditable' class='toolbox-item-remove'></span>" +
 	    "</li>" +
     "</ul>" +
+    "<span class='task-input-error'>{{error}}</span>" +
   "</div>";
 
 ToolboxItemCtrl.StringToCtrlMap[RankingCtrl.TYPE] = RankingCtrl;

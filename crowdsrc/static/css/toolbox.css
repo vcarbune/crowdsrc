@@ -117,3 +117,9 @@
 	height: 32px;
 	color: red;
 }
+
+.task-input-error {
+	margin-left: 2px;
+	font-size: 10px;
+	color: red;
+}
