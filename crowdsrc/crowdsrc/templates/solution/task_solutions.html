@@ -16,7 +16,7 @@
     <th>Worker</th>
     <th>Access Path</th>
   </tr>
-  {% for solution in task.solution_set.all %}
+  {% for solution in solutions %}
   {% if solution.status != 0 %}
   <tr>
     <td>

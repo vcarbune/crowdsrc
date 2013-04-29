@@ -213,7 +213,7 @@ def my_tasks(request):
     request.user.is_task_creator = request.user.has_perm('crowdapp.is_task_creator')
     try:
         profile = get_profile(request.user)
-        tasks = Task.objects.filter(creator=profile)
+        tasks = Task.objects.filter(creator=profile).order_by('-created_at')
     except ObjectDoesNotExist:
         raise Http404
     return render(request, 'task/mylist.html', {'tasks': tasks})
@@ -224,8 +224,7 @@ def all_tasks(request):
     try:
         profile = get_profile(request.user)
         user_qualifs = set(profile.qualifications.all())
-        # TO DO: remove comment on next line
-        all_tasks = Task.objects.filter(is_active=True)#.exclude(creator=profile)
+        all_tasks = Task.objects.filter(is_active=True, ).exclude(creator=profile).order_by('-created_at')
         good_tasks = []
         for task in all_tasks:
             if profile.is_qualified(task):
@@ -285,7 +284,7 @@ def process_solution(request, solution_id, approved):
 def my_solutions(request):
     request.user.is_task_creator = request.user.has_perm('crowdapp.is_task_creator')
     profile = get_profile(request.user)
-    solutions = Solution.objects.filter(worker=profile).exclude(status=0)
+    solutions = Solution.objects.filter(worker=profile).exclude(status=0).order_by('-created_at')
     
     return render(request, 'solution/my_solutions.html', {'solutions': solutions })
 
@@ -297,10 +296,11 @@ def task_solutions(request, task_id):
         profile = get_profile(request.user)
         if task.creator != profile:
             raise PermissionDenied
+        solutions = Solution.objects.filter(task=task).exclude(status=0).order_by('-created_at')
     except ObjectDoesNotExist:
         raise Http404
     
-    return render(request, 'solution/task_solutions.html', {'task': task })
+    return render(request, 'solution/task_solutions.html', {'task': task, 'solutions': solutions })
 
 @permission_required('crowdapp.is_task_creator', raise_exception=True)
 def task_statistics(request, task_id):
