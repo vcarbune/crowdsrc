@@ -155,7 +155,7 @@ class Solution(models.Model):
     access_path = models.ForeignKey(AccessPath, null=True)
     resources = models.ManyToManyField(Resource)
     status = models.SmallIntegerField(choices=STATUSES, default=0)
-    created_at = models.DateField()
+    created_at = models.DateTimeField(default=datetime.now())
     
     def __unicode__(self):
         return self.task.name + " [" + self.worker.__unicode__() + "]"

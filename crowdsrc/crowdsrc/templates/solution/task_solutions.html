@@ -9,22 +9,36 @@
 <h2>{{ task.name }}</h2> <br/>
 <h4>Submitted solutions: </h4> <br/>
 
-<table class='task_list'>
+<table class="generic-table-list">
   <tr>
+    <th>Action</th>
+    <th>Status</th>
     <th>Date</th>
     <th>Worker</th>
-    <th>Description</th>
-    <th>Status</th>
-    <th>Action</th>
+    <th>Access Path</th>
   </tr>
   {% for solution in task.solution_set.all %}
   {% if solution.status != 0 %}
   <tr>
+    <td>
+    	<a href="{% url "crowdapp.views.view_solution" solution.id %}">
+			<img src="{{ STATIC_URL }}img/view_solution.png" title="View"/>
+		</a>
+	</td>
+    <td>
+      {% if solution.get_status_display == "Finished" %}
+        <img src="{{ STATIC_URL }}img/submitted_task.png" title="Submitted"/>
+      {% elif solution.get_status_display == "Approved" %}
+        <img src="{{ STATIC_URL }}img/solved.png" title="Approved"/>
+      {% elif solution.get_status_display == "Rejected" %}
+        <img src="{{ STATIC_URL }}img/rejected.png" title="Rejected"/>
+      {% else %}
+        This is a bug. Please report it.
+      {% endif %}
+    </td>
     <td>{{solution.created_at}}</td>
     <td>{{solution.worker}}</td>
     <td>{{solution.access_path}}</td>
-    <td>{{solution.get_status_display}}</td>
-    <td><a href="{% url "crowdapp.views.view_solution" solution.id %}">View</a></td>
   </tr>
   {% endif %}
   {% endfor %}
