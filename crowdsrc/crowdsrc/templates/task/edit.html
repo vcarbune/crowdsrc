@@ -107,8 +107,9 @@
 	{% endif %}
 	
 	{{ task_form.non_field_errors }}
-	
-	{{ task_form.name.label_tag }}: {{ task_form.name }} {{ task_form.name.errors }}
+
+	{{ task_form.name.errors }}
+	{{ task_form.name.label_tag }}: {{ task_form.name }} 
   <br>
 	{{ task_form.cost.label_tag }}: {{ task_form.cost }} {{ task_form.cost.errors }}
 	{{ task_form.is_active }} {{ task_form.is_active.label_tag}}

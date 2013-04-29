@@ -104,7 +104,7 @@ td
 {
 	padding-top: 25px;
 }
-
+/*
 .registration-fieldset p:nth-child(9) select,
 .registration-fieldset p:nth-child(10) select,
 .registration-fieldset p:nth-child(11) select,
@@ -112,8 +112,10 @@ td
 {
 	width: 150px;
 }
+*/
 
 /* My Account Field-Set Specifics */
+/*
 .my-account-fieldset p:nth-child(3) select,
 .my-account-fieldset p:nth-child(5) select,
 .my-account-fieldset p:nth-child(6) select,
@@ -122,7 +124,11 @@ td
 {
 	width: 150px;
 }
+*/
 
+select {
+	width: 150px;
+}
 /* Edit Task Form */
 .create-task-form {
 	margin-left: 15px;
@@ -200,4 +206,23 @@ td
 	height: 24px;
 
 	background: url('/static/img/toolbox-icons/list-add-3.png');
+}
+
+/* Error Messages */
+.errorlist {
+	color: red;
+	font-size: 0.8em;
+	position: relative;
+}
+.registration-fieldset .errorlist,
+.my-account-fieldset .errorlist {
+	left: 26%;
+	width: 150px;
+}
+
+.create-task-form .access-path-form .errorlist {
+	left: 20.5%;
+}
+.create-task-form .errorlist {
+	left: 7.5%;
 }

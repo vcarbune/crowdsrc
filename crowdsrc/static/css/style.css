@@ -16,7 +16,7 @@
    font-weight: normal;
    font-style: normal;
    position: relative;
-   width: 70%;
+   max-width: 70%;
    min-height: 100%;
    left: 0;
    top: 0;

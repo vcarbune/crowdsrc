@@ -105,8 +105,8 @@ app.controller('ToolboxCtrl', function($scope, internalService) {
   };
   
   $scope.initEmpty = function() {
-	  //$scope.addElement(CheckboxCtrl.TYPE);
-	  //$scope.addElement(ImageGroupCtrl.TYPE);
+	  $scope.addElement(ParagraphCtrl.TYPE);
+	  $scope.addElement(TextFieldCtrl.TYPE);
   };
   
   $scope.addExistingElement = function(elem) {
@@ -148,6 +148,11 @@ app.controller('ToolboxCtrl', function($scope, internalService) {
   $scope.removeElement = function (id) {
 	  for (var i=0; i<$scope.content.length; i++) {
 		  if ($scope.content[i].id == id) {
+        if ($scope.content[i].type == ImageGroupCtrl.TYPE) {
+          $scope.hasImageGroup = false;
+          $scope.warning = '';
+        }
+
 			  for (var j=0; j<$scope.content.length; j++) {
 				  if ($scope.content[j].id > id) {
 					  $scope.content[j].id--;
