@@ -30,7 +30,7 @@
 <h2>{{ solution.task.name }}</h2>
 <div class="complete-task-container">
 {% if solution.access_path %}
-<p>Description: {{ solution.access_path.description }} </p>
+<p>Instructions: {{ solution.access_path.description }} </p>
 {% endif %}
 
 <form ng-app="angularjs-toolbox" id="complete-task-form" method="post" action="{% url 'crowdapp.views.complete_task' solution.task.id solution.id %}">
@@ -41,7 +41,7 @@
 	
 	<!-- Begin Toolbox -->
 	<div ng-controller="ToolboxCtrl" ng-init="init({{ solution.task.content }}, 'PREVIEW', {{solution.id}})" class="toolbox">
-	    <ul ui-sortable="sortableOptions" ng-model="content" class="toolbox-item-list">
+	    <ul ng-model="content" class="toolbox-item-list">
 	    	<li ng-repeat="item in content" class="toolbox-item">
 	    		<toolbox-item content="item" itemcontent="item.itemContent"></toolbox-item>
 	    	</li>
