@@ -321,8 +321,9 @@ a.tooltip span {
 .complete-task-container button
 {
 	margin: 0% 40% 0% 40%;
-	border: 0px;
 	width: 20%;
+	border: 1px solid black;
+	background: #AAA;
 }
 
 .complete-task-container img
