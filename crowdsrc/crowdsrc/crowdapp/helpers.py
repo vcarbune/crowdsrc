@@ -31,6 +31,6 @@ def get_input_type(type):
 
 def get_pretty_name(brute_name):
      pretty_name = os.path.splitext(brute_name)[0]
-     pretty_name.replace('_', ' ')
+     pretty_name = pretty_name.replace('_', ' ')
      return pretty_name
 
