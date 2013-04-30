@@ -73,11 +73,17 @@
 	padding-left: 0;
 }
 .toolbox-ranking-list li {
+	text-align: center;
 	list-style-type: none;
 	margin-bottom: 5px;
 }
 
+.toolbox-ranking-rank {
+	font-weight: bold;
+}
 .toolbox-ranking-list li .toolbox-ranking-name {
+	display: inline-block;
+	width: 30%;
 	cursor: default;
 	border: 1px solid #333;
 	padding: 0 2px 0 2px;
@@ -85,7 +91,7 @@
 }
 
 .toolbox-ranking-list li.selected .toolbox-ranking-name {
-	background-color: #d55;
+	background-color: lightgreen;
 }
 
 .toolbox-editable {
