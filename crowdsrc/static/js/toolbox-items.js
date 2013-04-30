@@ -567,9 +567,11 @@ function ImageGroupCtrl($scope, $http, internalService) {
 	      $http(request).
 	        success(function(data, status, headers, config) {
 	          $scope.previewImgs = [];
+                  $scope.titles = [];
 	          for (i in data.resources) {
 	        	  console.log(decodeURI(data.resources[i].url));
 	        	  $scope.previewImgs.push(decodeURI(data.resources[i].url));
+                          $scope.titles.push(data.resources[i].name);
 	          }
 	        }).
 	        error(function(data, status, headers, config) {
@@ -598,6 +600,7 @@ function ImageGroupCtrl($scope, $http, internalService) {
        oFReader.onload = function(oFREvent) {
          $scope.previewImgs.push(oFREvent.target.result);
        }
+       
      }
   }
 
@@ -632,7 +635,7 @@ ImageGroupCtrl.HTML =
     "<div style='text-align:center; margin: 0 auto; overflow: hidden;' ng-hide='isEditable'>" +
       "<div style='float:left' ng-repeat='image in previewImgs' ng-hide='isEditable'>" +
         "<img src={{image}} ng-hide='isEditable' Hspace='30' />" +
-        "<br/>Image {{$index+1}}<br/><br/>" +
+        "<br/>{{titles[$index]}}<br/><br/>" +
       "</div ng-hide='isEditable'>" +
     "</div ng-hide='isEditable'>" +
   "</div>";

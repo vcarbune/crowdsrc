@@ -91,7 +91,7 @@ def edit_task(request, task_id=None):
             
             # create resources from uploaded images
             for img in request.FILES.getlist('resource_files'):
-                resource = Resource(task=task, index=1, image = img)
+                resource = Resource(task=task, index=1, image = img, name=get_pretty_name(img.name))
                 resource.save()
                 
             # create task input objects
