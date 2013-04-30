@@ -30,7 +30,8 @@
 <h2>{{ solution.task.name }}</h2>
 <div class="complete-task-container">
 {% if solution.access_path %}
-<p>Instructions: {{ solution.access_path.description }} </p>
+<p><b>Instructions:</b></p>
+<i>{{ solution.access_path.description }}</i>
 {% endif %}
 
 <form ng-app="angularjs-toolbox" id="complete-task-form" method="post" action="{% url 'crowdapp.views.complete_task' solution.task.id solution.id %}">
