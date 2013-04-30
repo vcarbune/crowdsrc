@@ -61,7 +61,8 @@ class Task(models.Model):
     cost = models.SmallIntegerField(default=0)
     created_at = models.DateField(default=datetime.now()) 
     resources_per_task = models.SmallIntegerField(default=0)
-    
+    solutions_auto_approved = models.BooleanField(default=True)
+ 
     qualifications = models.ManyToManyField(Qualification, blank=True) 
     
     def get_random_access_path(self): 

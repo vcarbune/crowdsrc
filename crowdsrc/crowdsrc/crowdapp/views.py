@@ -155,6 +155,11 @@ def complete_task(request, task_id, solution_id=0):
         
         if check_solution_values(task_inputs): # TODO: validate input
             solution.status = 1
+
+            # Solutions might be auto-approved
+            if Task.objects.get(id=task_id).solutions_auto_approved:
+                solution.status = 2
+
             solution.save()
             
             for input_val_dict in task_inputs:
