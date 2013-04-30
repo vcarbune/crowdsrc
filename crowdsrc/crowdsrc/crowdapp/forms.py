@@ -32,12 +32,13 @@ class ProfileForm(ModelForm):
 class CreateTaskForm(ModelForm):
     name = forms.CharField(label="Title")
     is_active = forms.BooleanField(label="Active", required=False)
+    solutions_auto_approved = forms.BooleanField(label="Auto approve solutions?", required=False);
     
     content = forms.CharField(widget=forms.HiddenInput())
     
     class Meta:
         model = Task
-        fields = ('name', 'content', 'is_active', 'cost', 'qualifications')
+        fields = ('name', 'content', 'is_active', 'cost', 'solutions_auto_approved', 'qualifications')
         
 class TaskAdminForm(ModelForm):
     html = forms.CharField(widget=forms.Textarea)
