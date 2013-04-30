@@ -2,6 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from models import *
 from const import INPUT_TYPES
 
+import os 
 
 def get_profile(user):
     try:
@@ -27,3 +28,9 @@ def get_input_type(type):
         return INPUT_TYPES[type]
     else:
         return None
+
+def get_pretty_name(brute_name):
+     pretty_name = os.path.splitext(brute_name)[0]
+     pretty_name.replace('_', ' ')
+     return pretty_name
+

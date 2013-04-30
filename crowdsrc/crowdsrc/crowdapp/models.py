@@ -59,7 +59,7 @@ class Task(models.Model):
     content = models.TextField()
     is_active = models.BooleanField(default=False)
     cost = models.SmallIntegerField(default=0)
-    created_at = models.DateField(default=datetime.now()) 
+    created_at = models.DateTimeField(default=datetime.now()) 
     resources_per_task = models.SmallIntegerField(default=0)
     solutions_auto_approved = models.BooleanField(default=True)
  
