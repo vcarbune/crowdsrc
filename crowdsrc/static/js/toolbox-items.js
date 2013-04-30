@@ -524,6 +524,7 @@ RankingCtrl.TYPE = 'ranking';
 RankingCtrl.ICON = 'ranking.png';
 RankingCtrl.HTML =
   "<div ng-controller='RankingCtrl' ng-init='init(content.id)' >" +
+    "<p>Click the items in the order you want to rank them.</p>" +
     "<div ng-model='itemContent.id' ng-show='false'>{{content.id}}</div>" +
     "<span ng-click='addItem()' ng-show='isEditable' class='toolbox-item-add'></span>" +
 	  "<ul class='toolbox-ranking-list'>" +
@@ -591,19 +592,6 @@ function ImageGroupCtrl($scope, $http, internalService) {
   MAX_PREVIEW_IMG = 10;
   DEFAULT_IMG_PER_TASK = 3;
 
-  $scope.refreshPreviewImages = function() {
-     $scope.previewImgs = [];
-     for(i = 0; i < $scope.files.length && i < $scope.itemContent.nrImagesPerTask; ++i)
-     {
-       oFReader = new FileReader();
-       oFReader.readAsDataURL($scope.files[i]);
-       oFReader.onload = function(oFREvent) {
-         $scope.previewImgs.push(oFREvent.target.result);
-       }
-       
-     }
-  }
-
   $scope.setFiles = function(element) {
     // Filter image files.
     rFilter = /^(image\/bmp|image\/gif|image\/jpeg|image\/png|image\/tiff)$/i;
@@ -615,7 +603,6 @@ function ImageGroupCtrl($scope, $http, internalService) {
     for(i = 0; i < element.files.length; ++i)
       if(rFilter.test(element.files[i].type) && element.files[i].size < FILE_SIZE_MAX)
         $scope.files.push(element.files[i]);
-    $scope.refreshPreviewImages();
   }
 };
 
@@ -628,7 +615,7 @@ ImageGroupCtrl.HTML =
     "<label for='resources_{{content.id}}' ng-show='isEditable'>Task Images: </label>" +
     "<input type='file' name='resource_files' ng-model-instant onchange='angular.element(this).scope().setFiles(this)' ng-show='isEditable' multiple required />" +
     "<p ng-show='isEditable'>Used Images: " +
-      "<input ng-model='itemContent.nrImagesPerTask' type='number' min='1' max='10' ng-show='isEditable' ng-change='refreshPreviewImages()' required />" +
+      "<input ng-model='itemContent.nrImagesPerTask' type='number' min='1' max='10' ng-show='isEditable' required />" +
     "</p>" +
     
     // Content for PREVIEW state.
