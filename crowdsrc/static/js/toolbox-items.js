@@ -622,7 +622,7 @@ ImageGroupCtrl.HTML =
     "<div style='text-align:center; margin: 0 auto; overflow: hidden;' ng-hide='isEditable'>" +
       "<div style='float:left' ng-repeat='image in previewImgs' ng-hide='isEditable'>" +
         "<img src={{image}} ng-hide='isEditable' Hspace='30' />" +
-        "<br/>{{titles[$index]}}<br/><br/>" +
+        "<br/><b>{{titles[$index]}}</b><br/><br/>" +
       "</div ng-hide='isEditable'>" +
     "</div ng-hide='isEditable'>" +
   "</div>";
