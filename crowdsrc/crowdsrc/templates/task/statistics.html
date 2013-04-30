@@ -13,7 +13,7 @@
 
 <div class='stats-inputs-container'>
 <p>{{ num_sol }} solutions</p>
-<p class="stats-inputs-header">Inputs</p>
+<p class="stats-inputs-header">Inputs:</p>
 {% for elem in total_stats %}
 	{% include 'task/_stats_elem.html' with elem=elem %}
 {% endfor %}
@@ -25,7 +25,7 @@
 		<h4>Access path: {{ ap.name }} </h4>
 		<div class='stats-inputs-container'>
 		<p>{{ num_sol_per_ap|get_item:ap.id }} solutions</p>
-		<p>Inputs:</p>
+		<p class="stats-inputs-header">Inputs:</p>
 		{% for elem in ap_stats_map|get_item:ap.id %}
 			{% include 'task/_stats_elem.html' with elem=elem %}
 		{% endfor %}

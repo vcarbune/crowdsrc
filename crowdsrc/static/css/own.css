@@ -375,6 +375,7 @@ a.action-icon {
 
 #task-stats-container .stats-inputs-header {
 	font-weight: bold;
+	margin-bottom: 20px;
 }
 
 #task-stats-container table, th, td {
