@@ -39,6 +39,9 @@
     newQualificationLabel.classList.add('create-task-qualification-label');
     newQualificationLabel.appendChild(document.createTextNode(option.label));
 
+    if (option.selected)
+      newQualificationLabel.classList.add('create-task-qualification-selected');
+
     newQualificationLabel.addEventListener('click', function() {
       option.selected = !option.selected;
       this.classList.toggle('create-task-qualification-selected');
