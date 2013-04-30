@@ -4,16 +4,15 @@
 <div class="stats-input-box">
 	<span class="stats-input-title">{{elem.task_input.type|input_type_name}}</span>
 	{% if elem.task_input.type == 1 %} <!-- Checkbox -->
-		<p>Counts:</p>
-		<ul>
-			<li>False: {{ elem.stats.counts.0 }}</li>
-			<li>True: {{ elem.stats.counts.1 }}</li>
-		</ul>
+		<table>
+			<thead><th>Value</th><th>Solutions</th></thead>
+			<tr><td>False</td> <td>{{ elem.stats.counts.0 }}</td></tr>
+			<tr><td>True</td> <td>{{ elem.stats.counts.1 }}</td></tr>
+		</table>
 	{% elif elem.task_input.type == 2 %} <!-- Radio group -->
-		<p>Counts for all choices:</p>
 		<table>
 		<thead>
-			<th>Id</th><th>Count</th>
+			<th>Choice</th><th>Solutions</th>
 		</thead>
 			{% for count in elem.stats.counts %}
 				<tr>
@@ -23,10 +22,9 @@
 			{% endfor %}
 		</table>
 	{% elif elem.task_input.type == 3 %} <!-- Ranking -->
-		<p>Scores for all choices:</p>
 		<table>
 		<thead>
-			<th>Id</th><th>Mean</th><th>Variance</th>
+			<th>Item</th><th>Mean Score</th><th>Variance</th>
 		</thead>
 		{% for score in elem.stats.scores %}
 			<tr>
@@ -37,7 +35,10 @@
 		{% endfor %}
 		</table>
 	{% elif elem.task_input.type == 4 %} <!-- Number field -->
-		<p>Mean value: {{elem.stats.mean}}</p>
-		<p>Variance: {{elem.stats.variance}}</p>
+		<table>
+			<thead><th>Measure</th><th>Value</th></thead>
+			<tr><td>Mean</td> <td>{{elem.stats.mean}}</td></tr>
+			<tr><td>Variance</td> <td>{{elem.stats.variance}}</td></tr>
+		</table>
 	{% endif %}
 </div>
