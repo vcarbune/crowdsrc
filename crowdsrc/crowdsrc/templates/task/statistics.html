@@ -7,32 +7,37 @@
 {% block content %}
 
 <div id='task-stats-container'>
-<h3>{{ task.name }} - Statistics </h3>
-<br>
-<h4>Total</h4>
+	<h3>{{ task.name }} - Statistics </h3>
+	<br>
+	<h4>Total</h4>
 
-<div class='stats-inputs-container'>
-<p>{{ num_sol }} solutions</p>
-<p class="stats-inputs-header">Inputs:</p>
-{% for elem in total_stats %}
-	{% include 'task/_stats_elem.html' with elem=elem %}
-{% endfor %}
-
-{% if task.accesspath_set.all %}
-</div>
-{% for ap in task.accesspath_set.all %}
-	<div class="stats-access-path-container">
-		<h4>Access path: {{ ap.name }} </h4>
-		<div class='stats-inputs-container'>
-		<p>{{ num_sol_per_ap|get_item:ap.id }} solutions</p>
-		<p class="stats-inputs-header">Inputs:</p>
-		{% for elem in ap_stats_map|get_item:ap.id %}
-			{% include 'task/_stats_elem.html' with elem=elem %}
-		{% endfor %}
-		</div>
+	<div class='stats-inputs-container'>
+		<p>{{ num_sol }} solutions</p>
+		
+		{% if num_sol > 0 %}
+			<p class="stats-inputs-header">Inputs:</p>
+			{% for elem in total_stats %}
+				{% include 'task/_stats_elem.html' with elem=elem %}
+			{% endfor %}
+		{% endif %}
 	</div>
-{% endfor %}
-{% endif %}
+	
+	{% if task.accesspath_set.all %}
+		{% for ap in task.accesspath_set.all %}
+			<div class="stats-access-path-container">
+				<h4>Access path: {{ ap.name }} </h4>
+				<div class='stats-inputs-container'>
+					<p>{{ num_sol_per_ap|get_item:ap.id }} solutions</p>
+					{% if num_sol_per_ap|get_item:ap.id > 0 %}
+						<p class="stats-inputs-header">Inputs:</p>
+						{% for elem in ap_stats_map|get_item:ap.id %}
+							{% include 'task/_stats_elem.html' with elem=elem %}
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+		{% endfor %}
+	{% endif %}
 
 </div>
 

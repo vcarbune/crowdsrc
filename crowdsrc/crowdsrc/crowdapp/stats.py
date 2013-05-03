@@ -14,10 +14,10 @@ def get_task_stats(task):
     for ap in access_paths:
         ap_stats_map[ap.id] = []
     
-    num_solutions = len(task.solution_set.all())
+    num_solutions = len(task.solution_set.exclude(status=0))
     
     if num_solutions == 0:
-        return None
+        return None, None
     
     for task_input in task_inputs:
         task_input_values = task_input.taskinputvalue_set.all()

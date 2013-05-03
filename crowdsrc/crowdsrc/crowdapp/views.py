@@ -319,14 +319,14 @@ def task_statistics(request, task_id):
     except ObjectDoesNotExist:
         raise Http404
     
-    total_stats, ap_stats_map = get_task_stats(task)
-    
-    num_sol = len(task.solution_set.all())
+    num_sol = len(task.solution_set.exclude(status=0))
     num_sol_per_ap = {}
     aps = task.accesspath_set.all()
     
     for ap in aps:
-        num_sol_per_ap[ap.id] = len(ap.solution_set.all())
+        num_sol_per_ap[ap.id] = len(ap.solution_set.exclude(status=0))
+    
+    total_stats, ap_stats_map = get_task_stats(task)
     
     return render(request, 'task/statistics.html', {'task': task,
                                                     'num_sol': num_sol, 'num_sol_per_ap': num_sol_per_ap,
