@@ -55,7 +55,7 @@
 	<h4>Total</h4>
 
 	<div class='stats-inputs-container'>
-		<p>{{ num_sol }} solutions</p>
+		<p>{{ num_sol }} solution{% if num_sol != 1 %}s{% endif %}</p>
 		
 		{% if num_sol > 0 %}
 			<p class="stats-inputs-header">Inputs:</p>
@@ -70,7 +70,7 @@
 			<div class="stats-access-path-container">
 				<h4>Access path: {{ ap.name }} </h4>
 				<div class='stats-inputs-container'>
-					<p>{{ num_sol_per_ap|get_item:ap.id }} solutions</p>
+					<p>{{ num_sol_per_ap|get_item:ap.id }} solution{% if num_sol_per_ap|get_item:ap.id != 1 %}s{% endif %}</p>
 					{% if num_sol_per_ap|get_item:ap.id > 0 %}
 						<p class="stats-inputs-header">Inputs:</p>
 						{% for elem in ap_stats_map|get_item:ap.id %}

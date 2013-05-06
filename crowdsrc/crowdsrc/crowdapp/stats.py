@@ -53,16 +53,12 @@ def get_task_stats(task):
                                 'stats': {'mean': total_mean, 'variance': total_variance}})
             
             for ap in access_paths:
-                ap_mean = 0
-                if ap_count_map[ap.id] != 0:
+                if ap_count_map[ap.id] > 0:
                     ap_mean = ap_sum_map[ap.id] / float(ap_count_map[ap.id])
-
-                ap_variance = 0
-                if float(ap_count_map[ap.id]) != ap_mean * ap_mean:
                     ap_variance = ap_sum_squared_map[ap.id] / float(ap_count_map[ap.id]) - (ap_mean * ap_mean)
                 
-                ap_stats_map[ap.id].append({'task_input': task_input, 
-                                            'stats': {'mean': ap_mean, 'variance': ap_variance}})
+                    ap_stats_map[ap.id].append({'task_input': task_input, 
+                                                'stats': {'mean': ap_mean, 'variance': ap_variance}})
         # if the input is a checkbox
         elif task_input.type == INPUT_TYPES['checkbox']:
             total_counts = [0,0]
@@ -106,13 +102,9 @@ def get_task_stats(task):
                     else:
                         ap_value_counts_map[ap.id][val] = 1
                 
-            print "Total"        
-            print "Radio value counts: " + str(total_value_counts)
             total_stats.append({'task_input': task_input, 'stats': {'counts': total_value_counts}})
             
             for ap in access_paths:
-                print "Access path: " + str(ap)
-                print "Radio value counts:" + str(ap_value_counts_map[ap.id])
                 ap_stats_map[ap.id].append({'task_input': task_input, 
                                             'stats': {'counts': ap_value_counts_map[ap.id]}})
         # if the input is a ranking component
@@ -133,7 +125,6 @@ def get_task_stats(task):
                 ap = input_value.solution.access_path if input_value.solution.access_path else None
                 
                 elems = input_value.value.strip().split(' ')
-                print "A ranking value: " + str(elems)
                 
                 for i in range(0, num_elems, 1):
                     elems[i] = int(elems[i])
@@ -151,27 +142,20 @@ def get_task_stats(task):
                 total_mean_scores[i] = total_scores[i] / float(num_solutions)
                 total_var_scores[i] = (total_squared_scores[i] / float(num_solutions)) - (total_mean_scores[i] * total_mean_scores[i])
                 
-            print "Total"
-            print "Ranking score means:" + str(total_mean_scores)
-            print "Ranking score variances: " + str(total_var_scores)
-            
             total_stats.append({'task_input': task_input, 
                                 'stats': { 'scores' : zip(total_mean_scores, total_var_scores)}})
             
             for ap in access_paths:
                 num_sols_ap = len(ap.solution_set.all())
-                ap_mean_scores = [0] * num_elems
-                ap_var_scores = [0] * num_elems
-                for i in range(0, num_elems, 1):
-                    ap_mean_scores[i] = ap_scores_map[ap.id][i] / float(num_sols_ap)
-                    ap_var_scores[i] = (ap_squared_scores_map[ap.id][i] / float(num_sols_ap)) - (ap_mean_scores[i] * ap_mean_scores[i])
+                if num_sols_ap > 0:
+                    ap_mean_scores = [0] * num_elems
+                    ap_var_scores = [0] * num_elems
+                    for i in range(0, num_elems, 1):
+                        ap_mean_scores[i] = ap_scores_map[ap.id][i] / float(num_sols_ap)
+                        ap_var_scores[i] = (ap_squared_scores_map[ap.id][i] / float(num_sols_ap)) - (ap_mean_scores[i] * ap_mean_scores[i])
                 
-                print "Access path: " + str(ap)
-                print "Ranking score means:" + str(ap_mean_scores)
-                print "Ranking score variances: " + str(ap_var_scores)
-                
-                ap_stats_map[ap.id].append({'task_input': task_input, 
-                                            'stats': {'scores': zip(ap_mean_scores, ap_var_scores)}})
+                    ap_stats_map[ap.id].append({'task_input': task_input, 
+                                                'stats': {'scores': zip(ap_mean_scores, ap_var_scores)}})
                 
         
             
