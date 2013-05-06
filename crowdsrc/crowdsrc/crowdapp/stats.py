@@ -53,8 +53,13 @@ def get_task_stats(task):
                                 'stats': {'mean': total_mean, 'variance': total_variance}})
             
             for ap in access_paths:
-                ap_mean = ap_sum_map[ap.id] / float(ap_count_map[ap.id])
-                ap_variance = ap_sum_squared_map[ap.id] / float(ap_count_map[ap.id]) - (ap_mean * ap_mean)
+                ap_mean = 0
+                if ap_count_map[ap.id] != 0:
+                    ap_mean = ap_sum_map[ap.id] / float(ap_count_map[ap.id])
+
+                ap_variance = 0
+                if float(ap_count_map[ap.id]) != ap_mean * ap_mean:
+                    ap_variance = ap_sum_squared_map[ap.id] / float(ap_count_map[ap.id]) - (ap_mean * ap_mean)
                 
                 ap_stats_map[ap.id].append({'task_input': task_input, 
                                             'stats': {'mean': ap_mean, 'variance': ap_variance}})
