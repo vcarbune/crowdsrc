@@ -87,6 +87,7 @@ def edit_task(request, task_id=None):
             # save task
             task = task_form.save(commit=False)
             task.creator = get_profile(request.user)
+            task.created_at = datetime.now()
             task.save()
             task_form.save_m2m()
             
