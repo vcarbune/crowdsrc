@@ -162,6 +162,7 @@ def complete_task(request, task_id, solution_id=0):
             if Task.objects.get(id=task_id).solutions_auto_approved:
                 solution.status = 2
 
+            solution.created_at = datetime.now()
             solution.save()
             
             for input_val_dict in task_inputs:
