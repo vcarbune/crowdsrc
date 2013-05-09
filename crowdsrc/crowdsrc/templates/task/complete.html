@@ -30,9 +30,9 @@
 <h2>{{ solution.task.name }}</h2>
 <div class="complete-task-container">
 {% if solution.access_path %}
-<p><b>Instructions:</b></p>
+<p><b>Instructions</b></p>
 {% autoescape off %}
-<i>{{ solution.access_path.description }}</i>
+<p class="instruction">{{ solution.access_path.description }}</p>
 {% endautoescape %}
 {% endif %}
 

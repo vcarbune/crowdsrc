@@ -335,7 +335,6 @@ a.action-icon {
 	text-decoration: none;
 }
 
-
 /* Task Statistics Styling */
 #task-stats-container {
 	margin: 10px;
@@ -388,3 +387,9 @@ a.action-icon {
 }
 
 
+/* Complete task styling */
+.instruction {
+	border: 1px solid #000;
+	font-weight: bold;
+	padding: 2px;
+}
