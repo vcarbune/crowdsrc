@@ -434,7 +434,7 @@ white-space: nowrap;
    position:relative;
    cursor:auto;
    width: 100%;
-   min-width: 700px;
+   min-width: 300px;
    max-width: 1920px;
    z-index: auto !important;
 }

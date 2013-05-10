@@ -158,7 +158,7 @@ TextFieldCtrl.NAME = 'Text Field Component';
 TextFieldCtrl.TYPE = 'textField';
 TextFieldCtrl.ICON = 'textField.png'
 TextFieldCtrl.HTML =
-  "<div ng-controller='TextFieldCtrl' ng-init='init(content.id)' >" +
+  "<div ng-controller='TextFieldCtrl' ng-init='init(content.id)' class='toolbox-container-textfield'>" +
     "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.textFieldLabel' ng-bind-html-unsafe='itemContent.textFieldLabel'>Enter contents here... </div>" + 
     "<input id='task_{{content.id}}' ng-model='textFieldValue' name='task_{{content.id}}' value='{{textFieldValue}}' type='text' ng-disabled='disabled' />" +
     "<span class='task-input-error'>{{error}}</span>" +
@@ -222,7 +222,7 @@ NumberFieldCtrl.NAME = 'Number Field Component';
 NumberFieldCtrl.TYPE = 'numberField';
 NumberFieldCtrl.ICON = 'numberField.png'
 NumberFieldCtrl.HTML =
-  "<div ng-controller='NumberFieldCtrl' ng-init='init(content.id)' class='task-generic-item'>" +
+  "<div ng-controller='NumberFieldCtrl' ng-init='init(content.id)' class='toolbox-container-numberfield'>" +
     "<div contenteditable='{{isEditable}}' class='toolbox-editable' ng-model='itemContent.textFieldLabel' ng-bind-html-unsafe='itemContent.textFieldLabel'>Label: </div>" + 
     "<input id='task_{{content.id}}' ng-model='textFieldValue' name='task_{{content.id}}' value='{{textFieldValue}}' type='text' ng-disabled='disabled' />" +
     "<span class='task-input-error'>{{error}}</span>" +
