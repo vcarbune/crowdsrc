@@ -337,5 +337,20 @@ def task_statistics(request, task_id):
 def toolbox_dev(request):
     return render(request, 'dev/toolbox.html');
 
+@login_required
+def feedback(request):
+    request.user.is_task_creator = request.user.has_perm('crowdapp.is_task_creator')
+    try:
+        profile = get_profile(request.user)
+    except ObjectDoesNotExist:
+        raise Http404
+    if request.method == 'POST':
+        profile_form = ProfileForm(data=request.POST, prefix='profile', instance=profile)
+        if profile_form.is_valid():
+            profile_form.save()  
+    else :
+        profile_form = ProfileForm(prefix='profile', instance=profile)
 
-
+    # FIXME: Would be nice to check whether the user has submitted at least
+    # one solution before providing the feedback form.
+    return render(request, 'feedback.html', {'profile_form': profile_form})

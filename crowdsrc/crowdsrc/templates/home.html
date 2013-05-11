@@ -8,8 +8,8 @@ Crowdsourcing Application
 <div class="padded">
 <h1>Welcome!</h1>
   <p>To get started you can:</p>
-  {% if user.is_task_creator %}
     <ul class="signicon">
+      {% if user.is_task_creator %}
       <li>
         <a href="/create_task">Create a task.</a><br>
         Post a new task and assign it a specific worker profile.
@@ -21,9 +21,7 @@ Crowdsourcing Application
       <li><a href="/my_tasks">Manage solutions.</a><br>
         Accept or reject solutions submitted for your tasks by the workers.
       </li>
-    </ul>
-  {% else %}
-    <ul class="signicon">
+      {% else %}
       <li>
         <a href="/all_tasks">View tasks.</a><br>
         Show active tasks that match your profile and solve them.
@@ -36,7 +34,19 @@ Crowdsourcing Application
         <a href="/my_solutions">View solutions.</a><br>
         Monitor the approval of your submitted solutions.
       </li>
+      {% endif %}
+      <br><br>
+      <li>
+        <a href="/feedback">Provide Feedback!</a><br>
+        You are one of the earliest users of this project and therefore your<br>
+        feedback is <b>extremely</b> valuable for the team behind it.<br><br>
+        
+        Please take a few minutes <b>at the end of the experiment</b> to complete<br>
+        the survey and let us know what problems you found or improvement<br>
+        suggestions you have.<br><br>
+
+        Thank you!
+      </li>
     </ul>
-  {% endif %}
 </div>
 {% endblock %}

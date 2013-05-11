@@ -39,6 +39,8 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 
-    # Toolbox development URL
-    url(r'^toolbox/$', 'crowdapp.views.toolbox_dev'),
+    # Toolbox development URL (Outdated template)
+    # url(r'^toolbox/$', 'crowdapp.views.toolbox_dev'),
+
+    url(r'^feedback/', 'crowdapp.views.feedback'),
 )
