@@ -137,3 +137,7 @@
 	text-align: right;
 	padding-top: 5px;
 }
+
+.toolbox-resource-image {
+	display: inline-block;
+}

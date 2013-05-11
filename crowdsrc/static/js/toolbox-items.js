@@ -620,7 +620,7 @@ ImageGroupCtrl.HTML =
     
     // Content for PREVIEW state.
     "<div style='text-align:center; margin: 0 auto; overflow: hidden;' ng-hide='isEditable'>" +
-      "<div style='float:left' ng-repeat='image in previewImgs' ng-hide='isEditable'>" +
+      "<div class='toolbox-resource-image' ng-repeat='image in previewImgs' ng-hide='isEditable'>" +
         "<img src={{image}} ng-hide='isEditable' Hspace='30' />" +
         "<br/><b>{{titles[$index]}}</b><br/><br/>" +
       "</div ng-hide='isEditable'>" +
