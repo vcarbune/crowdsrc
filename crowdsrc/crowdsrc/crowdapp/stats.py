@@ -146,7 +146,7 @@ def get_task_stats(task):
                                 'stats': { 'scores' : zip(total_mean_scores, total_var_scores)}})
             
             for ap in access_paths:
-                num_sols_ap = len(ap.solution_set.all())
+                num_sols_ap = len(ap.solution_set.exclude(status=0))
                 if num_sols_ap > 0:
                     ap_mean_scores = [0] * num_elems
                     ap_var_scores = [0] * num_elems
