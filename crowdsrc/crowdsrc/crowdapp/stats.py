@@ -128,13 +128,13 @@ def get_task_stats(task):
                 
                 for i in range(0, num_elems, 1):
                     elems[i] = int(elems[i])
-                    weight = num_elems - i # TODO: create the weights somewhere else, with other values
-                    total_scores[elems[i]-1] += weight
-                    total_squared_scores[elems[i]-1] += weight * weight
+                    weight = num_elems - elems[i] + 1 # TODO: create the weights somewhere else, with other values
+                    total_scores[i] += weight
+                    total_squared_scores[i] += weight * weight
                     
                     if ap:
-                        ap_scores_map[ap.id][elems[i]-1] += weight
-                        ap_squared_scores_map[ap.id][elems[i]-1] += weight * weight
+                        ap_scores_map[ap.id][i] += weight
+                        ap_squared_scores_map[ap.id][i] += weight * weight
                     
             total_mean_scores = [0] * num_elems
             total_var_scores = [0] * num_elems
