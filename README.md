@@ -1,4 +1,6 @@
 crowdsrc
 ========
 
-Information Systems Laboratory - Project Repository
+Crowd Source Platform written in Django and AngularJS.
+
+Project for Information Systems Laboratory at ETH.
